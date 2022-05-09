@@ -1,0 +1,92 @@
+<div class="container">
+  <div class="form-wrapper">
+    <!-- Screen Name and Date -->
+    <div class="heading-section ng-star-inserted">
+      <div>GOI Loan Purpose Master </div>
+      <div class="font-heading"><strong>Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+    </div>
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DMO</li>
+        <li class="breadcrumb-item active" aria-current="page">GOI Loan Purpose Master </li>
+      </ol>
+    </nav>
+
+    <!-- Form Starts -->
+    <form [formGroup]="goiLoanPurposeMasterForm">
+      <div class="panel-group">
+        <div class="box box-primary">
+          <div class="box-header">GOI Loan Purpose Master</div>
+          <div class="box-body">
+
+            <div class="row">
+              
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="loanPurpose" [(ngModel)]="loanPurpose" placeholder="Loan Purpose" required />
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanPurposeMasterForm.controls.loanPurpose.touched && goiLoanPurposeMasterForm.controls.loanPurpose.errors">
+                    <mat-error *ngIf="goiLoanPurposeMasterForm.controls.loanPurpose.errors.required">
+                      {{errorMessages.LOAN_PURPOSE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="planSchemeName" [(ngModel)]="planSchemeName" placeholder="Plan Scheme Name" required />
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanPurposeMasterForm.controls.planSchemeName.touched && goiLoanPurposeMasterForm.controls.planSchemeName.errors">
+                    <mat-error *ngIf="goiLoanPurposeMasterForm.controls.planSchemeName.errors.required">
+                      {{errorMessages.PLAN_SCHEME_NAME}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+             
+         
+          
+
+            </div>
+
+          </div>
+        </div>
+
+      
+      
+        <!--action button Starts  -->
+        <div style="margin-top: 15px;" *ngIf="isShown" id="actionbutton">
+          <div class="form-action-button">
+            <button type="submit" mat-raised-button color="primary" (click)="onSubmit()">
+              <i class="material-icons" aria-hidden="true" title="Save">save</i>
+              Save</button>
+            <button type="button" mat-raised-button color="warn" (click)="goToListing()" title="Listing"
+              >
+              <i class="material-icons" title="Listing" aria-hidden="true">
+                list
+              </i>
+              Listing
+            </button>
+            <!-- <button type="submit" mat-raised-button class="green" (click)="onAddAdviceMaster()">
+                  <i class="material-icons" aria-hidden="true" title="Add Advice Master">add</i>
+                  Add Advice Master</button>
+                <button type="reset" mat-raised-button color="accent" (click)="clearForm()">
+                  <i class="material-icons" aria-hidden="true" title="Reset">
+                    restore
+                  </i>
+                  Reset
+                </button> -->
+          </div>
+        </div>
+        <!-- action button Ends -->
+
+      </div>
+    </form>
+    <!-- Form Ends -->
+
+  </div>
+</div>

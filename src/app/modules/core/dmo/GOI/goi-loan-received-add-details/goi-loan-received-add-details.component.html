@@ -1,0 +1,399 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>GOI Loan Received- Add Details</div>
+      <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/GLRAD/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div> -->
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">DMO</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> GOI Loan / GOI Loan Received
+        </li>
+      </ol>
+    </nav>
+
+
+    <form [formGroup]="goiLoanReceivedAddDetailsForm">
+      <div class="panel-group">
+        <div class="box box-primary">
+          <div class="box-header"> GOI Loan Basic Details</div>
+          <div class="box-body" [ngClass]="{'disabled-style': isViewOnly}">
+
+            <div class="row">
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select formControlName="typeOfLoan" placeholder="Type Of Loan" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="typeOfLoanCtrl"
+                        [placeholderLabel]="'Select Type Of Loan ...'"
+                        [noEntriesFoundLabel]="'no matching Type Of Loan found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of typeOfLoanList | filterSelectInput:typeOfLoanCtrl.value"
+                      [value]="item.id">
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.typeOfLoan.touched && goiLoanReceivedAddDetailsForm.controls.typeOfLoan.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.typeOfLoan.errors.required">
+                      {{errorMessages.TYPE_OF_LOAN}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select formControlName="backToBackLoan" placeholder="Back-To-Back Loan">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="backToBackLoanCtrl"
+                        [placeholderLabel]="'Select Back-To-Back Loan ...'"
+                        [noEntriesFoundLabel]="'no matching Back-To-Back Loan found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of backToBackLoanList | filterSelectInput:backToBackLoanCtrl.value"
+                      [value]="item.id">
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="sanctionOrderNo" placeholder="Sanction No." numbersOnly required>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.sanctionOrderNo.touched && goiLoanReceivedAddDetailsForm.controls.sanctionOrderNo.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.sanctionOrderNo.errors.required">
+                      {{errorMessages.SANCTION_NO}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-sm-3">
+                <mat-form-field (click)="sanctionOrderDate.open()">
+                  <input matInput formControlName="sanctionOrderDate" style="cursor: pointer;" [matDatepicker]="sanctionOrderDate"
+                    placeholder="Sanction Date" readonly required>
+                  <mat-datepicker-toggle matSuffix [for]="sanctionOrderDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #sanctionOrderDate></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.sanctionOrderDate.touched && goiLoanReceivedAddDetailsForm.controls.sanctionOrderDate.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.sanctionOrderDate.errors.required">
+                      {{errorMessages.SANCTION_DATE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field (click)="loanStartDate.open()">
+                  <input matInput formControlName="loanStartDate" style="cursor: pointer;" [matDatepicker]="loanStartDate"
+                    placeholder="Loan Start Date" readonly required>
+                  <mat-datepicker-toggle matSuffix [for]="loanStartDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #loanStartDate></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.loanStartDate.touched && goiLoanReceivedAddDetailsForm.controls.loanStartDate.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.loanStartDate.errors.required">
+                      {{errorMessages.LOAN_START_DATE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select formControlName="nameOfMinistry" placeholder="Name of Ministry/ Department" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="nameOfMinistryCtrl"
+                        [placeholderLabel]="'Select Name of Ministry/ Department ...'"
+                        [noEntriesFoundLabel]="'no matching Name of Ministry/ Department found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of departmentNameList | filterSelectInput:nameOfMinistryCtrl.value"
+                      [value]="item.id">
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.nameOfMinistry.touched && goiLoanReceivedAddDetailsForm.controls.nameOfMinistry.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.nameOfMinistry.errors.required">
+                      {{errorMessages.DEPARTMENT_NAME}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select formControlName="loanPurpose" (selectionChange)="loanPurposeSelected($event)" placeholder="Loan Purpose" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="loanPurposeCtrl"
+                        [placeholderLabel]="'Select Loan Purpose ...'"
+                        [noEntriesFoundLabel]="'no matching Loan Purpose found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of loanPurposeList | filterSelectInput:loanPurposeCtrl.value"
+                      [value]="item.id">
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.loanPurpose.touched && goiLoanReceivedAddDetailsForm.controls.loanPurpose.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.loanPurpose.errors.required">
+                      {{errorMessages.LOAN_PURPOSE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="planSchemeName" readonly placeholder="Plan Scheme Name" numbersOnly required>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.planSchemeName.touched && goiLoanReceivedAddDetailsForm.controls.planSchemeName.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.planSchemeName.errors.required">
+                      {{errorMessages.PLAN_SCHEME_NAME}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select formControlName="planSchemeName" placeholder="Plan Scheme Name" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="planSchemeNameCtrl"
+                        [placeholderLabel]="'Select Back-To-Back Loan ...'"
+                        [noEntriesFoundLabel]="'no matching Back-To-Back Loan found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of planSchemeNameList | filterSelectInput:planSchemeNameCtrl.value"
+                      [value]="item.id">
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.planSchemeName.touched && goiLoanReceivedAddDetailsForm.controls.planSchemeName.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.planSchemeName.errors.required">
+                      {{errorMessages.PLAN_SCHEME_NAME}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div> -->
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="loanTenure"  placeholder="Loan Tenure" decimalLimitTwoOnly
+                    required>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.loanTenure.touched && goiLoanReceivedAddDetailsForm.controls.loanTenure.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.loanTenure.errors.required">
+                      {{errorMessages.LOAN_TENURE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="loanAmount" placeholder="Loan Amount" decimalLimitTwoOnly required>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.loanAmount.touched && goiLoanReceivedAddDetailsForm.controls.loanAmount.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.loanAmount.errors.required">
+                      {{errorMessages.LOAN_AMOUNT}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="loanROI"  decimalLimitTwoOnly placeholder="Rate of Interest (%) "
+                    numbersAlphabetsOnly required>
+                  <div class="error-wrapper"
+                    *ngIf="goiLoanReceivedAddDetailsForm.controls.loanROI.touched && goiLoanReceivedAddDetailsForm.controls.loanROI.errors">
+                    <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.loanROI.errors.required">
+                      {{errorMessages.RATE_OF_INTEREST}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="panelInterest" decimalLimitTwoOnly placeholder="Penal Interest If any (%)"
+                    numbersAlphabetsOnly>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="srPageNo"  placeholder="SR/Page No (AG Ref)" numbersOnly>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field (click)="demandDateOfReceipt.open()">
+                  <input matInput formControlName="demandDateOfReceipt" style="cursor: pointer;"  [matDatepicker]="demandDateOfReceipt"
+                    placeholder="Demand Date of Loan Receipt" readonly>
+                  <mat-datepicker-toggle matSuffix [for]="demandDateOfReceipt">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #demandDateOfReceipt></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="box box-primary">
+          <div class="box-header">Loan Repayment Schedule</div>
+          <div class="box-body">
+
+            <div class="box box-primary">
+              <div class="box-header">Principal</div>
+              <div class="box-body" [ngClass]="{'disabled-style': isViewOnly}">
+
+                <div class="row">
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="moratariumPeriod"  placeholder="Moratorium Period"
+                        numbersOnly required>
+                      <div class="error-wrapper"
+                        *ngIf="goiLoanReceivedAddDetailsForm.controls.moratariumPeriod.touched && goiLoanReceivedAddDetailsForm.controls.moratariumPeriod.errors">
+                        <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.moratariumPeriod.errors.required">
+                          {{errorMessages.MORATOTIUM_PERIOD}}
+                        </mat-error>
+                       
+                      </div>                     
+                    </mat-form-field>                    
+                  </div>
+                 
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="moratriumPricipalPerc"
+                        placeholder=" % of Principal under Moratorium" decimalLimitTwoOnly required>
+                      <div class="error-wrapper"
+                        *ngIf="goiLoanReceivedAddDetailsForm.controls.moratriumPricipalPerc.touched && goiLoanReceivedAddDetailsForm.controls.moratriumPricipalPerc.errors">
+                        <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.moratriumPricipalPerc.errors.required">
+                          {{errorMessages.PRINCIPAL_UNDER_MORATORIUM}}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="prncplInstallYear"
+                        placeholder="No. Of Installments in a Year" numbersOnly required>
+                      <div class="error-wrapper"
+                        *ngIf="goiLoanReceivedAddDetailsForm.controls.prncplInstallYear.touched && goiLoanReceivedAddDetailsForm.controls.prncplInstallYear.errors">
+                        <mat-error
+                          *ngIf="goiLoanReceivedAddDetailsForm.controls.prncplInstallYear.errors.required">
+                          {{errorMessages.NO_OF_INSTALLMENTS_IN_A_YEAR}}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="totalPrncplInstall"
+                        placeholder="Total Number of Installments" numbersOnly required>
+                      <div class="error-wrapper"
+                        *ngIf="goiLoanReceivedAddDetailsForm.controls.totalPrncplInstall.touched && goiLoanReceivedAddDetailsForm.controls.totalPrncplInstall.errors">
+                        <mat-error
+                          *ngIf="goiLoanReceivedAddDetailsForm.controls.totalPrncplInstall.errors.required">
+                          {{errorMessages.TOTAL_NO_OF_INSTALLMENTS}}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+
+                  <div class="col-sm-3">
+                    <mat-form-field (click)="principalFirstInstallDate.open()">
+                      <input matInput formControlName="principalFirstInstallDate" style="cursor: pointer;" [matDatepicker]="principalFirstInstallDate"
+                        placeholder="First Installment Date" readonly required>
+                      <mat-datepicker-toggle matSuffix [for]="principalFirstInstallDate">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #principalFirstInstallDate></mat-datepicker>
+                      <div class="error-wrapper"
+                        *ngIf="goiLoanReceivedAddDetailsForm.controls.principalFirstInstallDate.touched && goiLoanReceivedAddDetailsForm.controls.principalFirstInstallDate.errors">
+                        <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.principalFirstInstallDate.errors.required">
+                          {{errorMessages.FIRST_INSTALLMENT_DATE}}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="box box-primary">
+              <div class="box-header">Interest</div>
+              <div class="box-body" [ngClass]="{'disabled-style': isViewOnly}">
+
+                <div class="row">
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="intrestInstallYear" placeholder="No of Installments in a  Year "
+                        numbersOnly required>
+                      <div class="error-wrapper"
+                        *ngIf="goiLoanReceivedAddDetailsForm.controls.intrestInstallYear.touched && goiLoanReceivedAddDetailsForm.controls.intrestInstallYear.errors">
+                        <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.intrestInstallYear.errors.required">
+                          {{errorMessages.NUMBER_OF_INSTALLMENTS_IN_A_YEAR}}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+
+                  <div class="col-sm-3">
+                    <mat-form-field (click)="interestFirstInstallDate.open()">
+                      <input matInput formControlName="interestFirstInstallDate" [matDatepicker]="interestFirstInstallDate"
+                        placeholder="First Installment Date" style="cursor: pointer;" readonly required>
+                      <mat-datepicker-toggle matSuffix [for]="interestFirstInstallDate">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #interestFirstInstallDate></mat-datepicker>
+                      <div class="error-wrapper"
+                        *ngIf="goiLoanReceivedAddDetailsForm.controls.interestFirstInstallDate.touched && goiLoanReceivedAddDetailsForm.controls.interestFirstInstallDate.errors">
+                        <mat-error *ngIf="goiLoanReceivedAddDetailsForm.controls.interestFirstInstallDate.errors.required">
+                          {{errorMessages.FIRST_INSTALLMENT_DATE}}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-action-button" [ngClass]="{'disabled-style': isViewOnly}">
+          <button type="submit" mat-raised-button color="primary" [disabled]="!goiLoanReceivedAddDetailsForm.valid" (click)="onAddSubmit()" title="Save"> <i
+              class="material-icons " title="Save">save</i>Save</button>
+          <button type="button" mat-raised-button class="btnClose" title="Cancel" (click)="onCancelClick()">
+            <i class="material-icons " title="cancel">close</i>Cancel</button>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+</div>

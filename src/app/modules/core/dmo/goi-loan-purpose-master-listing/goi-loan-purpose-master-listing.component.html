@@ -1,0 +1,175 @@
+<div class="container">
+  <div class="form-wrapper">
+    <!-- Screen Name and Date -->
+    <div class="heading-section ng-star-inserted">
+      <div>GOI Loan Purpose Master Listing</div>
+      <div class="font-heading"><strong>Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+    </div>
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DMO</li>
+        <li class="breadcrumb-item active" aria-current="page">GOI Loan Purpose Master Listing</li>
+      </ol>
+    </nav>
+    <!-- Form Starts -->
+    <form [formGroup]="goiLoanPurposeMasterListingForm">
+
+      <mat-accordion class="colapsedata">
+        <mat-expansion-panel [expanded]="true" class="nopadding">
+          <mat-expansion-panel-header>
+            <div class="heading-section">Search</div>
+          </mat-expansion-panel-header>
+
+          <div class="box-body">
+            <div class="row">                         
+
+                
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="loanPurpose" [(ngModel)]="loanPurpose" placeholder="Loan Purpose" />
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="planSchemeName" [(ngModel)]="planSchemeName" placeholder="Plan Scheme Name" />
+                  </mat-form-field>
+                </div>        
+             
+
+              <div class="col-sm-12">
+                <!-- Buttons for Search and Reset Starts -->
+                <div class="form-action-button">
+                  <button type="submit" mat-raised-button color="primary" (click)="searchForm()">
+                    <i class="material-icons" aria-hidden="true" title="Search">search</i>
+                    Search</button>
+                  <button type="submit" mat-raised-button class="green" (click)="onAdd()">
+                    <i class="material-icons" aria-hidden="true" title="Add GOI Loan Purpose Master">add</i>
+                    Add GOI Loan Purpose Master</button>
+                  <button type="reset" mat-raised-button color="accent" (click)="clearForm()">
+                    <i class="material-icons" aria-hidden="true" title="Reset">
+                      restore
+                    </i>
+                    Reset
+                  </button>
+                </div>
+                <!-- Buttons for Search and Reset Ends -->
+              </div>
+
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+    <!-- Form Ends -->
+
+    <div class="mat-elevation-z8 mt-2 overflow-auto" *ngIf="showTable">
+       <!-- GOI Department / Ministry Name Master Listing Table -->
+      <table mat-table [dataSource]="dataSource" width="100%" aria-describedby="goiLoanPurposeMasterListingTable">
+
+        <!-- Sr. No. Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef scope="row" style="width: 5%;">Sr. No.</th>
+          <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+            {{ i + 1 }} </td>
+          <!-- <td mat-footer-cell *matFooterCellDef>Total</td> -->
+        </ng-container>
+
+       
+
+        <ng-container matColumnDef="loanPurpose">
+          <th mat-header-cell *matHeaderCellDef scope="row">
+            Loan Purpose
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            {{ element.loanPurpose }}
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="planSchemeName">
+          <th mat-header-cell *matHeaderCellDef scope="row">
+            Plan Scheme Name
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            {{ element.planSchemeName }}
+          </td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef scope="row">Action</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="action-btn-i centerAlign">
+            <table class="iconTable" aria-describedby="actionBtn">
+              <tbody>
+                <tr>
+                  <td width="30">
+                    <i class="material-icons plus edit-icon" title="Edit" aria-hidden="true"
+                      (click)="onEdit(element)">edit</i>
+                  </td>
+                  <td width="30">
+                    <i class="material-icons plus view-icon" title="View" aria-hidden="true"
+                      (click)="onView(element)">remove_red_eye</i>
+                  </td>
+                  <!-- <td width="30" *ngIf="element.status !== 'Approved' && element.status !== 'Pending'">
+                    <i class="material-icons plus delete" aria-hidden="true" title="Delete">
+                      delete
+                    </i>
+                  </td>
+                  <td width="30">
+                    <i class="material-icons history-icon plus" aria-hidden="true"
+                      title="View Comments History">receipt</i>
+                  </td>
+                  <td width="30" *ngIf="element.status !== 'Approved'">
+                    <i class="material-icons plus delete" aria-hidden="true" title="Cancel">
+                      close
+                    </i>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+
+
+          </td>
+        </ng-container>
+        <!-- Action View/Edit/Delete Column ->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef scope="row" scope="row" style="width: 12%;">Add Details</th>
+          <td mat-cell *matCellDef="let element" style="text-align: center;" class="action-btn-i centerAlign">
+            <table class="iconTable" aria-describedby="actionBtn">
+              <tbody>
+                <tr>
+                  <td width="30">
+                    <div *ngIf="(element.addDetails); then notHidden else isHidden">
+                    </div>
+                    <ng-template #notHidden>
+                      <button type="button" mat-raised-button color="primary" (click)="addDetails(element)" title="Add Detials"
+                        style="margin:5px;">
+                        Add Detials
+                      </button>
+                    </ng-template>
+                    <ng-template #isHidden>
+                      Done
+                    </ng-template>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </ng-container -->
+
+        <!-- Header, Footer and Data column of Table -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+
+      </table>
+      <!-- Market Loan Received Table Ends -->
+
+      <!-- Paginator -->
+      <mat-paginator #paginator [pageSizeOptions]="[10, 20 ,30]" (page)="onPaginateChange($event)"
+        [length]="totalRecords" showFirstLastButtons></mat-paginator>    
+      <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+    </div>
+
+  </div>
+</div>

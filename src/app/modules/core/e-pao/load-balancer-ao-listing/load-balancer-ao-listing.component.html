@@ -1,0 +1,325 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>Load Balancer AO Listing </div>
+      <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/E-PAO/SC/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div> -->
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+        <li class="breadcrumb-item active" aria-current="page">Load Balancer AO Listing</li>
+      </ol>
+    </nav>
+    <div class="panel-group">
+      <mat-accordion class="search-accordian">
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <div class="heading-section">
+              Search
+            </div>
+          </mat-expansion-panel-header>
+          <form class="col-sm-12" [formGroup]="scrollForm" >
+            <div class="row">
+
+              <!-- Bank Name -->
+              <!-- <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="bankName" placeholder="Bank Name">
+                  <td mat-cell *matCellDef="let element">
+                    {{element.bankName}}
+                  </td>
+                </mat-form-field>
+              </div> -->
+
+               <!-- From SA/DA -->
+               <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="fromSaDaName" placeholder="From SA/DA">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="fromSaDaCtrl" [placeholderLabel]="'Find From SA/DA...'"
+                        [noEntriesFoundLabel]="'no matching From SA/DA found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let bl of sadaList | filterSelectInput : branchCtrl.value : 'sadaName'"
+                      [value]="bl.sadaId" [matTooltip]="bl.sadaName" (onSelectionChange)="onSelectSada($event, i);">
+                      {{bl.sadaName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!-- Total Challan -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="totalChallans"  type="number" placeholder="Total Challan">
+                </mat-form-field>
+              </div>
+
+              <!-- Total Amount -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="totalAmount"  type="number" placeholder="Total Amount">
+                </mat-form-field>
+              </div>
+
+              <!-- To SA/DA -->
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="toSaDaName" placeholder="To SA/DA">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="toSaDaCtrl" [placeholderLabel]="'Find To SA/DA...'"
+                        [noEntriesFoundLabel]="'no matching To SA/DA found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let bl of sadaList | filterSelectInput : toSaDaCtrl.value : 'sadaName'"
+                      [value]="bl.sadaName" [matTooltip]="bl.sadaName" (onSelectionChange)="onSelectSada($event, i);">
+                      {{bl.sadaName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+               <!-- No. Of Challan -->
+               <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="totalChallansTrnf" placeholder="No. Of Challan" type="number">
+                </mat-form-field>
+              </div>
+
+              <!-- Amount -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="totalAmountTrnf"  type="number" placeholder="Amount">
+                </mat-form-field>
+              </div>
+
+               <!-- Bank -->
+               <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="bankName" placeholder="Bank">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="bankNameCtrl" [placeholderLabel]="'Find Bank...'"
+                        [noEntriesFoundLabel]="'no matching Bank found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let FY of bankList | filterSelectInput:bankNameCtrl.value : 'bankName'"
+                      [value]="FY.bankName" [matTooltip]="FY.bankName" >
+                      {{FY.bankName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+
+
+              <!-- SA/DA -->
+              <!-- <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="saDa" placeholder="SA/DA">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="saDaCtrl" [placeholderLabel]="'Find SA/DA...'"
+                        [noEntriesFoundLabel]="'no matching SA/DA found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let bl of sadaList | filterSelectInput : branchCtrl.value : 'sadaName'"
+                      [value]="bl.sadaName" [matTooltip]="bl.sadaName" (onSelectionChange)="onSelectSada($event, i);">
+                      {{bl.sadaName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div> -->
+
+             
+
+              
+
+             
+              <!-- To Branch -->
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="toBranchName" placeholder="To Branch">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="branchCtrl" [placeholderLabel]="'Find To Branch...'"
+                        [noEntriesFoundLabel]="'no matching To Branch found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let bl of branchList | filterSelectInput : branchCtrl.value : 'branchName'"
+                      [value]="bl.branchName" [matTooltip]="bl.branchName" (onSelectionChange)="onSelect($event, bl);">
+                      {{bl.branchName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              
+
+             
+              <!-- Challan Count -->
+              <!-- <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput numbersOnly formControlName="chaCount" placeholder="Challan Count">
+                </mat-form-field>
+              </div> -->
+
+            </div>
+            <!-- common butoon -->
+            <div class="form-action-button">
+              <button type="button" mat-raised-button color="primary" (click)="onSearch(scrollForm.value);">
+                <i class="material-icons" aria-hidden="true">search</i>
+                Search
+              </button>
+              <button type="reset" mat-raised-button color="accent" (click)="reset();">
+                <i class="material-icons" aria-hidden="true">
+                  restore
+                </i>
+                Reset
+              </button>
+            </div>
+          </form>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <br>
+      <!-- load balance table -->
+      <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" aria-describedby="loadBalancer">
+        <!-- sr no -->
+        <ng-container matColumnDef="srNo">
+          <th mat-header-cell *matHeaderCellDef scope="row">
+            Sr No.
+          </th>
+          <td mat-cell *matCellDef="let row; let i = index" class=" centerAlign">
+            {{i + 1}}
+          </td>
+        </ng-container>
+
+        <!-- Bank Name -->
+        <ng-container matColumnDef="bankName">
+          <th mat-header-cell *matHeaderCellDef scope="row"> Bank Name </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.bankName}}
+          </td>
+        </ng-container>
+
+        <!-- From SA/DA  -->
+        <ng-container matColumnDef="fromSaDA">
+          <th mat-header-cell *matHeaderCellDef scope="row"> From SA/DA </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.fromSaDaName}}
+          </td>
+        </ng-container>
+
+         <!-- Total Challan -->
+         <ng-container matColumnDef="totalChallan">
+          <th mat-header-cell *matHeaderCellDef scope="row"> Total Challan </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.totalChallans  }}
+          </td>
+        </ng-container>
+
+        <!-- Total Amount -->
+        <ng-container matColumnDef="totalAmount">
+          <th mat-header-cell *matHeaderCellDef scope="row"> Total Amount </th>
+          <td mat-cell *matCellDef="let element" class="rightAlign">
+            {{element.totalAmount  | number:'1.2-2'}}
+          </td>
+        </ng-container>
+
+         <!-- To SA/DA -->
+         <ng-container matColumnDef="toSaDA">
+          <th mat-header-cell *matHeaderCellDef scope="row"> To SA/DA </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.toSaDaName}}
+          </td>
+        </ng-container>
+
+        <!-- No. Of Challan -->
+        <ng-container matColumnDef="noOfChallan">
+          <th mat-header-cell *matHeaderCellDef scope="row"> No. Of Challan </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.totalChallansTrnf}}
+          </td>
+        </ng-container>
+
+         <!-- Bank -->
+         <!-- <ng-container matColumnDef="bank">
+          <th mat-header-cell *matHeaderCellDef scope="row"> Bank </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.bankName}}
+          </td>
+        </ng-container> -->
+
+         <!-- Amount -->
+         <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef scope="row"> Amount </th>
+          <td mat-cell *matCellDef="let element" class="rightAlign">
+            {{element.totalAmountTrnf  | number:'1.2-2'}}
+          </td>
+        </ng-container>
+
+        <!-- SA/DA  -->
+        <!-- <ng-container matColumnDef="saDa">
+          <th mat-header-cell *matHeaderCellDef scope="row"> SA/DA </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.saDa}}
+          </td>
+        </ng-container> -->
+        
+      
+        <ng-container matColumnDef="toBranch">
+          <th mat-header-cell *matHeaderCellDef scope="row">To Branch</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.toBranchName}}
+          </td>
+        </ng-container>
+       
+       
+        <!-- Challan Count -->
+        <!-- <ng-container matColumnDef="challanCount">
+          <th mat-header-cell *matHeaderCellDef scope="row"> Challan Count </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.totalChallansTrnf}}
+          </td>
+        </ng-container> -->
+
+
+        <!-- action -->
+        <ng-container matColumnDef="newaction">
+          <th mat-header-cell *matHeaderCellDef scope="row"> Action</th>
+          <td mat-cell *matCellDef="let element" class="action-btn-i centerAlign">
+            <a><i class="material-icons plus edit-icon" aria-hidden="true" title="Edit"> edit </i></a>
+            <a class="delete-icon"><i class="material-icons plus delete" aria-hidden="true"
+                title="delete">delete_forever</i></a>
+          </td>
+        </ng-container>
+
+        <!-- Header Section Of table -->
+        <tr mat-header-row *matHeaderRowDef="dataColumns"></tr>
+        <!-- Data Fetch From .TS File to table -->
+        <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr>
+      </table>
+
+      <mat-paginator #paginator [length]="totalPages" [pageSizeOptions]="pageSizeOptions" 
+            [pageSize]="pageSize" (page)="PageEvents($event)" [showFirstLastButtons]="true"></mat-paginator>
+
+      <!-- end load balancer -->
+      <!-- common button -->
+      <div class="form-action-button">
+
+        <button type="button" mat-raised-button class="btnClose" (click)="onClose();">
+          <i class="material-icons" aria-hidden="true" title="Budget dashboard">
+            close
+          </i>
+          Close
+        </button>
+      </div>
+      <!-- End common button -->
+    </div>
+  </div>
+</div>

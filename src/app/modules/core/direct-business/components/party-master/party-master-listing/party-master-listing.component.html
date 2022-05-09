@@ -1,0 +1,272 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>Party Master Listing </div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DOI/PML/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DOI</li>
+
+        <li class="breadcrumb-item active" aria-current="page">Party Master Listing</li>
+      </ol>
+    </nav>
+
+    <div class="panel-group">
+      <!-- JPA Claim Listing  Form-->
+
+      <form [formGroup]="partyMasterListingForm" (submit)="search()">
+
+        <!-- Details of Deceased/Disabled -->
+        <div class="box box-primary">
+          <div class="box-header">Search</div>
+          <div class="box-body">
+
+            <div class="row">
+
+              <!-- party type -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select formControlName="partyType" placeholder="Party Type">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="partTypeCtrl" [placeholderLabel]="'Select Party Type ...'"
+                        [noEntriesFoundLabel]="'no matching Party Type found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option
+                      *ngFor="let item of partyTypeList | filterSelectInput : partTypeCtrl.value : 'viewValue'"
+                      [value]="item.value" [matTooltip]="item.viewValue">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- District -->
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="district" placeholder="District">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="districtCtrl" [placeholderLabel]="'Find District...'"
+                        [noEntriesFoundLabel]="'No matching District found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let item of districtList |
+                          filterSelectInput:districtCtrl.value : 'viewValue'" [value]="item.value" matTooltip="{{item.viewValue}}">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select formControlName='status' placeholder='Status' numbersAlphabetsOnly>
+                    <mat-option>
+                      <!-- <ngx-mat-select-search [formControl]='statusCtrl' [placeholderLabel]="'Select Status ...'"
+                        [noEntriesFoundLabel]="'no matching status found'">
+                      </ngx-mat-select-search> -->
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let item of statusList"
+                      [value]="item.value" matTooltip="{{item.viewValue}}">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Office/Location Name" formControlName="officeLocationName">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="officeLocationNameCtrl"
+                        [placeholderLabel]="'Find Office/Location Name...'"
+                        [noEntriesFoundLabel]="'no matching Office/Location Name found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="
+                    let item of officeLocationNameList| filterSelectInput : officeLocationNameCtrl.value : 'viewValue'"
+                      [value]="item.value" [matTooltip]="item.viewValue">
+                      {{ item.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- common button -->
+              <div class="form-action-button">
+                <button type="submit" mat-raised-button color="primary">
+                  <i class="material-icons" aria-hidden="true">search</i>
+                  Search
+                </button>
+
+                <button type="reset" mat-raised-button color="accent">
+                  <i class="material-icons" aria-hidden="true">
+                    restore
+                  </i>
+                  Reset
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </form>
+
+
+      <div class="mat-elevation-z8 table-responsive mt-2">
+        <table mat-table [dataSource]="dataSource" width="100%" matSort aria-describedby="listinginwardscreen">
+
+          <ng-container matColumnDef="srno">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Sr No.
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="partyType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Party Type
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.partyType }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="partyName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Party Name
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.partyName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Address
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.address }}
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="officeLocationName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Office/Location Name
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.officeLocationName }}
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="addrerss">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Address
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.addrerss }}
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="contactNo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Contact No
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.contactNo }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="emailId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Email ID
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.emailId }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="paymentPreferred">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Payment Preferred
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.paymentPreferred }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Status
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.status }} -->
+              <mat-slide-toggle [(ngModel)]="element.status"></mat-slide-toggle>
+
+              <span *ngIf="element.status; else elseBlock">Active</span>
+              <ng-template #elseBlock>Deactive</ng-template>
+
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="createModeON">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Created on Date
+
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.createModeON }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="modifyModeON">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Modified On Date
+
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.modifyModeON }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef scope="row">Action</th>
+            <td mat-cell *matCellDef="let element; let i = index" class="action-btn-i centerAlign">
+              <a><i class="material-icons plus view-icon" title="Edit" (click)="editParty(i)" aria-hidden="true">edit</i></a>
+              <a><i class="material-icons plus view-icon" title="View" (click)="viewParty(i)" aria-hidden="true">remove_red_eye</i></a>
+            </td>
+          </ng-container>
+
+          <!-- Header Section Of table -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <!-- Data Fetch From .TS File to table -->
+          <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns"></tr>
+        </table>
+
+        <mat-paginator [length]="totalRecords"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="[10, 15, 20]" 
+          (page)="pageEvent($event)"
+         showFirstLastButtons></mat-paginator>
+
+      </div>
+
+      <!-- End Top schedule Entry Table -->
+    </div>
+
+  </div>
+</div>

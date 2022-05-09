@@ -1,0 +1,340 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div> File Summary</div>
+            <div class="font-heading"><strong>Reference Number:</strong> 19-20/E-PAO/FS/001</div>
+            <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+            </div>
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+                <li class="breadcrumb-item active" aria-current="page">File Summary</li>
+            </ol>
+        </nav>
+        <div class="panel-group">
+            <form [formGroup]="fileSummaryForm">
+                File Summary
+                <div class="box box-primary">
+                    <div class="box-header">File Summary </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="fromDate" [max]="maxDate"
+                                        formControlName="fromDate" placeholder="Date">
+                                    <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #fromDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="form-action-button">
+                            <button type="submit" mat-raised-button color="primary" (click)="getFileSummary();">
+                                Get File Summary
+                            </button>
+                            <button type="reset" mat-raised-button color="accent" title="Reset"
+                                (click)="resetFileSummaryData();">
+                                <i class="material-icons" title="Reset" aria-hidden="true">restore</i>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- end File Summary -->
+
+                <!--  first table starts -->
+                <div *ngIf="getfilesummary" class="box box-primary">
+                    <div class="box-header">API Resopnse </div>
+                    <div class="box-body">
+                        <table mat-table [dataSource]="dataSource" width="100%" matSort
+                         aria-describedby="fileSummaryTable">
+
+                            <ng-container matColumnDef="srNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> SR No.</th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="centerAlign">
+                                    {{i + 1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="fileName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> File Name</th>
+                                <td mat-cell *matCellDef="let element"> {{element.fileName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fileDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> File Date</th>
+                                <td mat-cell *matCellDef="let element"> {{element.file_dt | date:'dd-MMM-yyyy'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fileType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">File Type</th>
+                                <td mat-cell *matCellDef="let element"> {{element.fileType}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totRecCnt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Records</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.rec_cnt}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totFileCnt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Files</th>
+                                <td mat-cell *matCellDef="let element"> {{element.file_cnt}} </td>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="sgstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">SGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign">
+                                    {{element.sgst_amt | number:'1.2-2'}} </td>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="igstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">IGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.igst_amt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cgstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> CGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.cgst_amt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cessAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Cess Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.cessAmt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.total_amt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> Action </th>
+                                <td mat-cell *matCellDef="let element;let i = index;" class="action-btn-i centerAlign">
+                                    <a [routerLink]="'../block-cpin-view'">
+                                        <i aria-hidden="true" class="material-icons plus edit-icon" title="Edit"> edit
+                                        </i></a>
+                                </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;">
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="form-action-button">
+                        <button type="button" mat-raised-button color="primary" (click)="onClickDifference();">
+                            Get Difference
+                        </button>
+                    </div>
+                </div>
+                <!-- table ends -->
+
+                <!--  second table starts -->
+                <div *ngIf="getdifference" class="box box-primary">
+                    <div class="box-header">Read Files</div>
+                    <div class="box-body">
+                        <table mat-table width="100%" [dataSource]="newDataSource" matSort
+                         aria-describedby="fileSummaryTable">
+
+                            <ng-container matColumnDef="srNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> SR No.</th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="centerAlign">
+                                    {{i + 1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="fileName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> File Name</th>
+                                <td mat-cell *matCellDef="let element"> {{element.fileName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fileDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> File Date</th>
+                                <td mat-cell *matCellDef="let element"> {{element.fileDate | date:'dd-MMM-yyyy'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fileType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">File Type</th>
+                                <td mat-cell *matCellDef="let element"> {{element.fileType}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totRecCnt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Records</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.totRecCnt}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totFileCnt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Files</th>
+                                <td mat-cell *matCellDef="let element"> {{element.totFileCnt}} </td>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="sgstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">SGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign">
+                                    {{element.sgstAmt | number:'1.2-2'}} </td>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="igstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">IGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.igstAmt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cgstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> CGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.cgstAmt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cessAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Cess Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.cessAmt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.totAmt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> Action </th>
+                                <td mat-cell *matCellDef="let element;let i = index;" class="action-btn-i centerAlign">
+                                    <a [routerLink]="'../block-cpin-view'">
+                                        <i aria-hidden="true" class="material-icons plus edit-icon" title="Edit"> edit
+                                        </i></a>
+                                </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="newDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; let i = index;columns: newDisplayedColumns;">
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- table ends -->
+                <!--  second table starts -->
+                <div  *ngIf="getdifference" class="box box-primary">
+                    <div class="box-header">Difference</div>
+                    <div class="box-body">
+                        <table mat-table width="100%" [dataSource]="diffDataSource" matSort
+                        aria-describedby="fileSummaryTable">
+
+                            <ng-container matColumnDef="srNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> SR No.</th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="centerAlign">
+                                    {{i + 1}}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="fileName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> File Name</th>
+                                <td mat-cell *matCellDef="let element"> {{element.fileName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fileDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> File Date</th>
+                                <td mat-cell *matCellDef="let element"> {{element.file_dt | date:'dd-MMM-yyyy'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fileType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">File Type</th>
+                                <td mat-cell *matCellDef="let element"> {{element.fileType}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totRecCnt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Records</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.rec_cnt}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totFileCnt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Files</th>
+                                <td mat-cell *matCellDef="let element"> {{element.file_cnt}} </td>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="sgstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">SGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign">
+                                    {{element.sgst_amt | number:'1.2-2'}} </td>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="igstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">IGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.igst_amt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cgstAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> CGST Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.cgst_amt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cessAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Cess Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.cessAmt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totAmt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Total Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign"> {{element.total_amt |
+                                    number:'1.2-2'}} </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> Action </th>
+                                <td mat-cell *matCellDef="let element;let i = index;" class="action-btn-i centerAlign">
+                                    <a [routerLink]="'../block-cpin-view'">
+                                        <i aria-hidden="true" class="material-icons plus edit-icon" title="Edit"> edit
+                                        </i></a>
+                                </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;">
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- table ends -->
+                <!-- standard button starts -->
+                <div class="form-action-button">
+
+                    <button type="button" mat-raised-button class="print-btn" title="Print" onclick="window.print()">
+                        <i class="material-icons" title="Print" aria-hidden="true">print</i>
+                        Print
+                    </button>
+
+                    <button *ngIf = "currentUrl === '/dashboard/e-pao/file-summary'" type="button" mat-raised-button class="btnClose" title="Close" (click)="onClose();">
+                        <i class="material-icons" title="Close" aria-hidden="true">close</i>
+                        Close
+                    </button>
+
+                </div>
+                <!-- standard button ends -->
+            </form>
+        </div>
+    </div>
+</div>

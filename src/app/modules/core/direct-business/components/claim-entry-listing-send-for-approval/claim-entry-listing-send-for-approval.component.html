@@ -1,0 +1,283 @@
+<div class="container">
+  <div class="form-wrapper">
+
+    <!-- heading section -->
+    <div class="heading-section ng-star-inserted">
+      <div>Claim Entry Lisiting Send for Approval</div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DOI/DB/CELSFA/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div>
+    </div>
+
+    <!-- navigation start -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DOI / DB </li>
+        <li class="breadcrumb-item active" aria-current="page">Claim Entry Lisiting Send for Approval</li>
+      </ol>
+    </nav>
+    <!-- navigation end -->
+
+
+    <div class="panel-group">
+
+      <mat-tab-group mat-stretch-tabs>
+
+        <mat-tab label="Search">
+
+          <!-- Claim Entry Listing Send for Approval Form-->
+          <form [formGroup]="claimEntryListingSendForApprovalForm">
+
+            <!-- Search -->
+            <div class="box box-primary">
+              <div class="box-header">Search</div>
+              <div class="box-body">
+                <div class="row">
+
+                  <!-- Policy No. -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <mat-select formControlName="policyNo" placeholder="Policy No.">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="policyNoCtrl" [placeholderLabel]="'Find Policy No....'"
+                            [noEntriesFoundLabel]="'no matching Policy No. found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of policyNoList | filterSelectInput: policyNoCtrl.value"
+                          [value]="item.value" [matTooltip]="item.viewValue">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Insured Name -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="insuredName" placeholder="Insured Name" alphabetOnly>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- claim Pending With -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="claimPendingWith" placeholder="Claim Pending With">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="claimPendingWithCtrl"
+                            [placeholderLabel]="'Find Claim Pending With...'"
+                            [noEntriesFoundLabel]="'No matching Claim Pending With found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of claimPendingWithList |
+                        filterSelectInput:claimPendingWithCtrl.value" [value]="item.value"
+                          matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- status -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <mat-select name='status' formControlName='status' placeholder='Status'>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]='statusCtrl' [placeholderLabel]="'Select Status ...'"
+                            [noEntriesFoundLabel]="'no matching Status found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of statusList | filterSelectInput : statusCtrl.value : 'viewValue'"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Month -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="month" placeholder="Month">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="monthCtrl" [placeholderLabel]="'Find Month...'"
+                            [noEntriesFoundLabel]="'no matching Month found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of monthList | filterSelectInput: monthCtrl.value"
+                          [value]="item.value" [matTooltip]="item.viewValue">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+
+                  <!-- Year -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="year" placeholder="Year">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="yearCtrl" [placeholderLabel]="'Find Year...'"
+                            [noEntriesFoundLabel]="'no matching Year found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of yearList | filterSelectInput: yearCtrl.value"
+                          [value]="item.value" [matTooltip]="item.viewValue">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- common button -->
+                  <div class="form-action-button">
+                    <button type="submit" mat-raised-button color="primary">
+                      <i class="material-icons" aria-hidden="true">search</i>
+                      Search
+                    </button>
+
+                    <button type="reset" mat-raised-button color="accent" (click)="reset()">
+                      <i class="material-icons" aria-hidden="true">
+                        restore
+                      </i>
+                      Reset
+                    </button>
+                  </div>
+                  <!-- common button end -->
+
+                </div>
+              </div>
+            </div>
+
+          </form>
+          <!-- Claim Entry Listing Send for Approval Form end -->
+
+          <!-- listing -->
+          <div class="mat-elevation-z8 mt-2">
+
+            <!-- table start -->
+            <table mat-table [dataSource]="dataSource" matSort
+              aria-describedby="claimEntryListingApplicationAcceptedListing">
+
+              <!-- serial No -->
+              <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                <td mat-cell *matCellDef="let element;let i= index" class="centerAlign">
+                  {{i+1}}
+                </td>
+              </ng-container>
+
+              <!-- policy no -->
+              <ng-container matColumnDef="policyNo">
+                <th mat-header-cell *matHeaderCellDef scope="row">Policy No.</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.policyNo }}
+                </td>
+              </ng-container>
+
+              <!-- Insured Name -->
+              <ng-container matColumnDef="insuredName">
+                <th mat-header-cell *matHeaderCellDef scope="row">Insured Name</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.insuredName }}
+                </td>
+              </ng-container>
+
+              <!-- Claim Created On -->
+              <ng-container matColumnDef="claimCreatedOn">
+                <th mat-header-cell *matHeaderCellDef scope="row">Claim Created On</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.claimCreatedOn | date:'dd-MMM-yyyy' }}
+                </td>
+              </ng-container>
+
+              <!-- claim amount -->
+              <ng-container matColumnDef="claimAmount">
+                <th mat-header-cell *matHeaderCellDef scope="row">Claim Amount</th>
+                <td mat-cell *matCellDef="let element" class="rightAlign">
+                  {{ element.claimAmount }}
+                </td>
+              </ng-container>
+
+              <!-- claim pending with -->
+              <ng-container matColumnDef="claimPendingWith">
+                <th mat-header-cell *matHeaderCellDef scope="row">Claim Pending With</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.claimPendingWith }}
+                </td>
+              </ng-container>
+
+              <!-- designation -->
+              <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef scope="row">Designation</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.designation }}
+                </td>
+              </ng-container>
+
+              <!-- status -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef scope="row">Status</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.status }}
+                </td>
+              </ng-container>
+
+              <!-- action -->
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef scope="row"> Action </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <a (click)="onView()"><i class="material-icons plus view-icon mr-2" title="View">remove_red_eye</i>
+                  </a>
+                  <a (click)="onSurveyor()"><i class="material-icons plus view-icon mr-2" title="Surveyor">edit</i>
+                  </a>
+
+                </td>
+              </ng-container>
+
+              <!-- Header Section Of table -->
+              <tr mat-header-row *matHeaderRowDef="columns"></tr>
+              <!-- Data Fetch From .TS File to table -->
+              <tr mat-row *matRowDef="let row; let i = index;columns:columns">
+              </tr>
+
+            </table>
+            <!-- table end -->
+
+            <!-- paginator -->
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+          <!-- listing end -->
+
+        </mat-tab>
+
+        <mat-tab label="Attachment">
+          <app-common-attachment [attachemntValue]="attachmentTypeCode"></app-common-attachment>
+
+          <!-- action button -->
+          <div class="form-action-button">
+
+            <button type="button" mat-raised-button budget-list (click)="goToListing()" color="warn" title="Listing">
+              <i class="material-icons" aria-hidden="true" title="Listing">
+                list
+              </i>
+              Listing
+            </button>
+
+            <button type="button" mat-raised-button (click)="onClose()" class="btnClose" title="Close">
+              <i class="material-icons" aria-hidden="true" title="Close">
+                close
+              </i>
+              Close
+            </button>
+
+          </div>
+          <!-- action button end -->
+        </mat-tab>
+
+      </mat-tab-group>
+
+    </div>
+  </div>
+</div>

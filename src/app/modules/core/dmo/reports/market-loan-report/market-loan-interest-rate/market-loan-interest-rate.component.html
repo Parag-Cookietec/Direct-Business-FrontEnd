@@ -1,0 +1,271 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>Market Loan Interest Rate Slab wise Loan Liability </div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/MLA/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">DMO</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Market Loan Interest Rate Slab wise Loan Liability</li>
+      </ol>
+    </nav>
+
+
+    <form [formGroup]="MarketLoanInterestRateForm">
+      <!-- Loan Approved -->
+      <div class="panel-group">
+        <div class="box box-primary">
+          <div class="box-header">Market Loan Interest Rate Slab wise Loan Liability </div>
+          <div class="box-body">
+
+            <div class="row">
+
+              <div class="col-sm-4">
+                <mat-form-field (click)="fromDate.open()">
+                  <input matInput formControlName="fromDate" [matDatepicker]="fromDate" placeholder="From Date" disabled>
+                  <mat-datepicker-toggle matSuffix [for]="fromDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #fromDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <mat-form-field (click)="toDate.open()">
+                  <input matInput formControlName="toDate" [matDatepicker]="toDate" placeholder="To Date" disabled>
+                  <mat-datepicker-toggle matSuffix [for]="toDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #toDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+            </div>
+
+         
+            <div class="row">
+              
+              
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <input matInput  placeholder="Intrest Rate Range 1">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-4">
+              </div>
+
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <input matInput  placeholder="Intrest Rate Range 2">
+                </mat-form-field>
+              </div>
+
+            </div>
+
+            <div class="row">
+              
+              
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <input matInput  placeholder="Intrest Rate Range 3">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-4">
+              </div>
+
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <input matInput  placeholder="Intrest Rate Range 4">
+                </mat-form-field>
+              </div>
+
+            </div>
+
+            <div class="row">
+              
+              
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <input matInput  placeholder="Intrest Rate Range 5">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-4">
+              </div>
+
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <input matInput  placeholder="Intrest Rate Range 6">
+                </mat-form-field>
+              </div>
+
+            </div>
+
+
+            <div class="row">
+              <div class="col-sm-4">
+                <mat-form-field >
+                  <mat-label>Interest Rate</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let RateOfInterest of RateOfInterests" [value]="RateOfInterest.value">
+                      {{RateOfInterest.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button value="1">Rs in Crores</mat-radio-button>
+              <mat-radio-button value="2">Rs in Lacks</mat-radio-button>
+              <mat-radio-button value="3">Rs in Thousands</mat-radio-button>
+              <mat-radio-button value="4">Absolute Amount(Rs)</mat-radio-button>
+            </mat-radio-group>
+           
+            </div>
+
+
+             <!-- Action Button -->
+             <div class="form-action-button">
+              <button mat-raised-button type="button" class="green" title="Submit" >
+                <i class="material-icons" title="Submit" aria-hidden="true">done</i>
+                Generate
+              </button>
+              <button mat-raised-button type="button"  title="Submit" >
+                <i class="material-icons" title="Submit" aria-hidden="true">refresh</i>
+                Reset
+              </button>
+              <button type="button" title="Cancel" mat-raised-button class="btnClose">
+                <i class="material-icons " title="cancel">close</i>Cancel</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+    <div class="mat-elevation-z8 mt-2 overflow-x-auto overflow-y-hidden">
+      <!-- Loan Approved Table -->
+      <table mat-table [dataSource]="dataSource" aria-describedby="loanApprovedTable">
+
+        <!-- Sr. No. -->
+        <ng-container matColumnDef="srno">
+          <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                  {{ i + 1 }} </td>
+        </ng-container>
+
+
+        <!-- Loan Description  -->
+        <ng-container matColumnDef="loanDescription">
+          <th mat-header-cell *matHeaderCellDef scope="row">Loan Description</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.loanDescription}}
+          </td>
+        </ng-container>
+        
+        <!-- Loan Receipt Date -->
+        <ng-container matColumnDef="loanReceiptDate">
+          <th mat-header-cell *matHeaderCellDef scope="row">Loan Receipt Date</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.loanReceiptDate | date: 'dd-MMM-yyyy'}}
+          </td>
+        </ng-container>
+
+        <!-- Loan Amount -->
+        <ng-container matColumnDef="loanAmount">
+          <th mat-header-cell *matHeaderCellDef scope="row">Loan Amount</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.loanAmount }}
+          </td>
+        </ng-container>
+
+        <!-- Paid Principal -->
+        <ng-container matColumnDef="paidPrincipal">
+          <th mat-header-cell *matHeaderCellDef scope="row">Principal</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.paidPrincipal }}
+          </td>
+        </ng-container>
+
+        <!-- Interest -->
+        <ng-container matColumnDef="interest">
+          <th mat-header-cell *matHeaderCellDef scope="row">Interest</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.interest }}
+          </td>
+        </ng-container>
+
+        <!-- Principal -->
+        <ng-container matColumnDef="principal">
+          <th mat-header-cell *matHeaderCellDef scope="row">Principal</th>
+          <td mat-cell *matCellDef="let element" class="rightAlign">
+            {{element.principal }}
+          </td>
+        </ng-container>
+
+         <!-- % Repayment Outstanding -->
+         <ng-container matColumnDef="repaymentOutstanding">
+          <th mat-header-cell *matHeaderCellDef scope="row">% Repayment Outstanding</th>
+          <td mat-cell *matCellDef="let element" class="rightAlign">
+            {{element.repaymentOutstanding }}
+          </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="header-row-amount">
+          <th mat-header-cell *matHeaderCellDef 
+              [style.text-align]="center"
+              [attr.colspan]="8"> 
+             Amounts(Rs.)
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="header-row-blank">
+          <th mat-header-cell *matHeaderCellDef 
+              [style.text-align]="center"
+              [attr.colspan]="4"> 
+             
+          </th>
+        </ng-container>
+<!-- Header row first group -->
+<ng-container matColumnDef="header-row-paid">
+  <th mat-header-cell *matHeaderCellDef 
+      [style.text-align]="center"
+      [attr.colspan]="2"> 
+    Paid
+  </th>
+</ng-container>
+
+<!-- Header row second group -->
+<ng-container matColumnDef="header-row-outstanding">
+  <th mat-header-cell *matHeaderCellDef [attr.colspan]="1"> Outstanding</th>
+</ng-container>
+<ng-container matColumnDef="header-row-blank-last">
+  <th mat-header-cell *matHeaderCellDef 
+      [style.text-align]="center"
+      [attr.colspan]="1"> 
+     
+  </th>
+</ng-container>
+<tr mat-header-row *matHeaderRowDef="['header-row-amount']"></tr>
+   
+<tr mat-header-row *matHeaderRowDef="['header-row-blank','header-row-paid', 'header-row-outstanding','header-row-blank-last']"></tr>
+        <!-- Header column of Table -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- Data fetch from .TS File  -->
+        
+        <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator #paginator [pageSizeOptions]="[pageSize]" (page)="onPaginateChange($event)"
+        [length]="totalRecords" showFirstLastButtons></mat-paginator>
+    </div>
+
+
+
+  </div>
+</div>

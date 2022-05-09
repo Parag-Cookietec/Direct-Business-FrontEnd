@@ -1,0 +1,848 @@
+<div class="container">
+  <div class="form-wrapper">
+
+    <!-- heading section -->
+    <div class="heading-section ng-star-inserted">
+      <div>Party Master</div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DOI/PM/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div>
+    </div>
+
+    <!-- navigation start -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DOI / DB </li>
+        <li class="breadcrumb-item active" aria-current="page">Party Master</li>
+      </ol>
+    </nav>
+    <!-- navigation ends -->
+
+
+
+    <div class="panel-group">
+      <mat-tab-group mat-stretch-tabs>
+        <mat-tab label="Party Master">
+
+          <!-- Party Master  Form-->
+          <form [formGroup]="partyMasterForm">
+
+            <!-- Party Master -->
+            <div class="box box-primary">
+              <div class="box-header">Leader/Insured Details</div>
+              <div class="box-body">
+
+                <div class="row">
+
+                  <!-- party type -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="partyType" placeholder="Party Type" required #partyTypeValue>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="partyTypeCtrl" [placeholderLabel]="'Find Party Type...'"
+                            [noEntriesFoundLabel]="'No matching Party Type found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of partyTypeList | filterSelectInput:partyTypeCtrl.value"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.partyType.touched && partyMasterForm.controls.partyType.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.partyType.errors.required">
+                          {{ errorMessage.PARTY_TYPE }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+
+                  <!-- leader name -->
+                  <div class="col-sm-3" *ngIf="partyMasterForm.get('partyType').value == '1'">
+                    <mat-form-field>
+                      <input matInput formControlName="leaderName" placeholder="Leader Name" required>
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.leaderName.touched && partyMasterForm.controls.leaderName.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.leaderName.errors.required">
+                          {{ errorMessage.LEADER_NAME }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- insured name -->
+                  <div class="col-sm-3" *ngIf="partyMasterForm.get('partyType').value == '2'">
+                    <mat-form-field>
+                      <input matInput formControlName="insuredName" placeholder="Insured Name" required>
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.insuredName.touched && partyMasterForm.controls.insuredName.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.insuredName.errors.required">
+                          {{ errorMessage.INSURED_NAME }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- party address -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="partyAddress" placeholder="Address">
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.partyAddress.touched && partyMasterForm.controls.partyAddress.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.partyAddress.errors.required">
+                          {{ errorMessage.ADDRESS }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+
+                  <!-- District -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="district" placeholder="District"
+                        (selectionChange)="selectDistrict()">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="districtCtrl" [placeholderLabel]="'Find District...'"
+                            [noEntriesFoundLabel]="'No matching District found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of districtList |
+                      filterSelectInput:districtCtrl.value" [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.district.touched && partyMasterForm.controls.district.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.district.errors.required">
+                          {{ errorMessage.DISTRICT }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+
+                  <!-- Taluka -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <mat-select name='taluka' formControlName='taluka' placeholder='Taluka'>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]='talukaCtrl' [placeholderLabel]="'Select Taluka ...'"
+                            [noEntriesFoundLabel]="'no matching Taluka found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option
+                          *ngFor="let item of taluka_list | filterSelectInput : talukaCtrl.value : 'viewValue'"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.taluka.touched && partyMasterForm.controls.taluka.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.taluka.errors.required">
+                          {{ errorMessage.TALUKA }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- city -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="city" placeholder="City">
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.city.touched && partyMasterForm.controls.city.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.city.errors.required">
+                          {{ errorMessage.CITY }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- pin code -->
+                  <div class="col-sm-3" *ngIf="partyMasterForm.get('partyType').value == '1'">
+                    <mat-form-field>
+                      <input matInput formControlName="pinCode" placeholder="Pincode" maxlength="6" numbersOnly>
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.pinCode.touched && partyMasterForm.controls.pinCode.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.pinCode.errors.required">
+                          {{ errorMessage.PIN_CODE }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- contact no -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="contactNo" placeholder="Contact No." numbersOnly maxlength="12">
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.contactNo.touched && partyMasterForm.controls.contactNo.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.contactNo.errors.required">
+                          {{ errorMessage.CONTACT_NO }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- email id -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <input matInput type="text" placeholder="Email ID" formControlName="email">
+                      <div class="error-wrapper"
+                        *ngIf="partyMasterForm.controls.email.touched && partyMasterForm.controls.email.errors">
+                        <mat-error *ngIf="partyMasterForm.controls.email.errors.required">
+                          {{ errorMessage.EMAIL_ID }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- adhar no -->
+                  <div class="col-sm-3" *ngIf="partyMasterForm.get('partyType').value == '1'">
+                    <mat-form-field class="full-width">
+                      <input matInput type="text" placeholder="Aadhar No" formControlName="adharNo" maxlength="12"
+                        numbersOnly>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- pan card -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <input matInput type="text" placeholder="PAN Card No" formControlName="panCard" maxlength="10">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- GSTIN -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="gstin" placeholder="GSTIN" maxlength="15">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- co-insurance share -->
+                  <!-- <div class="col-sm-3" *ngIf="partyMasterForm.get('partyType').value == '1'">
+                    <mat-form-field class="full-width">
+                      <input matInput type="text" placeholder="Co-Ins Share%" formControlName="coInsShare" numbersOnly>
+                    </mat-form-field>
+                  </div> -->
+
+                </div>
+              </div>
+            </div>
+            <!-- Party Master End -->
+          </form>
+
+          <!-- Office Details -->
+          <div class="box box-primary" *ngIf="partyMasterForm.get('partyType').value == '1'">
+            <div class="box-header">Office Details</div>
+            <div class="box-body">
+
+              <div class="row">
+                <div class="col-sm-12">
+
+                  <div class="mat-elevation-z8 ">
+                    <!-- table start -->
+                    <table mat-table [dataSource]="dataSourceOfficeDetails" matSort aria-describedby="officeDetails">
+
+                      <!-- office type -->
+                      <ng-container matColumnDef="officeType">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Office Type</th>
+                        <td mat-cell *matCellDef="let element">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.officeType" [ngModelOptions]="{standalone: true}" [disabled]="currentAction === 1">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="officeTypeCtrl"
+                                  [placeholderLabel]="'Find Office Type...'"
+                                  [noEntriesFoundLabel]="'no matching Office Type found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option *ngFor="let item of officeTypeList | filterSelectInput: officeTypeCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- office Name -->
+                      <ng-container matColumnDef="officeName">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Office Name*</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.officeName" [ngModelOptions]="{standalone: true}" [readonly]="currentAction === 1" required>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+
+                      <!-- office address -->
+                      <ng-container matColumnDef="officeAddress">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Office Address</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.officeAddress" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- district -->
+                      <ng-container matColumnDef="district">
+                        <th mat-header-cell *matHeaderCellDef scope="row">District</th>
+                        <td mat-cell *matCellDef="let element; let i = index">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.district" [disabled]="currentAction === 1" (selectionChange)="selectDistrict(i,'office')" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="districtOfficeCtrl"
+                                  [placeholderLabel]="'Find District...'"
+                                  [noEntriesFoundLabel]="'no matching District found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option
+                                *ngFor="let item of districtList | filterSelectInput: districtOfficeCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- taluka -->
+                      <ng-container matColumnDef="taluka">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Taluka</th>
+                        <td mat-cell *matCellDef="let element">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.taluka" [disabled]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="talukaOfficeCtrl"
+                                  [placeholderLabel]="'Find Taluka...'"
+                                  [noEntriesFoundLabel]="'no matching Taluka found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option
+                                *ngFor="let item of element.talukaList | filterSelectInput: talukaOfficeCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- city -->
+                      <ng-container matColumnDef="city">
+                        <th mat-header-cell *matHeaderCellDef scope="row">City</th>
+                        <td mat-cell *matCellDef="let element">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.city" [disabled]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="cityOfficeCtrl"
+                                  [placeholderLabel]="'Find City...'" [noEntriesFoundLabel]="'no matching City found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option *ngFor="let item of cityList | filterSelectInput: cityOfficeCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- pinCode -->
+                      <ng-container matColumnDef="pinCode">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Pincode</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.pinCode" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+
+                      <!-- action -->
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Action</th>
+                        <td mat-cell *matCellDef="let item; let i = index" class="centerAlign">
+                          <table class="iconTable" aria-describedby="actionBtn">
+                            <tbody>
+                              <tr>
+                                <td width="30">
+                                  <i class="material-icons plus add" aria-hidden="true"
+                                    *ngIf="dataSourceOfficeDetails && dataSourceOfficeDetails.data && (i == dataSourceOfficeDetails.data.length - 1)"
+                                    (click)="addOffice()">
+                                    add
+                                  </i>
+                                </td>
+                                <td width="30">
+                                  <i class="material-icons plus delete" aria-hidden="true"
+                                    *ngIf="dataSourceOfficeDetails && dataSourceOfficeDetails.data && dataSourceOfficeDetails.data.length > 1"
+                                    (click)="deleteColumn(dataSourceOfficeDetails,i)">
+                                    delete
+                                  </i>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                      </ng-container>
+
+                      <!-- Header Section Of table -->
+                      <tr mat-header-row *matHeaderRowDef="officeColumns"></tr>
+                      <!-- Data Fetch From .TS File to table -->
+                      <tr mat-row *matRowDef="let row; let i = index;columns:officeColumns"></tr>
+
+                    </table>
+                    <!-- table end -->
+
+                    <!-- paginator -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- Office Details End-->
+
+          <!-- Risk Location Details -->
+          <div class="box box-primary" *ngIf="partyMasterForm.get('partyType').value == '2'">
+            <div class="box-header">Risk Location Details</div>
+            <div class="box-body">
+              <div class="row">
+
+                <div class="col-sm-12">
+
+                  <div class="mat-elevation-z8 mt-2">
+                    <!-- table start -->
+                    <table mat-table [dataSource]="dataSourceRiskLocationDetails" matSort
+                      aria-describedby="riskLocationDetails">
+
+                      <!-- office type -->
+                      <ng-container matColumnDef="locationType">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Location Type*</th>
+                        <td mat-cell *matCellDef="let element">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [readonly]="currentAction === 1" [(ngModel)]="element.locationType" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="locationTypeCtrl"
+                                  [placeholderLabel]="'Find Office Type...'"
+                                  [noEntriesFoundLabel]="'no matching Office Type found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option
+                                *ngFor="let item of locationTypeList | filterSelectInput: locationTypeCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- office Name -->
+                      <ng-container matColumnDef="locationName">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Location Name*</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.locationName" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+
+                      <!-- office address -->
+                      <ng-container matColumnDef="locationAddress">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Location Address*</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.locationAddress" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- district -->
+                      <ng-container matColumnDef="district">
+                        <th mat-header-cell *matHeaderCellDef scope="row">District*</th>
+                        <td mat-cell *matCellDef="let element; let i = index">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.district" [disabled]="currentAction === 1"  (selectionChange)="selectDistrict(i,'risk')" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="districtLocationCtrl"
+                                  [placeholderLabel]="'Find District...'"
+                                  [noEntriesFoundLabel]="'no matching District found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option
+                                *ngFor="let item of districtList | filterSelectInput: districtLocationCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- taluka -->
+                      <ng-container matColumnDef="taluka">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Taluka*</th>
+                        <td mat-cell *matCellDef="let element">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.taluka" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="talukaLocationCtrl"
+                                  [placeholderLabel]="'Find Taluka...'"
+                                  [noEntriesFoundLabel]="'no matching Taluka found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option
+                                *ngFor="let item of element.talukaList | filterSelectInput: talukaLocationCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- city -->
+                      <ng-container matColumnDef="city">
+                        <th mat-header-cell *matHeaderCellDef scope="row">City*</th>
+                        <td mat-cell *matCellDef="let element">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.city" [disabled]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="cityLocationCtrl"
+                                  [placeholderLabel]="'Find City...'" [noEntriesFoundLabel]="'no matching City found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option *ngFor="let item of cityList | filterSelectInput: cityLocationCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- pinCode -->
+                      <ng-container matColumnDef="pinCode">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Pincode*</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.pinCode" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+
+                      <!-- action -->
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Action</th>
+                        <td mat-cell *matCellDef="let item; let i = index" class="centerAlign">
+                          <table class="iconTable" aria-describedby="actionBtn">
+                            <tbody>
+                              <tr>
+                                <td width="30">
+                                  <i class="material-icons plus add" aria-hidden="true"
+                                    *ngIf="dataSourceRiskLocationDetails && dataSourceRiskLocationDetails.data && (i == dataSourceRiskLocationDetails.data.length - 1)"
+                                    (click)="addLocation()">
+                                    add
+                                  </i>
+                                </td>
+                                <td width="30">
+                                  <i class="material-icons plus delete" aria-hidden="true"
+                                    *ngIf="dataSourceRiskLocationDetails && dataSourceRiskLocationDetails.data && dataSourceRiskLocationDetails.data.length > 1"
+                                    (click)="deleteColumn(dataSourceRiskLocationDetails,i)">
+                                    delete
+                                  </i>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </ng-container>
+
+                      <!-- Header Section Of table -->
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                      <!-- Data Fetch From .TS File to table -->
+                      <tr mat-row *matRowDef="let row; let i = index;columns:displayedColumns1"></tr>
+
+                    </table>
+                    <!-- table end -->
+
+                    <!-- paginator -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+          <!-- Risk Location Details end -->
+
+
+          <!-- Bank Details -->
+          <div class="box box-primary">
+            <div class="box-header">Bank Details</div>
+            <div class="box-body">
+              <div class="row">
+
+                <div class="col-sm-12">
+                  <div class="mat-elevation-z8 mt-2">
+                    <!-- table start -->
+                    <table mat-table [dataSource]="dataSourceBankDetails" matSort aria-describedby="bankDetails">
+
+                      <!-- bank name -->
+                      <ng-container matColumnDef="bankName">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Bank Name</th>
+                        <td mat-cell *matCellDef="let element;let i = index">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.bankId" (selectionChange)="selectBank($event, i)" [disabled]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="bankNameCtrl"
+                                  [placeholderLabel]="'Find Bank Name...'"
+                                  [noEntriesFoundLabel]="'no matching Bank Name found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option *ngFor="let item of bankNameList | filterSelectInput: bankNameCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- branch name -->
+                      <ng-container matColumnDef="branchName">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Branch Name</th>
+                        <td mat-cell *matCellDef="let element; let i = index;">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.branchId" [disabled]="currentAction === 1" (selectionChange)="selectBranch($event, i)" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="branchNameCtrl"
+                                  [placeholderLabel]="'Find Branch Name...'"
+                                  [noEntriesFoundLabel]="'no matching Branch Name found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option *ngFor="let item of element.branchList | filterSelectInput: branchNameCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="branchType">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Branch Type*</th>
+                        <td mat-cell *matCellDef="let element">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.branchType" [disabled]="currentAction === 1" [ngModelOptions]="{standalone: true}" required>
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="branchTypeCtrl"
+                                  [placeholderLabel]="'Find Branch Name...'"
+                                  [noEntriesFoundLabel]="'no matching Branch Name found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option *ngFor="let item of branchTypeList | filterSelectInput: branchTypeCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="BranchCode">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Branch Code</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.BranchCode" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+                      <!-- ifsc code -->
+                      <ng-container matColumnDef="ifscCode">
+                        <th mat-header-cell *matHeaderCellDef scope="row">IFSC Code</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.ifscCode" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+
+                      <!--  account no -->
+                      <ng-container matColumnDef="accountNo">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Account No.</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.accountNo" [readonly]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- payment prefered -->
+                      <ng-container matColumnDef="paymentPrefered">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Payment Preferred</th>
+                        <td mat-cell *matCellDef="let element">
+
+                          <mat-form-field class="example-full-width">
+                            <mat-select [(ngModel)]="element.paymentPrefered" [disabled]="currentAction === 1" [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="paymentPreferedCtrl"
+                                  [placeholderLabel]="'Find Payment Preferred...'"
+                                  [noEntriesFoundLabel]="'no matching Payment Preferred found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option
+                                *ngFor="let item of paymentPreferedList | filterSelectInput: paymentPreferedCtrl.value"
+                                [value]="item.value">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+
+                      <!-- action -->
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef scope="row">Action</th>
+                        <td mat-cell *matCellDef="let item; let i = index" class="centerAlign">
+                          <table class="iconTable" aria-describedby="actionBtn">
+                            <tbody>
+                              <tr>
+                                <td width="30">
+                                  <i class="material-icons plus add" aria-hidden="true"
+                                    *ngIf="dataSourceBankDetails && dataSourceBankDetails.data && (i == dataSourceBankDetails.data.length - 1)"
+                                    (click)="addBankDetails()">
+                                    add
+                                  </i>
+                                </td>
+                                <td width="30">
+                                  <i class="material-icons plus delete" aria-hidden="true"
+                                    *ngIf="dataSourceBankDetails && dataSourceBankDetails.data && dataSourceBankDetails.data.length > 1"
+                                    (click)="deleteColumn(dataSourceBankDetails,i)">
+                                    delete
+                                  </i>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                      </ng-container>
+
+                      <!-- Header Section Of table -->
+                      <tr mat-header-row *matHeaderRowDef="bakDetailsColumns"></tr>
+                      <!-- Data Fetch From .TS File to table -->
+                      <tr mat-row *matRowDef="let row; let i = index;columns:bakDetailsColumns"></tr>
+
+                    </table>
+                    <!-- table end -->
+
+                    <!-- paginator -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"  showFirstLastButtons></mat-paginator> -->
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- Bank Details end -->
+
+          <!-- common action button -->
+          <div class="form-action-button">
+
+            <button mat-raised-button type="submit" *ngIf="currentAction !== 1" class="green" title="Submit" (click)="onSubmit()">
+              <i class="material-icons">
+                done
+              </i>
+              Submit
+            </button>
+
+            <button type="button" mat-raised-button color="accent" *ngIf="currentAction !== 1" title="Reset" (click)="onReset()">
+              <i class="material-icons" aria-hidden="true">
+                restore
+              </i>
+              Reset
+            </button>
+
+            <button type="button" mat-raised-button (click)="goToListing()" color="warn" title="Listing">
+              <i class="material-icons" aria-hidden="true" title="Listing">
+                list
+              </i>
+              Listing
+            </button>
+
+            <!-- <button type="button" mat-raised-button (click)="onClose()" class="btnClose" title="Close">
+              <i class="material-icons" aria-hidden="true" title="Close">
+                close
+              </i>
+              Close
+            </button> -->
+
+          </div>
+          <!-- common action button end -->
+
+        </mat-tab>
+
+        <!-- attachment tab -->
+        <mat-tab label="Attachments">
+          <app-common-attachment [attachemntValue]="attachmentTypeCode"></app-common-attachment>
+
+          <!-- action button -->
+          <div class="form-action-button">
+
+            <button type="submit" mat-raised-button color="primary">
+              <i class="material-icons" aria-hidden="true" title="Upload">
+                publish
+              </i>
+              Upload
+            </button>
+
+            <button type="button" mat-raised-button budget-list (click)="goToListing()" color="warn" title="Listing">
+              <i class="material-icons" aria-hidden="true" title="Listing">
+                list
+              </i>
+              Listing
+            </button>
+
+            <button type="button" mat-raised-button (click)="onClose()" class="btnClose" title="Close">
+              <i class="material-icons" aria-hidden="true" title="Close">
+                close
+              </i>
+              Close
+            </button>
+
+          </div>
+          <!-- action button end -->
+
+        </mat-tab>
+        <!-- attachment tab end -->
+
+      </mat-tab-group>
+
+    </div>
+  </div>
+</div>

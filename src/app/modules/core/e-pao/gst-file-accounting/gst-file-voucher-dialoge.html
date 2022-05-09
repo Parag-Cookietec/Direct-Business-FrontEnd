@@ -1,0 +1,56 @@
+<div class="container">
+    <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" aria-describedby="branchHamapping">
+        <ng-container matColumnDef="srNo">
+            <th mat-header-cell *matHeaderCellDef scope="row">
+                Sr No.
+            </th>
+            <td mat-cell *matCellDef="let row; let i = index;" class="centerAlign">
+                {{i+1}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fileName">
+            <th mat-header-cell *matHeaderCellDef scope="row">File Name</th>
+            <td mat-cell *matCellDef="let element" class="centerAlign">
+                {{element.fileName}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="fileDate">
+            <th mat-header-cell *matHeaderCellDef scope="row">File Date</th>
+            <td mat-cell *matCellDef="let element" class="centerAlign">
+                {{element.fileDate | date:'dd-MMM-yyyy'}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="totFileCnt">
+            <th mat-header-cell *matHeaderCellDef scope="row">Total File Count</th>
+            <td mat-cell *matCellDef="let element" class="centerAlign">
+                {{element.totFileCnt}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="newaction">
+            <th mat-header-cell *matHeaderCellDef scope="row">Action</th>
+            <td mat-cell *matCellDef="let element" class="action-btn-i centerAlign">
+                <!-- <a (click)="openView()"><i class="material-icons plus view-icon" aria-hidden="true"
+                        title="View">remove_red_eye</i></a> -->
+                <a><i class="material-icons plus edit-icon" aria-hidden="true" title="Edit"> edit </i></a>
+                <a class="delete-icon"
+                    ><i class="material-icons plus delete" aria-hidden="true" title="delete">delete_forever</i></a
+                >
+            </td>
+        </ng-container>
+
+        <!-- Header Section Of table -->
+        <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+        <!-- Data Fetch From .TS File to table -->
+        <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+    </table>
+
+    <div class="form-action-button">
+        <button type="button" mat-raised-button class="btnClose" (click)="vitocancel()">
+            <i class="material-icons" aria-hidden="true" title="Budget dashboard">
+                close
+            </i>
+            Close
+        </button>
+    </div>
+</div>

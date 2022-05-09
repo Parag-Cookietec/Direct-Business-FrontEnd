@@ -1,0 +1,231 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>Penal Interest Received</div>
+            <div class="font-heading"><b>Reference No:</b> 19-20/E-PAO/PIR/001</div>
+            <div class="font-heading"><b>Reference Date:</b> {{ initiatiomdate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">E-PAO</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Penal Interest Received</li>
+            </ol>
+        </nav>
+
+        <form [formGroup]="penaltyAmountForm" #form="ngForm">
+            <div class="panel-group">
+                <!-- Penalty Amount Receive -->
+                <div class="box box-primary">
+                    <div class="box-header">Penal Interest Received</div>
+                    <div class="box-body">
+
+                        <div class="row">
+
+                            <!-- Bank -->
+                            <div class="col-sm-3">
+                                <mat-form-field class="full-width">
+                                    <mat-select formControlName="bankType" placeholder="Bank" required (selectionChange)="onBankChange($event)">
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]="bankTypeCtrl"
+                                                [placeholderLabel]="'Find Bank...'"
+                                                [noEntriesFoundLabel]="'no matching Bank found'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option>-- None --</mat-option>
+                                        <mat-option *ngFor="let CE of bankType_list | filterSelectInput: bankTypeCtrl.value
+                " [value]="CE.bankId" matTooltip="{{ CE.bankName }}">
+                                            {{ CE.bankName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+
+                            <!-- Mode Of Receipt -->
+                            <div class="col-sm-3">
+                                <mat-form-field class="full-width">
+                                    <mat-select formControlName="mor" placeholder="Mode Of Receipt" required (selectionChange)="onMORChange($event)">
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]="morCtrl"
+                                                [placeholderLabel]="'Find Mode of Receipt...'"
+                                                [noEntriesFoundLabel]="'no Mode of Receipt found'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option>-- None --</mat-option>
+                                        <mat-option *ngFor="let item of mor_list | filterSelectInput: morCtrl.value
+" [value]="item.id" matTooltip="{{ item.name }}">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input placeholder="Cheque/Draft/Reference No." formControlName="chqCeferenceNo" matInput required>
+                                </mat-form-field>
+                            </div>
+
+                            <!--  Date -->
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput formControlName="date" [matDatepicker]="date" [max]='maxDate'
+                                        placeholder=" Date" readonly required>
+                                    <mat-datepicker-toggle matSuffix [for]="date">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #date></mat-datepicker>
+
+                                </mat-form-field>
+                            </div>
+                            <!-- to date -->
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput formControlName="creditDate" [matDatepicker]="creditDate"
+                                        [max]='maxDate' placeholder="Government Account Credit Date" readonly required>
+                                    <mat-datepicker-toggle matSuffix [for]="creditDate">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #creditDate></mat-datepicker>
+
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Amount -->
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input placeholder="Amount (₹)" formControlName="amt" matInput required decimalLimitTwoOnly>
+                                </mat-form-field>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mt-2">
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> No. </th>
+                        <td mat-cell *matCellDef="let element let i = index" class="centerAlign"> {{i + 1}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="year">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> Year </th>
+                        <td mat-cell *matCellDef="let element;let i = index">
+                            <mat-form-field class="full-width">
+                                <mat-select                                 
+                                [(value)]="element.year"
+                                (selectionChange)="GetBankWiseInterest(element, i)" required>
+                                    <mat-option>-- None --</mat-option>
+                                    <mat-option *ngFor="let item of year_list" [value]="item.id"
+                                        matTooltip="{{item.name}}">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="month">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> Month </th>
+                        <td mat-cell *matCellDef="let element;let i=index">
+                            <mat-form-field class="full-width">
+                                <mat-select 
+                                [(value)]="element.month"
+                                (selectionChange)="GetBankWiseInterest(element, i)"> required
+                                    <mat-option>-- None --</mat-option>
+                                    <mat-option *ngFor="let item of month_list" [value]="item.id"
+                                        matTooltip="{{item.name}}">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="claimAmt">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> Claim Amount (₹) </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field class="full-width">
+                                <input matInput readonly [(value)]="element.claimAmt" required>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="oldAmt">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> Earliear Received Amount (₹)</th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field class="full-width">
+                                <input matInput readonly [(value)]="element.oldAmt" required>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="remainingAmt">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> Remaining Amount (₹) </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field class="full-width">
+                                <input matInput readonly [(value)]="element.remainingAmt" required>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="currentAmt">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> Currently Received Amount (₹) </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field class="full-width">
+                                <input matInput [(value)]="element.currentAmt" #currentAmt (blur)="checkAmountVal(element,currentAmt)" required>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> Action </th>
+                        <td mat-cell *matCellDef="let element;let i = index;" class="text-center">
+                            <i class="material-icons plus add" (click)="addRow()"> add </i>
+                            <i class="material-icons plus delete" (click)="delete(i)"> delete </i>
+                        </td>
+                    </ng-container>
+                    <!-- Header Section Of table -->
+                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                    <!-- Data Fetch From .TS File to table -->
+                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                </table>
+                <!-- End Penalty Amount Receive -->
+
+
+                <!-- Common Button -->
+                <div class="form-action-button">
+
+                    <!-- <button mat-raised-button type="button" class="green" (click)="directiveObject.workflowDetails()"> -->
+                        <button mat-raised-button type="button" class="green" (click)="Submit(form)">
+                        <i
+                            class="material-icons">
+                            done
+                        </i> Submit
+                    </button>
+                    <button type="reset" mat-raised-button color="accent" (click)="clearForm();">
+                        <i class="material-icons" aria-hidden="true" title="reset">
+                            restore
+                        </i>
+                        Reset
+                    </button>
+                    <button type="button" [routerLink]="'../penalty-amount-receive-listing'" mat-raised-button
+                        color="warn">
+                        <i class="material-icons" aria-hidden="true" title="Listing">
+                            list
+                        </i>
+                        Listing
+                    </button>
+
+
+                    <button type="button" mat-raised-button class="btnClose">
+                        <i class="material-icons" aria-hidden="true" title="close">
+                            close
+                        </i>
+                        Close
+                    </button>
+
+
+                </div>
+
+                <!-- End Common Button -->
+            </div>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,175 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>RBI Scroll Vs Statement Report</div>
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+                <li class="breadcrumb-item " aria-current="page">Reports</li>
+                <li class="breadcrumb-item " aria-current="page">Discrepancy</li>
+                <li class="breadcrumb-item active" aria-current="page">RBI Scroll Vs Statement Report</li>
+            </ol>
+        </nav>
+        <div class="panel-group" id="printContent">
+
+            <mat-accordion class="search-accordian">
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <div class="heading-section">
+                            Search
+                        </div>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="dtwiseCinDataReportForm">
+                            <div class="box-body">
+                                <div class="row">
+                                    <!-- From Date -->
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="fromDate" formControlName="fromDate"
+                                                placeholder="From Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #fromDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <!-- To Date -->
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="toDate" formControlName="toDate"
+                                                placeholder="To Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #toDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <!-- Common Button -->
+                                <div class="form-action-button">
+                                    <button type="submit" mat-raised-button color="primary">
+                                        <i class="material-icons" aria-hidden="true">search</i>
+                                        Search
+                                    </button>
+                                    <button type="reset" mat-raised-button color="accent">
+                                        <i class="material-icons" aria-hidden="true">
+                                            restore
+                                        </i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                    </form>
+                </mat-expansion-panel>
+            </mat-accordion>
+            
+            <br>
+            <div class="heading-section ng-star-inserted" style="display:flex; justify-content: space-between;">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-7">
+                    e-Pay and Accounts Office (GST),Gandhinagar <br>
+                        <div style="margin-left: 1rem;">RBI Scroll Vs Statement Report</div>
+                </div>
+                <a><i class="material-icons plus" title="Print"  aria-hidden="true">print</i></a>
+            </div>
+        
+            <!-- table SRS Report -->
+            <div style="float: left;">
+                <mat-paginator [pageSizeOptions]="[3,5,10,25]" [pageSize]="4"></mat-paginator>
+            </div>
+    
+            <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" aria-describedby="rbdReport">
+               
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef scope="row" [attr.colspan]="1">Month</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                       <a href="">
+                        {{element.date}}
+                       </a>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="centerAlign">Total</td>
+                </ng-container>
+                <ng-container matColumnDef="noOfScroll">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> No Of Scroll</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.noOfScroll}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="centerAlign">40</td>
+                </ng-container>
+                <ng-container matColumnDef="scrollAmt">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Amount</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                     <a href="">
+                        {{element.scrollAmt}}
+                     </a>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="centerAlign">400</td>
+                </ng-container>
+                <!-- no of transactions -->
+                <ng-container matColumnDef="noOfTxn">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> No Of Transactions</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.noOfTxn}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="centerAlign">200</td>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Amount</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        <a href="">
+                            {{element.amount}}
+                        </a>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="centerAlign">2500</td>
+                </ng-container>
+
+                <ng-container matColumnDef="noOfTxnDiff">
+                    <th mat-header-cell *matHeaderCellDef scope="row" [attr.colspan]="2"> Difference (In Amount)</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        <a href="">
+                            {{element.noOfTxnDiff}}
+                        </a>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="centerAlign">40</td>
+                </ng-container>
+                
+                
+                <ng-container matColumnDef="dt">
+                    <th mat-header-cell *matHeaderCellDef  [attr.colspan]="1">
+                    </th>
+                </ng-container>
+                <ng-container matColumnDef="header-row-first-group">
+                    <th mat-header-cell *matHeaderCellDef  [attr.colspan]="2">
+                       E-Scroll
+                    </th>
+                </ng-container>
+                <ng-container matColumnDef="header-row-second-group">
+                    <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> 
+                        Account Statement
+                     </th>
+                </ng-container>
+                <ng-container matColumnDef="header-row-third-group">
+                    <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"> 
+                     </th>
+                </ng-container>
+
+               
+                
+
+
+                
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="['dt','header-row-first-group', 'header-row-second-group','header-row-third-group']"></tr>
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+                <!-- Footer Section Of table -->
+                <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns"></tr>
+            </table>
+            <!-- End table GST File Accountion -->
+            <!-- common button -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,291 @@
+<div class="container">
+    <div class="form-wrapper">
+      <div class="heading-section ng-star-inserted">
+        <div>DMO</div>
+        <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/CDRI/001</div>
+        <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div> -->
+      </div>
+  
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">DMO</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Cheque Details Received from Institute</li>
+        </ol>
+      </nav>
+  
+  
+      <form [formGroup]="detailsForm">
+        <!-- Cheque Details Received from Institute -->
+  
+        <!-- Select Challan Section -->
+        <div class="panel-group">
+          <div class="box box-primary">
+            <div class="box-header">Select Reference No.</div>
+            <div class="box-body">
+  
+              <div class="row">
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select formControlName="chNo" placeholder="Reference No." required (selectionChange)="getByRef($event)">
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="chNoCtrl" [placeholderLabel]="'Find Challan No. ...'"
+                          [noEntriesFoundLabel]="'no Challan No.  found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option *ngFor="let va of chNo_List | filterSelectInput:chNoCtrl.value" [value]="va">
+                        {{va}}
+                      </mat-option>
+                    </mat-select>
+  
+                    <div class="error-wrapper"
+                      *ngIf="detailsForm.controls.chNo.touched && (detailsForm.controls.chNo.errors)">
+                      <mat-error *ngIf="detailsForm.controls.chNo.errors.required">
+                        {{errorMessages.NUMBER}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="refrenceDate.open()" >
+                    <input matInput formControlName="refrenceDate" [matDatepicker]="refrenceDate" placeholder="Reference Date"
+                    disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="refrenceDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #refrenceDate disabled="false"></mat-datepicker>
+  
+                    <div class="error-wrapper"
+                      *ngIf="detailsForm.controls.refrenceDate.touched && (detailsForm.controls.refrenceDate.errors)">
+                      <mat-error *ngIf="detailsForm.controls.refrenceDate.errors.required">
+                        {{errorMessages.DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+              </div>
+  
+            </div>
+          </div>
+        </div>
+  
+        <!-- Cheque Entry Details Section -->
+        <div class="panel-group">
+          <div class="box box-primary">
+            <div class="box-header">Cheque Entry Details</div>
+            <div class="box-body">
+  
+              <div class="row">
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <input matInput formControlName="instituteName" placeholder="Name of Institute">
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput class="rightAlign" formControlName="totalAmountRel"
+                      placeholder="Total Amount Released (Rs.)" numbersOnly>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="letterNo" placeholder="Letter No." numbersOnly>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="letterDate.open()">
+                    <input matInput formControlName="letterDate" [matDatepicker]="letterDate" placeholder="Letter Date" disabled
+                    required >
+                    <mat-datepicker-toggle matSuffix [for]="letterDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #letterDate disabled="false" ></mat-datepicker>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="refrenceNo" placeholder="Reference No." numbersOnly>
+                  </mat-form-field>
+                </div>  
+               
+                <div class="col-sm-3">
+                  <mat-form-field (click)="refrenceDate.open()">  
+                    <input matInput formControlName="refrenceDate" [matDatepicker]="refrenceDate" placeholder="Reference Date"  disabled
+                    required >
+                    <mat-datepicker-toggle matSuffix [for]="refrenceDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #refrenceDate disabled="false"></mat-datepicker>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="utrNo" placeholder="UTR No." numbersOnly>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="utrDate.open()">  
+                    <input matInput formControlName="utrDate" [matDatepicker]="utrDate" placeholder="UTR Date"  disabled
+                    required >
+                    <mat-datepicker-toggle matSuffix [for]="utrDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #utrDate disabled="false"></mat-datepicker>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="chequeNo" placeholder="Cheque No." numbersOnly>  
+                    
+                    <div class="error-wrapper"
+                      *ngIf="detailsForm.controls.chequeNo.touched && (detailsForm.controls.chequeNo.errors)">
+                      <mat-error *ngIf="detailsForm.controls.chequeNo.errors.required">
+                        {{errorMessages.NUMBER}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="chequeDate.open()">
+                    <input matInput formControlName="chequeDate" [matDatepicker]="chequeDate" placeholder="Cheque Date"  disabled
+                    required>
+                    <mat-datepicker-toggle matSuffix [for]="chequeDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #chequeDate disabled="false"></mat-datepicker>
+  
+                    <div class="error-wrapper"
+                      *ngIf="detailsForm.controls.chequeDate.touched && (detailsForm.controls.chequeDate.errors)">
+                      <mat-error *ngIf="detailsForm.controls.chequeDate.errors.required">
+                        {{errorMessages.DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+              </div>
+              <table mat-table class="mt-2" [dataSource]="dataSource" width="100%" aria-describedby="detailsTable">
+  
+                <!-- Sr. No. -->
+                <ng-container matColumnDef="position">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                    {{ i + 1 }} </td>
+                </ng-container>
+  
+  
+                <!-- Department Name   -->
+                <ng-container matColumnDef="deptName">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Department Name</th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                      <input matInput formControlName="departmentName">
+                    </mat-form-field>
+                  </td>
+                </ng-container>
+  
+                <!-- Ref No. -->
+                <ng-container matColumnDef="refNo">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Ref No.</th>
+                  <td mat-cell *matCellDef="let element"> 
+                    <mat-form-field floatLabel="never">
+                      <input matInput formControlName="refrenceNo">
+                    </mat-form-field> 
+                  </td>
+                </ng-container>
+  
+                <!-- Ref Date -->
+                <ng-container matColumnDef="refDate">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Ref Date</th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                      <input matInput formControlName="refrenceDate">
+                    </mat-form-field> 
+                  </td>
+                </ng-container>
+  
+                <!-- Tranche -->
+                <ng-container matColumnDef="transche">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Tranche</th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                      <input matInput formControlName="transactionDesc">
+                    </mat-form-field> 
+                  </td>
+                </ng-container>
+  
+                <!-- Account No. -->
+                <ng-container matColumnDef="accNo">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Account No.</th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                      <input matInput formControlName="loanAccNumber">
+                    </mat-form-field> 
+                  </td>
+                </ng-container>
+  
+                <!-- Purpose -->
+                <ng-container matColumnDef="purpose">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Purpose</th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-form-field floatLabel="never">
+                      <input matInput formControlName="loanPurpose">
+                    </mat-form-field> 
+                  </td>
+                </ng-container>
+  
+                <!-- Amount  -->
+                <ng-container matColumnDef="amt">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Amount</th>
+                  <td mat-cell *matCellDef="let element" class="rightAlign">
+                    <mat-form-field floatLabel="never">
+                      <input matInput formControlName="loanAmount">
+                    </mat-form-field>   
+                  </td>
+                </ng-container>
+  
+                <!-- Click to Select -->
+                <ng-container matColumnDef="action">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Click to Select</th>
+                  <td mat-cell *matCellDef="let element" class="centerAlign action-btn-i">
+                    <button type="button" mat-raised-button (click)="onAddDetails(element)" 
+                      color="primary" title="Add Details" style="margin:5px;">
+                      Add Details
+                    </button>
+                    <!-- <button type="button" mat-raised-button (click)="onAddDetails(element)" 
+                    [routerLink]="'../cheque-details-received-institute/add'"
+                      color="primary" title="Add Details" style="margin:5px;">
+                      Add Details
+                    </button> -->
+                  </td>
+                </ng-container>
+  
+                <!-- Header column of Table -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <!-- Data fetch from .TS File  -->
+                <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+              </table>
+  
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- Action Button -->
+      <!-- <div class="form-action-button">
+        <button type="submit" mat-raised-button color="primary">
+          <i class="material-icons" aria-hidden="true" title="save">
+            check
+          </i>
+          Update
+        </button>
+        <button type="button" title="Cancel" mat-raised-button class="btnClose">
+          <i class="material-icons " title="cancel">close</i>Close</button>
+      </div> -->
+  
+  
+    </div>
+  </div>

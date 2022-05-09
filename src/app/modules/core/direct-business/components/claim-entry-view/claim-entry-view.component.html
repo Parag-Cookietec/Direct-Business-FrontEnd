@@ -1,0 +1,486 @@
+<div class="container">
+  <div class="form-wrapper">
+
+    <!-- heading section -->
+    <div class="heading-section ng-star-inserted">
+      <div>Claim Entry</div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DOI/DB/CE/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div>
+    </div>
+
+    <!-- navigation start -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DOI / DB </li>
+        <li class="breadcrumb-item active" aria-current="page">Claim Entry</li>
+      </ol>
+    </nav>
+    <!-- navigation ends -->
+
+
+
+    <div class="panel-group">
+      <mat-tab-group mat-stretch-tabs>
+        <mat-tab label="Claim Entry">
+
+          <!-- Claim Entry  Form-->
+          <form [formGroup]="claimEntryForm">
+
+            <!-- Claim Entry -->
+            <div class="box box-primary">
+              <div class="box-header">Claim Entry</div>
+              <div class="box-body">
+
+                <div class="row">
+
+                  <!-- proposer name -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="proposerName" placeholder="Proposer Name">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="proposerNameCtrl"
+                            [placeholderLabel]="'Find Proposer Name...'"
+                            [noEntriesFoundLabel]="'No matching Proposer Name found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of proposerNameList | filterSelectInput:proposerNameCtrl.value"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Policy No -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="policyNo" placeholder="Policy No.">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="policyNoCtrl" [placeholderLabel]="'Find Policy No....'"
+                            [noEntriesFoundLabel]="'No matching Policy No. found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of policyNoList |
+                        filterSelectInput:policyNoCtrl.value" [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+
+                  <!-- policy start date -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="policyStartDate" formControlName="startDate"
+                        placeholder="Policy Start Date">
+                      <mat-datepicker-toggle matSuffix [for]="policyStartDate"></mat-datepicker-toggle>
+                      <mat-datepicker #policyStartDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+
+                  <!-- policy end date -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="policyEndDate" formControlName="endDate"
+                        placeholder="Policy End Date">
+                      <mat-datepicker-toggle matSuffix [for]="policyEndDate"></mat-datepicker-toggle>
+                      <mat-datepicker #policyEndDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+
+                  <!-- address -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="address" placeholder="Address">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- district -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="district" placeholder="District">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- taluka -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="taluka" placeholder="Taluka">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- contact no -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="contactNo" placeholder="Contact No." numbersOnly maxlength="12">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- email id -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <input matInput type="text" placeholder="Email ID" formControlName="email">
+                    </mat-form-field>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- Claim entry End -->
+
+
+            <!-- Policy Details -->
+            <div class="box box-primary">
+              <div class="box-header">Policy Details</div>
+              <div class="box-body">
+
+                <div class="row">
+
+                  <!-- Claim Type -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="claimType" placeholder="Claim Type">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="claimTypeCtrl" [placeholderLabel]="'Find Claim Type...'"
+                            [noEntriesFoundLabel]="'No matching Claim Type found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of claimTypeList | filterSelectInput:claimTypeCtrl.value"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Sum Insured -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="sumInsured" placeholder="Sum Insured" numbersOnly>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Claim Amount -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="claimAmount" placeholder="Claim Amount" numbersOnly>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+            <!-- Policy Details End-->
+
+            <!-- Details of loss/ damage -->
+            <div class="box box-primary">
+              <div class="box-header">Details of Loss/ Damage</div>
+              <div class="box-body">
+                <div class="row">
+
+                  <!-- loss/damage date -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="lossDamageDate" formControlName="lossDamageDate"
+                        placeholder="Date of Loss/ Damage" [max]="todayDate">
+                      <mat-datepicker-toggle matSuffix [for]="lossDamageDate"></mat-datepicker-toggle>
+                      <mat-datepicker #lossDamageDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- time -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="time" placeholder="Time" maxlength="8">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- cause of loss/ damage -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="lossDamageCause" placeholder="Cause of Loss/ Damage">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- cause of loss/ damage -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="lossExtend" placeholder="Extend of loss/damage">
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+            <!-- Details of loss/ damage end -->
+
+
+            <!-- Claim Entry Form End-->
+
+            <!-- Details of Property/ Asset start -->
+            <div class="box box-primary">
+              <div class="box-header">Details of Property/ Asset</div>
+              <div class="box-body">
+                <div class="row">
+
+                  <div class="col-sm-12">
+                    <div class="mat-elevation-z8 mt-2">
+                      <!-- table start -->
+                      <table mat-table [dataSource]="dataSource" matSort aria-describedby="detailsOfPropertyAsset">
+
+                        <!-- serial No -->
+                        <ng-container matColumnDef="position">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                          <td mat-cell *matCellDef="let element;let i= index" class="centerAlign">
+                            {{i+1}}
+                          </td>
+                          <td mat-footer-cell *matFooterCellDef>Total</td>
+                        </ng-container>
+
+                        <!-- description of item -->
+                        <ng-container matColumnDef="itemDescription">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Description of Item *</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{element.itemDescription}}
+                          </td>
+                          <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+
+                        <!-- Item serial no -->
+                        <ng-container matColumnDef="serialNo">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Item Serial No. *</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{element.serialNo}}
+                          </td>
+                          <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+
+                        <!-- actual value -->
+                        <ng-container matColumnDef="actualValue">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Actual Value *</th>
+                          <td mat-cell *matCellDef="let element" class="rightAlign">
+                            {{element.actualValue | number:'1.2-2'}}
+                          </td>
+                          <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+
+                        <!-- value at time of loss -->
+                        <ng-container matColumnDef="valueAtLossTime">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Value at the time of loss *</th>
+                          <td mat-cell *matCellDef="let element" class="rightAlign">
+                            {{element.valueAtLossTime | number:'1.2-2'}}
+                          </td>
+                          <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+
+                        <!-- amount claim -->
+                        <ng-container matColumnDef="amountClaim">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Amount Claim *</th>
+                          <td mat-cell *matCellDef="let element" class="rightAlign">
+                            {{element.amountClaim | number:'1.2-2'}}
+                          </td>
+                          <td mat-footer-cell *matFooterCellDef class="rightAlign">
+                            {{calculateClaimAmount() | number:'1.2-2'}}</td>
+                        </ng-container>
+
+                        <!-- Header Section Of table -->
+                        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                        <!-- Data Fetch From .TS File to table -->
+                        <tr mat-row *matRowDef="let row; let i = index;columns:columns"></tr>
+                        <!-- Footer Section Of table -->
+                        <tr mat-footer-row *matFooterRowDef="columns"></tr>
+
+                      </table>
+                      <!--table end  -->
+
+                      <!-- paginator -->
+                      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- Details of Property/ Asset end -->
+
+
+            <!-- Details of Previous Loss start  -->
+            <div class="box box-primary">
+              <div class="box-header">Details of Previous Loss</div>
+              <div class="box-body">
+                <div class="row">
+
+                  <div class="col-sm-12">
+                    <div class="mat-elevation-z8 mt-2">
+                      <!-- table start -->
+                      <table mat-table [dataSource]="dataSourceLoss" matSort aria-describedby="detailsOfPreviousLoss">
+
+                        <!-- serial No -->
+                        <ng-container matColumnDef="position">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                          <td mat-cell *matCellDef="let element;let i= index" class="centerAlign">
+                            {{i+1}}
+                          </td>
+                        </ng-container>
+
+                        <!-- claim year -->
+                        <ng-container matColumnDef="claimYear">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Claim Year</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{element.claimYear}}
+                          </td>
+                        </ng-container>
+
+                        <!-- claim description -->
+                        <ng-container matColumnDef="claimDescription">
+                          <th mat-header-cell *matHeaderCellDef scope="row">Claim Description</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{element.claimDescription}}
+                          </td>
+                        </ng-container>
+
+                        <!-- claim amount -->
+                        <ng-container matColumnDef="claimAmount">
+                          <th mat-header-cell *matHeaderCellDef scope="row" style="width: 250px;"> Claim Amount
+                          </th>
+                          <td mat-cell *matCellDef="let element">
+                            {{element.claimAmount}}
+                          </td>
+                        </ng-container>
+
+                        <!-- Header Section Of table -->
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <!-- Data Fetch From .TS File to table -->
+                        <tr mat-row *matRowDef="let row; let i = index;columns:displayedColumns"></tr>
+
+                      </table>
+                      <!-- table end -->
+
+                      <!-- paginator -->
+                      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- Details of Previous Loss end  -->
+            <div class="box box-primary">
+              <div class="box-header">General Details</div>
+              <div class="box-body">
+                <div class="row">
+                  <!-- Recommonded -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="recomnded" placeholder="Recommended " #recommend>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="recomndedCtrl"
+                            [placeholderLabel]="'Find Recommonded ...'"
+                            [noEntriesFoundLabel]="'no matching Scheme Typefound'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option>-- None --</mat-option>
+                        <mat-option *ngFor="let fa of recomnded_list | filterSelectInput: recomndedCtrl.value"
+                          [value]="fa.value" matTooltip="{{fa.viewValue}}">
+                          {{fa.viewValue}}
+                        </mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3" *ngIf="recommend.value == '6'">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="surveyorName" placeholder="Surveyor Name" required>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="surveyorNameCtrl"
+                            [placeholderLabel]="'Find Surveyor Name...'"
+                            [noEntriesFoundLabel]="'no matching Surveyor Name found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of surveyorNameList | filterSelectInput: surveyorNameCtrl.value"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                      <div class="error-wrapper"
+                        *ngIf="claimEntryForm.controls.surveyorName.touched && claimEntryForm.controls.surveyorName.errors">
+                        <mat-error *ngIf="claimEntryForm.controls.surveyorName.errors.required">
+                          {{ errorMessage.SURVEYOR_NAME_SELECT }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-3">
+                    <button mat-raised-button type="button" color="primary" (click)="onSubmit();"
+                      [ngStyle]="{'cursor': !recommend.value ? 'no-drop' : 'pointer' }"
+                      [disabled]="!recommend.value">Submit
+                    </button>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </form>
+          <!-- common action button start -->
+          <div class="form-action-button">
+
+            <button type="button" mat-raised-button (click)="goToListing()" color="warn" title="Listing">
+              <i class="material-icons" aria-hidden="true" title="Listing">
+                list
+              </i>
+              Listing
+            </button>
+
+          </div>
+          <!-- common action button end -->
+
+        </mat-tab>
+
+        <!-- attachent tab start -->
+        <mat-tab label="Attachments">
+          <app-common-attachment [attachemntValue]="attachmentTypeCode"></app-common-attachment>
+
+          <!-- action button start -->
+          <div class="form-action-button">
+
+            <button type="submit" mat-raised-button color="primary">
+              <i class="material-icons" aria-hidden="true" title="Upload">
+                publish
+              </i>
+              Upload
+            </button>
+
+            <button type="button" mat-raised-button budget-list (click)="goToListing()" color="warn" title="Listing">
+              <i class="material-icons" aria-hidden="true" title="Listing">
+                list
+              </i>
+              Listing
+            </button>
+
+            <button type="button" mat-raised-button (click)="onClose()" class="btnClose" title="Close">
+              <i class="material-icons" aria-hidden="true" title="Close">
+                close
+              </i>
+              Close
+            </button>
+
+          </div>
+          <!-- action button end -->
+
+        </mat-tab>
+        <!-- attachent tab end -->
+
+      </mat-tab-group>
+
+    </div>
+  </div>
+</div>

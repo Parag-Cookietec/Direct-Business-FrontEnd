@@ -1,0 +1,321 @@
+<div class="container">
+    <div class="form-wrapper">
+      <!-- Screen Name R -->
+      <div class="heading-section ng-star-inserted">
+        <div>DMO</div>
+        <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/PCH/001</div>
+        <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div> -->
+      </div>
+  
+      <!-- Breadcrumb Strarts -->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">DMO</a></li>
+          <li class="breadcrumb-item"><a href="#">Paid Cheque</a></li>
+        </ol>
+      </nav>
+      <!-- Breadcrumb Ends -->
+  
+  
+      <form [formGroup]="paidChequeForm">
+        <div class="panel-group">
+          <div class="box box-primary">
+            <div class="box-header">Paid Cheque</div>
+            <div class="box-body">
+  
+              <div class="row">
+  
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select formControlName="chequeNo" placeholder=" Cheque No">
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="chequeNoCtrl" [placeholderLabel]="'Find Cheque No ...'"
+                          [noEntriesFoundLabel]="'No matching Cheque No  found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option>-- None --</mat-option>
+                      <mat-option *ngFor="let item of chequeNoList |
+                        filterSelectInput:chequeNoCtrl.value" [value]="item.value">
+                        {{item.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                  <mat-form-field (click)="chequeDate.open()">
+                    <input matInput formControlName="chequeDate" [matDatepicker]="chequeDate" placeholder="Cheque Date "
+                    disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="chequeDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #chequeDate disabled="false"></mat-datepicker>
+                    <div class="error-wrapper"
+                      *ngIf="paidChequeForm.controls.chequeDate.touched && paidChequeForm.controls.chequeDate.errors">
+                      <mat-error *ngIf="paidChequeForm.controls.chequeDate.errors.required">
+                        {{errorMessages.CHEQUE_DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select formControlName="treasury" placeholder="Name of Treasury">
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="treasuryCtrl"
+                          [placeholderLabel]="'Find Name of Treasury ...'"
+                          [noEntriesFoundLabel]="'No matching Name of Treasury  found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option>-- None --</mat-option>
+                      <mat-option *ngFor="let item of treasuryList |
+                        filterSelectInput:treasuryCtrl.value" [value]="item.value" matTooltip="{{item.viewValue}}">
+                        {{item.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="chequePaidDate.open()">
+                    <input matInput formControlName="chequePaidDate" [matDatepicker]="chequePaidDate"
+                      placeholder="Cheque Paid Date " disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="chequePaidDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #chequePaidDate disabled="false"></mat-datepicker>
+                    <div class="error-wrapper"
+                      *ngIf="paidChequeForm.controls.chequePaidDate.touched && paidChequeForm.controls.chequePaidDate.errors">
+                      <mat-error *ngIf="paidChequeForm.controls.chequePaidDate.errors.required">
+                        {{errorMessages.CHEQUE_PAID_DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select formControlName="payableType" placeholder="Type of Payable">
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="payableCtrl" [placeholderLabel]="'Find Type of Payable...'"
+                          [noEntriesFoundLabel]="'No matching Type of Payable found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option>-- None --</mat-option>
+                      <mat-option *ngFor="let item of payableList |
+                        filterSelectInput:payableCtrl.value" [value]="item.value">
+                        {{item.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+  
+              <!-- Action Button -->
+              <div class="form-action-button">
+                <button type="button" mat-raised-button color="primary">
+                  Update
+                </button>
+                <button type="button" title="Close" mat-raised-button class="btnClose">
+                  <i class="material-icons " title="Close">close</i>Cancel</button>
+              </div>
+              <!-- Action Button Ends -->
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel-group">
+            <div class="customresponsive">
+              <!-- Principle Table -->
+              <table mat-table *ngIf="paidChequeForm.controls.payableType.value=='1'"
+              [dataSource]="dataSource" width="100%" aria-describedby="principleTable">
+  
+                <!-- Sr. No. -->
+                <ng-container matColumnDef="position">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                    {{ i + 1 }} </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row" class="centerAlign">Total</td>
+                </ng-container>
+  
+                <!-- Tranche -->
+                <ng-container matColumnDef="tranche">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Tranche</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.tranche}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Account No -->
+                <ng-container matColumnDef="accNo">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Account No</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.accNo}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Principle Repayment (Rs.) -->
+                <ng-container matColumnDef="principleRepay">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Principle Repayment (Rs.)</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.principleRepay}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row">
+                    {{  directiveObj.columnTotal(dataSource,'principleRepay') | number : '1.2-2' }}
+                  </td>
+                </ng-container>
+  
+                <!-- Repayment Due Date -->
+                <ng-container matColumnDef="dueDate">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Repayment Due Date </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.dueDate}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Header column of Table -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <!-- Data fetch from .TS File  -->
+                <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+                <!-- Footer column of Table -->
+                <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+              </table>
+  
+  
+              <!-- Interest Table -->
+              <table mat-table *ngIf="paidChequeForm.controls.payableType.value=='2'"
+              [dataSource]="dataSourceInterest" width="100%" aria-describedby="interestTable">
+  
+                <!-- Sr. No. -->
+                <ng-container matColumnDef="position">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                    {{ i + 1 }} </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row" class="centerAlign">Total</td>
+                </ng-container>
+  
+                <!-- Tranche -->
+                <ng-container matColumnDef="tranche">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Tranche</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.tranche}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Account No -->
+                <ng-container matColumnDef="accNo">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Account No</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.accNo}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Loan Outstanding Amount (Rs.) -->
+                <ng-container matColumnDef="loanOutstand">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Loan Outstanding Amount (Rs.)</th>
+                  <td mat-cell *matCellDef="let element" class="rightAlign">
+                    {{element.loanOutstand}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Rate Of Interest (%) -->
+                <ng-container matColumnDef="intRate">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Rate Of Interest (%)</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.intRate}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- From Date -->
+                <ng-container matColumnDef="fromDate">
+                  <th mat-header-cell *matHeaderCellDef scope="row">From Date</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.fromDate}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- To Date -->
+                <ng-container matColumnDef="toDate">
+                  <th mat-header-cell *matHeaderCellDef scope="row">To Date</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.toDate}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- No Days -->
+                <ng-container matColumnDef="noDays">
+                  <th mat-header-cell *matHeaderCellDef scope="row">No Days</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.noDays}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Interest (Rs.) -->
+                <ng-container matColumnDef="interest">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Interest (Rs.)</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.interest}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Adjustment (+/-) -->
+                <ng-container matColumnDef="adjustment">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Adjustment (+/-)</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.adjustment}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Interest Payable (Rs.) (in round figure) -->
+                <ng-container matColumnDef="IntPayRound">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Interest Payable (Rs.) (in round figure)</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.IntPayRound}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row">
+                    {{  directiveObj.columnTotal(dataSourceInterest,'IntPayRound') | number : '1.2-2' }}
+                  </td>
+                </ng-container>
+  
+                <!-- Previous Penalty (if any) -->
+                <ng-container matColumnDef="prevPenalty">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Previous Penalty (if any)</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.prevPenalty}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Rebate -->
+                <ng-container matColumnDef="rebate">
+                  <th mat-header-cell *matHeaderCellDef scope="row">Rebate</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.rebate}}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef scope="row"></td>
+                </ng-container>
+  
+                <!-- Header column of Table -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsInterest"></tr>
+                <!-- Data fetch from .TS File  -->
+                <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumnsInterest;"></tr>
+                <!-- Footer column of Table -->
+                <tr mat-footer-row *matFooterRowDef="displayedColumnsInterest"></tr>
+              </table>
+  
+            </div>
+        </div>
+      </form>
+  
+    </div>
+  </div>

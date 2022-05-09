@@ -1,0 +1,12 @@
+<div>
+    <mat-label style="text-align:center; font-size: larger;">Reference No.:<strong><i>{{referenceNo}}</i></strong> &&
+        Reference Date:
+        <strong><i>{{referenceDate | date: 'dd-MMM-yyyy '}}</i></strong></mat-label>
+    <mat-label style="margin-left: 155px;font-size: large;"><strong>Generated Successfully!!!</strong></mat-label>
+</div>
+
+<div class="form-action-button">
+    <button type="button" mat-raised-button color="primary" title="OK" (click)="onOk()">
+        OK
+    </button>
+</div>

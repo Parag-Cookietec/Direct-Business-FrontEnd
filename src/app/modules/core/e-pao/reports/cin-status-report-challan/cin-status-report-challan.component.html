@@ -1,0 +1,170 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="panel-group" id="printContent">
+            <br>
+            <div class="heading-section ng-star-inserted" style="display:flex; justify-content: space-between;">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-8">
+                     e - Pay and Accounts Office (GST), Gandhinagar <br><br>
+                    <div style="margin-left:5rem">Challan Status Report </div>
+                </div>
+            </div>
+            <br>
+            <div class="box box-primary">
+                <div class="box-body">
+            <table width="100%" class="input-table" style="margin-bottom:0px ;" mat-table [dataSource]="newdataSource2" class="mat-elevation-z8" aria-describedby="rbdReport">
+                    <ng-container matColumnDef="sr">
+                        <th mat-header-cell *matHeaderCellDef scope="row">
+                            Sr No.
+                        </th>
+                        <td mat-cell *matCellDef="let row ; let i = index" class=" centerAlign">
+                            {{i + 1}}
+                        </td>
+                        <!-- <td mat-footer-cell *matFooterCellDef></td> -->
+                    </ng-container>
+                
+                    <ng-container matColumnDef="cin">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> CIN</th>
+                        <td mat-cell *matCellDef="let element" class="centerAlign">
+                            {{element.cin}}
+                        </td>
+                        <!-- <td mat-footer-cell *matFooterCellDef class="leftAlign"></td> -->
+                    </ng-container>
+                
+                    <ng-container matColumnDef="cinDate">
+                        <th mat-header-cell *matHeaderCellDef scope="row">CIN Date</th>
+                        <td mat-cell *matCellDef="let element" class="centerAlign">
+                            {{element.cinDate}}
+                        </td>
+                        <!-- <td mat-footer-cell *matFooterCellDef ></td> -->
+                    </ng-container>
+                
+                    <ng-container matColumnDef="amt">
+                        <th mat-header-cell *matHeaderCellDef scope="row"> Amount </th>
+                        <td mat-cell *matCellDef="let element" class="centerAlign">
+                            {{element.amt}}</td>
+                        <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="newdisplayedColumns2"></tr>
+                    <!-- Data Fetch From .TS File to table -->
+                    <tr mat-row *matRowDef="let row; columns: newdisplayedColumns2;"></tr>
+                    <!-- Footer Section Of table -->
+                    <!-- <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns1"></tr> -->
+               </table>
+                <div class="form-action-button">
+                    <button type="submit" mat-raised-button color="primary"> OK</button> 
+                </div>
+              </div>
+            </div>
+        
+            <div class="box box-primary">
+                <div class="box-body">
+                    <table width="100%" class="input-table" style="margin-bottom:0px ;">
+                        <tr>
+                            <td>GSTIN : 24AMWEP9879812234UU</td>
+                            <td>Party Name: </td>
+                        </tr>
+                        <tr>
+                            <td>CPIN : 12233445566700</td>
+                            <td>CPIN Date & Time : 19-Sep-2020 19:24:24</td>
+                        </tr>
+                        <tr>
+                            <td>CIN : BARB12233445566700</td>
+                            <td>CIN Date & Time : 19-Sep-2020 00:00:00</td>
+                        </tr>
+                        <tr>
+                            <td>Bank Code : BARB</td>
+                            <td>Bank Ref No : 139832098</td>
+                        </tr>
+                        <tr>
+                            <td>Instrument Type : IB</td>
+                            <td>Payment Mode : INETBANK(via Govt Portal - Net Banking)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Amount Details:</td>
+                        </tr>
+                    </table>
+                   
+                    <table mat-table [dataSource]="modifieddataSource" width="100%" matSort
+                            aria-describedby="modifiedTable">
+
+                            <ng-container matColumnDef="desc">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Description</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.desc}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="tax">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Tax</th>
+                                <td mat-cell *matCellDef="let element"> {{element.tax}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="interest">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Interest</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.interest}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fees">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Fees</th>
+                                <td mat-cell *matCellDef="let element"> {{element.fees}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="penalty">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Penalty</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.penalty}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="others">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> Others</th>
+                                <td mat-cell *matCellDef="let element"> {{element.others}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="rat">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">RAT</th>
+                                <td mat-cell *matCellDef="let element"> {{element.rat}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="total">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> Total </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.total}}
+                                </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="modifiedTableCols"></tr>
+                            <tr mat-row *matRowDef="let row; let i = index;columns: modifiedTableCols;">
+                            </tr>
+                        </table>
+
+                    <table width="100%" class="input-table">
+                        <tr>
+                            <td>Scroll No : CNV605695956876598734589740953783453</td>
+                            <td>Scroll Date : 21-Sep-2020</td>
+                        </tr>
+                        <tr>
+                            <td>Govt. Account Credit Date : 21-Sep-2020</td>
+                            <td>Status : Accounted</td>
+                        </tr>
+                        <tr>
+                            <td>Lying With : KRUPALI SUKHDEV VAGHELA</td>
+                            <td>Account On : 22-Sep-2020</td>
+                        </tr>
+                    </table>
+
+                    <div class="form-action-button">
+                        <button type="submit" mat-raised-button color="primary"> OK
+                        </button>
+                        <button type="print" mat-raised-button color="accent" title="print">
+                            <i class="material-icons" title="print" aria-hidden="true">print</i>
+                            Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

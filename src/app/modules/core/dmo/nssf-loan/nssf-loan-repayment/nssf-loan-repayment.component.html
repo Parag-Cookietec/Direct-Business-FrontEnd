@@ -1,0 +1,353 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>DMO</div>
+            <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/NLR/001</div>
+            <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm' }}</div> -->
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">DMO</a></li>
+                <li class="breadcrumb-item active" aria-current="page">NSSF Loan Repayment</li>
+            </ol>
+        </nav>
+
+        <form [formGroup]="nssfLoanRepaymentForm">
+            <!-- NSSF Loan Repayment -->
+            <div class="panel-group">
+                <div class="box box-primary">
+                    <div class="box-header">NSSF Loan Repayment</div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <mat-form-field (click)="fromDate.open()">
+                                    <input
+                                        matInput
+                                        readonly
+                                        style="cursor: pointer;"
+                                        formControlName="fromDate"
+                                        [matDatepicker]="fromDate"
+                                        placeholder="From Date"
+                                        required
+                                    />
+                                    <mat-datepicker-toggle matSuffix [for]="fromDate"> </mat-datepicker-toggle>
+                                    <mat-datepicker #fromDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <mat-form-field (click)="toDate.open()">
+                                    <input
+                                        matInput
+                                        readonly
+                                        style="cursor: pointer;"
+                                        formControlName="toDate"
+                                        [matDatepicker]="toDate"
+                                        placeholder="To Date"
+                                        required
+                                    />
+                                    <mat-datepicker-toggle matSuffix [for]="toDate"> </mat-datepicker-toggle>
+                                    <mat-datepicker #toDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="form-action-button">
+                            <button
+                                type="submit"
+                                mat-raised-button
+                                color="primary"
+                                [disabled]="!nssfLoanRepaymentForm.valid"
+                                (click)="actualPayble()"
+                            >
+                                Actual & Payable
+                            </button>
+                            <button type="button" title="Cancel" mat-raised-button class="btnClose">
+                                <i class="material-icons " title="cancel">close</i>Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Payable Amounts -->
+        <div class="panel-group">
+            <div class="box box-primary">
+                <div class="box-header">Payable Amounts</div>
+                <div class="box-body">
+                    <div class="mat-elevation-z8 mt-2">
+                        <table mat-table [dataSource]="payableAmountsDataSource" aria-describedby="payableAmountsTable">
+                            <!-- select -->
+                            <ng-container matColumnDef="select">
+                                <th mat-header-cell *matHeaderCellDef scope="row">                                   
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="centerAlign checkboxnssfRepayment">                                  
+                                    <mat-radio-group [(ngModel)]="selectedRow1">
+                                        <mat-radio-button
+                                            (change)="radioChange($event, row)"
+                                            [value]="row.id"
+                                        ></mat-radio-button>
+                                    </mat-radio-group>
+                                </td>
+                                <td mat-footer-cell *matFooterCellDef>Total</td>
+                            </ng-container>
+
+                            <!-- Sr. No. -->
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="centerAlign">
+                                    {{ i + 1 }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Loan No -->
+                            <ng-container matColumnDef="loanNo">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Loan No.</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.loanNo }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Due Date -->
+                            <ng-container matColumnDef="dueDate">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Due Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.dueDate | date: 'dd-MMM-yyyy' }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Loan Amount(in Rs.) -->
+                            <ng-container matColumnDef="loanAmount">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Loan Amount(in Rs.)</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign">
+                                    {{ element.loanAmount }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Interest -->
+                            <ng-container matColumnDef="payableInterest">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Interest</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign">
+                                    {{ element.payableInterest }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Principal -->
+                            <ng-container matColumnDef="payablePrincipal">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Principal</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign">
+                                    {{ element.payablePrincipal }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Header column of Table -->
+                            <tr mat-header-row *matHeaderRowDef="payableAmountsDisplayedColumns"></tr>
+                            <!-- Data fetch from .TS File  -->
+                            <tr
+                                mat-row
+                                *matRowDef="let row; let i = index; columns: payableAmountsDisplayedColumns"
+                            ></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Payable Amounts -->
+
+        <!-- Actual Paid According To Daily Position Sheet -->
+        <div class="panel-group">
+            <div class="box box-primary">
+                <div class="box-header">Actual Paid According To Daily Position Sheet</div>
+                <div class="box-body">
+                    <div class="mat-elevation-z8 mt-2">
+                        <table
+                            mat-table
+                            [dataSource]="dataSource"
+                            aria-describedby="actualPaidAccordingToDailyPositionSheetTable"
+                        >
+                            <!-- Select -->
+                            <ng-container matColumnDef="select">
+                                <th mat-header-cell *matHeaderCellDef scope="row"></th>
+                                <td mat-cell *matCellDef="let row" class="centerAlign checkboxnssfRepayment">
+                                    <mat-radio-group [(ngModel)]="selectedRow2">
+                                        <mat-radio-button
+                                            (click)="$event.stopPropagation()"
+                                            (change)="radioChangeactualpaid($event)"
+                                            [value]="row.id"
+                                        >
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </td>
+                                <td mat-footer-cell *matFooterCellDef>Total</td>
+                            </ng-container>
+
+                            <!-- Sr. No. -->
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="centerAlign">
+                                    {{ i + 1 }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Memo No -->
+                            <ng-container matColumnDef="memoNo">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Memo No.</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.memoNo }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Advice No. -->
+                            <ng-container matColumnDef="adviceNo">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Advice No.</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.adviceNo }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Dp Date -->
+                            <ng-container matColumnDef="dpDate">
+                                <th mat-header-cell *matHeaderCellDef scope="row">DP Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.dpDate | date: 'dd-MMM-yyyy' }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Advice Date -->
+                            <ng-container matColumnDef="adviceDate">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Advice Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.adviceDate | date: 'dd-MMM-yyyy' }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Advice By -->
+                            <ng-container matColumnDef="adviceBy">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Advice By</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.adviceBy }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Transaction Description -->
+                            <ng-container matColumnDef="transactionDesc">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Transaction Description</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.transactionDesc }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Debit Amount  -->
+                            <ng-container matColumnDef="debitAmt">
+                                <th mat-header-cell *matHeaderCellDef scope="row">Debit Amount</th>
+                                <td mat-cell *matCellDef="let element" class="rightAlign">
+                                    {{ element.debitAmt }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Header column of Table -->
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <!-- Data fetch from .TS File  -->
+                            <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns"></tr>
+                        </table>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="form-action-button">
+                        <button
+                            type="button"
+                            mat-raised-button
+                            color="primary"
+                            [disabled]="checkValidation()"
+                            (click)="onMatchWithPayable()"
+                        >
+                            Match with Payable
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Actual Paid According To Daily Position Sheet -->
+
+        <div class="mat-elevation-z8 mt-2" *ngIf="ismatchWithPayable">
+            <table mat-table [dataSource]="matchWithPayableDataSource" aria-describedby="matchWithPayableTable">
+                <!-- Memo No -->
+                <ng-container matColumnDef="memoNo">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Memo No.</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.memoNo }}
+                    </td>
+                </ng-container>
+
+                <!-- Advice No. -->
+                <ng-container matColumnDef="adviceNo">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Advice No.</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.adviceNo }}
+                    </td>
+                </ng-container>
+
+                <!-- Due Date -->
+                <ng-container matColumnDef="installDueDate">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Due Date</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.installDueDate | date: 'dd-MMM-yyyy' }}
+                    </td>
+                </ng-container>
+
+                <!-- Principal -->
+                <ng-container matColumnDef="principalAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Principal</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{ element.principalAmount }}
+                    </td>
+                </ng-container>
+                <!-- Interest -->
+                <ng-container matColumnDef="intrestAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Interest</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{ element.intrestAmount }}
+                    </td>
+                </ng-container>
+                <!-- Amount Unpaid -->
+                <ng-container matColumnDef="unpaidAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Amount Unpaid</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{ element.unpaidAmount }}
+                    </td>
+                </ng-container>
+                <!-- Amount Paid -->
+                <ng-container matColumnDef="paidAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Amount Paid</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{ element.paidAmount }}
+                    </td>
+                </ng-container>
+
+                <!-- Amount Outstanding -->
+                <ng-container matColumnDef="outstandingAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Amount Outstanding</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{ element.outstandingAmount }}
+                    </td>
+                </ng-container>
+
+                <!-- Header column of Table -->
+                <tr mat-header-row *matHeaderRowDef="matchWithPayableDisplayedColumns"></tr>
+                <!-- Data fetch from .TS File  -->
+                <tr mat-row *matRowDef="let row; let i = index; columns: matchWithPayableDisplayedColumns"></tr>
+            </table>
+        </div>
+        <!-- Action Button -->
+        <div class="form-action-button" *ngIf="ismatchWithPayable">
+            <button type="button" mat-raised-button color="primary" (click)="update()">Update</button>
+            <button type="button" title="Cancel" mat-raised-button class="btnClose">
+                <i class="material-icons " title="cancel">close</i>Cancel
+            </button>
+        </div>
+    </div>
+</div>

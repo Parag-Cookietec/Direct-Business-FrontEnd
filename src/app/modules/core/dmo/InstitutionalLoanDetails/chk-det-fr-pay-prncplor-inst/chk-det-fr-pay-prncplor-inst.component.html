@@ -1,0 +1,139 @@
+<div class="container">
+    <div class="form-wrapper">
+      <div class="heading-section ng-star-inserted">
+        <div>DMO</div>
+        <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/CDFP/001</div>
+        <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div> -->
+      </div>
+  
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">DMO</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Cheque Details for Payment (Principal or Interest)</li>
+        </ol>
+      </nav>
+  
+  
+      <form [formGroup]="detailsForm">
+        <!-- Cheque Details for Payment (Principal or Interest) -->
+  
+        <div class="panel-group">
+          <div class="box box-primary">
+            <div class="box-header">Cheque Details for Payment (Principal or Interest)</div>
+            <div class="box-body">
+  
+              <div class="row">
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select formControlName="memoNo" placeholder="Memo No." required>
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="memoNoCtrl" [placeholderLabel]="'Find Memo No. ...'"
+                          [noEntriesFoundLabel]="'no Memo No.  found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option>-- None --</mat-option>
+                      <mat-option *ngFor="let va of Memos | filterSelectInput:memoNoCtrl.value" [value]="va">
+                        {{va}}
+                      </mat-option>
+                    </mat-select>
+                    <div class="error-wrapper"
+                      *ngIf="detailsForm.controls.memoNo.touched && (detailsForm.controls.memoNo.errors)">
+                      <mat-error *ngIf="detailsForm.controls.memoNo.errors.required">
+                        {{errorMessages.MEMO_NUMBER}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="memoDate.open()" >
+                    <input matInput formControlName="memoDate" [matDatepicker]="memoDate" placeholder="Memo Date"
+                    disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="memoDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #memoDate disabled="false"></mat-datepicker>
+                    <div class="error-wrapper"
+                      *ngIf="detailsForm.controls.memoDate.touched && (detailsForm.controls.memoDate.errors)">
+                      <mat-error *ngIf="detailsForm.controls.memoDate.errors.required">
+                        {{errorMessages.MEMO_DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select formControlName="payType" placeholder="Type of Payable">
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="payTypeCtrl" [placeholderLabel]="'Find Type of Payable ...'"
+                          [noEntriesFoundLabel]="'no Type of Payable  found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option>-- None --</mat-option>
+                      <mat-option *ngFor="let va of PayableOptions | filterSelectInput:payTypeCtrl.value"
+                        [value]="va.id">
+                        {{va.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="cheNo" placeholder="Cheque No." required>
+  
+                    <div class="error-wrapper"
+                      *ngIf="detailsForm.controls.cheNo.touched && (detailsForm.controls.cheNo.errors)">
+                      <mat-error *ngIf="detailsForm.controls.cheNo.errors.required">
+                        {{errorMessages.NUMBER_ENTER}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="cheDate.open()">
+                    <input matInput formControlName="cheDate" [matDatepicker]="cheDate" placeholder="Cheque Date"
+                    disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="cheDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #cheDate disabled="false"></mat-datepicker>
+  
+                    <div class="error-wrapper"
+                      *ngIf="detailsForm.controls.cheDate.touched && (detailsForm.controls.cheDate.errors)">
+                      <mat-error *ngIf="detailsForm.controls.cheDate.errors.required">
+                        {{errorMessages.DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- Action Button -->
+      <div class="form-action-button">
+        <button type="button" mat-raised-button color="primary">
+          <i class="material-icons" aria-hidden="true" title="save">
+            check
+          </i>
+          Update
+        </button>
+  
+        <button type="button" mat-raised-button color="primary">
+          Institute Letter
+        </button>
+        <button type="button" title="Cancel" mat-raised-button class="btnClose">
+          <i class="material-icons " title="cancel">
+            close
+          </i>
+          Cancel
+        </button>
+      </div>
+  
+  
+    </div>
+  </div>

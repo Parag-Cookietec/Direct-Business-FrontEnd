@@ -1,0 +1,229 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>Add Details</div>
+      <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/NLR/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div> -->
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">DMO</a></li>
+        <li class="breadcrumb-item"><a href="#">NSSF Loan Received</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Details</li>
+      </ol>
+    </nav>
+
+
+    <form [formGroup]="addDetailsForm">
+      <!-- NSSF Loan Details -->
+      <div class="panel-group">
+        <div class="box box-primary">
+          <div class="box-header">NSSF Loan Details</div>
+          <div class="box-body" [ngClass]="{'disabled-style': isViewOnly}">
+
+            <div class="row">
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="sanctionOrderNo" placeholder="Sanction No" required>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.sanctionOrderNo.touched && addDetailsForm.controls.sanctionOrderNo.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.sanctionOrderNo.errors.required">
+                      {{errorMessages.SANCTION_NO}}
+                    </mat-error>
+                    <mat-error *ngIf="addDetailsForm.controls.sanctionOrderNo.errors.maxlength">
+                      Length should be upto 30 characters
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field (click)="sanctionOrderDate.open()">
+                  <input matInput formControlName="sanctionOrderDate" [matDatepicker]="sanctionOrderDate" [max]="maxDate"
+                    placeholder="Sanction Date" required disabled>
+                  <mat-datepicker-toggle matSuffix [for]="sanctionOrderDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #sanctionOrderDate disabled="false"></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.sanctionOrderDate.touched && addDetailsForm.controls.sanctionOrderDate.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.sanctionOrderDate.errors.required">
+                      {{errorMessages.SANCTION_DATE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field (click)="loanReceiptDate.open()">
+                  <input matInput formControlName="loanReceiptDate" [matDatepicker]="loanReceiptDate"
+                    placeholder="Loan Receipt Date" required disabled>
+                  <mat-datepicker-toggle matSuffix [for]="loanReceiptDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #loanReceiptDate disabled="false"></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.loanReceiptDate.touched && addDetailsForm.controls.loanReceiptDate.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.loanReceiptDate.errors.required">
+                      {{errorMessages.LOAN_RECEIPT_DATE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3" [ngClass]="{'disabled-style': isEditOnly}">
+                <mat-form-field>
+                  <input matInput formControlName="loanAmount"  placeholder="Loan Amount" required numbersOnly>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.loanAmount.touched && addDetailsForm.controls.loanAmount.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.loanAmount.errors.required">
+                      {{errorMessages.LOAN_AMOUNT}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3" [ngClass]="{'disabled-style': isEditOnly}">
+                <mat-form-field>
+                  <input matInput formControlName="loanTenure" placeholder="Loan Tenure" decimalPoint1 required
+                    numbersOnly>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.loanTenure.touched && addDetailsForm.controls.loanTenure.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.loanTenure.errors.required">
+                      {{errorMessages.LOAN_TENURE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3" [ngClass]="{'disabled-style': isEditOnly}">
+                <mat-form-field>
+                  <input matInput formControlName="moratariumPeriod" placeholder="Moratorium Period" decimalPoint1
+                    required numbersOnly>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.moratariumPeriod.touched && addDetailsForm.controls.moratariumPeriod.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.moratariumPeriod.errors.required">
+                      {{errorMessages.MORATORIUM_PERIOD}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3" [ngClass]="{'disabled-style': isEditOnly}">
+                <mat-form-field>
+                  <input matInput formControlName="loanROI" placeholder="Rate of Interest(%)" decimalLimitTwoOnly
+                    required>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.loanROI.touched && addDetailsForm.controls.loanROI.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.loanROI.errors.required">
+                      {{errorMessages.RATE_OF_INTEREST}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Loan Repaymant Schedule -->
+      <div class="panel-group">
+        <div class="box box-primary">
+          <div class="box-header">Loan Repaymant Schedule</div>
+          <div class="box-body" [ngClass]="{'disabled-style': isViewOnly}">
+
+            <div class="row">
+
+              <div class="col-sm-12">
+                <div class="labelCSS">
+                  Principal
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="prncplInstallYear" 
+                    placeholder="No. of Installments in a Year" numbersOnly required>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.prncplInstallYear.touched && addDetailsForm.controls.prncplInstallYear.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.principalInstalmentsInYear.errors.required">
+                      {{errorMessages.NO_OF_INSTALLMENTS_IN_A_YEAR}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="totalPrncplInstall"
+                    placeholder="Total Number of Installments " numbersOnly required>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.totalPrncplInstall.touched && addDetailsForm.controls.totalPrncplInstall.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.totalPrncplInstall.errors.required">
+                      {{errorMessages.TOTAL_NO_OF_INSTALLMENTS}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6"></div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="labelCSS">
+                  Interest
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="intrestInstallYear"
+                    placeholder="No. of Installments in a Year" numbersOnly required>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.intrestInstallYear.touched && addDetailsForm.controls.intrestInstallYear.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.intrestInstallYear.errors.required">
+                      {{errorMessages.NO_OF_INSTALLMENTS_IN_A_YEAR}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              
+              <div class="col-sm-3" [ngClass]="{'disabled-style': isEditOnly}">
+                <mat-form-field (click)="firstInstallDate.open()">
+                  <input matInput formControlName="firstInstallDate" style="cursor: pointer;" [matDatepicker]="firstInstallDate"
+                    placeholder="First Installment Date" readonly required>
+                  <mat-datepicker-toggle matSuffix [for]="firstInstallDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #firstInstallDate></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="addDetailsForm.controls.firstInstallDate.touched && addDetailsForm.controls.firstInstallDate.errors">
+                    <mat-error *ngIf="addDetailsForm.controls.firstInstallDate.errors.required">
+                      {{errorMessages.FIRST_INSTALLMENT_DATE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6"></div>
+
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Action Button -->
+    <div class="form-action-button" [ngClass]="{'disabled-style': isViewOnly}">
+      <button type="submit" mat-raised-button class="green" [disabled]="!addDetailsForm.valid" (click)="onAddSubmit()">
+        <i class="material-icons " title="Submit">done</i>
+        Submit</button>
+      <button type="button" title="Cancel" mat-raised-button class="btnClose" (click)="onCancel()">
+        <i class="material-icons " title="cancel">close</i>Cancel</button>
+    </div>
+
+  </div>
+</div>

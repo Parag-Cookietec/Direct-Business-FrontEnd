@@ -1,0 +1,125 @@
+<div class="container">
+  <div class="form-wrapper">
+    <!-- Screen Name and Date -->
+    <div class="heading-section ng-star-inserted">
+      <div>WMA Master </div>
+      <div class="font-heading"><strong>Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+    </div>
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DMO</li>
+        <li class="breadcrumb-item active" aria-current="page">WMA Master </li>
+      </ol>
+    </nav>
+
+    <!-- WMA Master  -->
+    <div class="panel-group">
+      <div class="box box-primary">
+        <div class="box-header">WMA Master </div>
+        <div class="box-body" [ngClass]="{'disabled-style': isViewOnly}">
+          <form [formGroup]="wmaMasterForm">
+
+            <div class="row">
+
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select formControlName="wmaType" placeholder="WMA Type" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="wmaTypeCtrl" [placeholderLabel]="'Select WMA Type...'"
+                        [noEntriesFoundLabel]="'no matching WMA Type found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of wmaTypeList | filterSelectInput:wmaTypeCtrl.value"
+                      [value]="item.name">
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="error-wrapper"
+                    *ngIf="wmaMasterForm.controls.wmaType.touched && wmaMasterForm.controls.wmaType.errors">
+                    <mat-error *ngIf="wmaMasterForm.controls.wmaType.errors.required">
+                      {{errorMessages.WMA_TYPE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field (click)="startFrmDt.open()">
+                  <input matInput formControlName="startFrmDt" style="cursor: pointer;" placeholder="Start Date" [matDatepicker]="startFrmDt"
+                  readonly required />
+                  <mat-datepicker-toggle matSuffix [for]="startFrmDt">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #startFrmDt></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="wmaMasterForm.controls.startFrmDt.touched && wmaMasterForm.controls.startFrmDt.errors">
+                    <mat-error *ngIf="wmaMasterForm.controls.startFrmDt.errors.required">
+                      {{errorMessages.START_DATE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field (click)="endToDt.open()">
+                  <input matInput formControlName="endToDt" style="cursor: pointer;" placeholder="End Date" [matDatepicker]="endToDt" required />
+                  <mat-datepicker-toggle matSuffix [for]="endToDt">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #endToDt></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="wmaMasterForm.controls.endToDt.touched && wmaMasterForm.controls.endToDt.errors">
+                    <mat-error *ngIf="wmaMasterForm.controls.endToDt.errors.required">
+                      {{errorMessages.END_DATE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="wmaLimit" placeholder="wmaLimit" required />
+                  <div class="error-wrapper"
+                    *ngIf="wmaMasterForm.controls.wmaLimit.touched && wmaMasterForm.controls.wmaLimit.errors">
+                    <mat-error *ngIf="wmaMasterForm.controls.wmaLimit.errors.required">
+                      {{errorMessages.LIMIT}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="wmaRoi" placeholder="wmaRoi" required />
+                  <div class="error-wrapper"
+                    *ngIf="wmaMasterForm.controls.wmaRoi.touched && wmaMasterForm.controls.wmaRoi.errors">
+                    <mat-error *ngIf="wmaMasterForm.controls.wmaRoi.errors.required">
+                      {{errorMessages.ROI}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+
+            </div>
+          </form>
+        </div>
+        <!-- End WMA Master  -->
+      </div>
+    </div>
+    <!-- Common Button -->
+    <div class="form-action-button">
+      <button type="submit" mat-raised-button color="primary" [disabled]="!wmaMasterForm.valid "  [ngClass]="{'disabled-style': isViewOnly}" (click)="save()">
+        <i class="material-icons" aria-hidden="true" title="Save">save</i>
+        Save</button>
+      <button type="button" mat-raised-button color="warn" title="Listing"
+        (click)="goToListing()">
+        <i class="material-icons" title="Listing" aria-hidden="true">
+          list
+        </i>
+        Listing
+      </button>
+    </div>
+    <!-- End Common Button -->
+
+
+
+
+  </div>
+</div>

@@ -1,0 +1,152 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div> Penal Interest TC Report</div>
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+                <li class="breadcrumb-item " aria-current="page">Reports</li>
+                <li class="breadcrumb-item " aria-current="page">Accounting</li>
+                <li class="breadcrumb-item active" aria-current="page">Penal Interest TC Report</li>
+            </ol>
+        </nav>
+        <div class="panel-group" id="printContent">
+
+            <mat-accordion class="search-accordian">
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <div class="heading-section">
+                            Search
+                        </div>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="panelInterestTcReportForm">
+                            <div class="box-body">
+                                <div class="row">
+                                    <!-- From Date -->
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="fromDate" formControlName="fromDate"
+                                                placeholder="From Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #fromDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <!-- To Date -->
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="toDate" formControlName="toDate"
+                                                placeholder="To Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #toDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <!-- Common Button -->
+                                <div class="form-action-button">
+                                    <button type="submit" mat-raised-button color="primary">
+                                        <i class="material-icons" aria-hidden="true">search</i>
+                                        Search
+                                    </button>
+                                    <button type="reset" mat-raised-button color="accent">
+                                        <i class="material-icons" aria-hidden="true">
+                                            restore
+                                        </i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                    </form>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <br>
+            <div class="heading-section ng-star-inserted" style="display:flex; justify-content: space-between;">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-6">
+                    e-Pay and Accounts Office (GST), <br>
+                   <span style="margin-left: 4rem;">Gandhinagar</span> <br>
+                <div style="margin-left: 3rem;">Penal Interest TC Report 
+                </div>
+                </div>
+                <a><i class="material-icons plus" title="Print" (click)="onPressPrint('printContent')" aria-hidden="true">print</i></a>
+            </div>
+        
+            <!-- table SRS Report -->
+            <div style="float: left;">
+                <mat-paginator [pageSizeOptions]="[3,5,10,25]" [pageSize]="4"></mat-paginator>
+            </div>
+    
+            <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" aria-describedby="spiReport">
+                <ng-container matColumnDef="srNo">
+                    <th mat-header-cell *matHeaderCellDef scope="row">
+                        Sr No.
+                    </th>
+                    <th>
+                        Sr No.
+                    </th>
+                    <td mat-cell *matCellDef="let row ; let i = index" class=" centerAlign">
+                        {{i + 1}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="bankName">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Bank Name</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.bankName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="OpeningBalance">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Opening balance</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.OpeningBalance}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="currentPenalInt">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Current Penal Interest
+                        </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.currentPenalInt}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="totaAmtRec">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Total Amount To Be Recovered</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.totaAmtRec}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="recovAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Recovered Amount</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.recovAmount}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="remAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Remaining Amount</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.remAmount}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="remark">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Remark</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.remark}}
+                    </td>
+                </ng-container>
+            
+               
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+                <!-- Footer Section Of table -->
+                <!-- <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns"></tr> -->
+            </table>
+            <!-- End table GST File Accountion -->
+            <!-- common button -->
+        </div>
+    </div>
+</div>

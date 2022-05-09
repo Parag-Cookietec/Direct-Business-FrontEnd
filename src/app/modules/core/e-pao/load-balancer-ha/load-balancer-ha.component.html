@@ -1,0 +1,233 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>Load Balancer HA</div>
+            <div class="font-heading"><strong>Reference Number:</strong> {{refNumber}}</div>
+            <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/E-PAO/SC/001</div> -->
+            <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+            </div>
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+                <li class="breadcrumb-item active" aria-current="page">Load Balancer HA</li>
+            </ol>
+        </nav>
+        <div class="panel-group">
+            <form [formGroup]="scrollForm" >
+                <!-- Load Balancer HA -->
+                <div class="box box-primary">
+                    <div class="box-header">Load Balancer HA</div>
+                    <div class="box-body">
+                        <div class="row">
+                            <!-- From Date -->
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="fromDate" formControlName="fromDate"
+                                        placeholder="From Date" [max]="maxDate" required>
+                                    <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #fromDate></mat-datepicker>
+                                    <div class="error-wrapper"
+                                        *ngIf="scrollForm.controls.fromDate.touched && (scrollForm.controls.fromDate.errors)">
+                                        <mat-error *ngIf="scrollForm.controls.fromDate.errors.required">
+                                            {{errorMessages.DATE}}
+                                        </mat-error>
+                                    </div>
+                                </mat-form-field>
+                            </div>
+                            <!-- To Date -->
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="toDate" [max]="maxDate" formControlName="toDate"
+                                        placeholder="To Date" required>
+                                    <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #toDate></mat-datepicker>
+                                    <div class="error-wrapper"
+                                        *ngIf="scrollForm.controls.toDate.touched && (scrollForm.controls.toDate.errors)">
+                                        <mat-error *ngIf="scrollForm.controls.toDate.errors.required">
+                                            {{errorMessages.DATE}}
+                                        </mat-error>
+                                    </div>
+                                </mat-form-field>
+                            </div>
+                            <!-- Bank -->
+                            <div class="col-sm-3">
+                                <mat-form-field class="full-width">
+                                    <mat-select formControlName="bankName" placeholder="Bank">
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]="bankNameCtrl"
+                                                [placeholderLabel]="'Find Bank...'"
+                                                [noEntriesFoundLabel]="'no matching Bank found'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option>-- None --</mat-option>
+                                        <mat-option
+                                            *ngFor="let FY of bankList | filterSelectInput:bankNameCtrl.value : 'bankName'"
+                                            [value]="FY.bankName" [matTooltip]="FY.bankName"
+                                            (onSelectionChange)="onSelect($event);">
+                                            {{FY.bankName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                        <!-- common button -->
+                        <div class="form-action-button">
+                            <button type="submit" mat-raised-button color="primary"
+                                (click)="listingData(scrollForm.value);">
+                                <i class="material-icons" aria-hidden="true">search</i>
+                                Search
+                            </button>
+                            <button type="reset" mat-raised-button color="accent" (click)="reset();">
+                                <i class="material-icons" aria-hidden="true">
+                                    restore
+                                </i>
+                                Reset
+                            </button>
+                        </div>
+                        <!-- end common button -->
+                    </div>
+                </div>
+                <!-- End Load Balancer HA -->
+            </form>
+            <br>
+            <!-- table Load Balancer HA -->
+            <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" aria-describedby="loadBalance">
+                <!-- srNo -->
+                <ng-container matColumnDef="srNo">
+                    <th mat-header-cell *matHeaderCellDef scope="row">
+                        <mat-checkbox (change)="$event ? directiveObject.masterToggle( newdataSource) : null"
+                            [checked]="directiveObject.selection.hasValue() && directiveObject.isAllSelected( newdataSource)"
+                            [indeterminate]="directiveObject.selection.hasValue() && !directiveObject.isAllSelected( newdataSource)"
+                            [aria-label]="directiveObject.checkboxLabel( newdataSource)">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="text-center">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? directiveObject.selection.toggle(row) : null"
+                            [checked]="directiveObject.selection.isSelected(row) "
+                            [aria-label]="directiveObject.checkboxLabel( newdataSource, row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+                <!-- Bank Name -->
+                <ng-container matColumnDef="bankName">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Bank Name </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.bankName}}
+                    </td>
+                </ng-container>
+                <!-- SA/DA -->
+                <ng-container matColumnDef="saDa">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> SA/DA </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.fromSaDaName}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef colspan="3" class="centerAlign">Total</td>
+                </ng-container>
+                <!-- No. Of Challan  -->
+                <ng-container matColumnDef="noOfChallan">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> No. Of Challan </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.totalChallans}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef>{{totalChallan()}}</td>
+                </ng-container>
+                <!-- Amount -->
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Amount(₹) </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.totalAmount | number:'1.2-2'}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalAmmount() | number:'1.2-2'}}</td>
+                </ng-container>
+                <!-- To SA/DA -->
+                <ng-container matColumnDef="toSaDA">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> To SA/DA </th>
+                    <td mat-cell *matCellDef="let element ; let i = index" class="rightAlign">
+                        <mat-form-field>
+                            <mat-select required>
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="branch2Ctrl"
+                                        [placeholderLabel]="'Select  To SA/DA ...'"
+                                        [noEntriesFoundLabel]="'no matching To SA/DA found'">
+                                    </ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option>-- None --</mat-option>
+                                <mat-option
+                                    *ngFor="let bl of sadaList | filterSelectInput : branchCtrl.value : 'sadaName'"
+                                    [value]="bl.sadaId" [matTooltip]="bl.sadaName"
+                                    (onSelectionChange)="onSelectSada($event, i);">
+                                    {{bl.sadaName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <!-- Challan Count -->
+                <ng-container matColumnDef="challanAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Challan Count </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        <mat-form-field class="full-width">
+                            <input matInput [ngModelOptions]="{standalone: true}"
+                                (change)="checkChallanCount(element, index)" [(ngModel)]="element.totalChallansTrnf"
+                                numbersOnly required>
+                        </mat-form-field>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <!-- Action -->
+                <ng-container matColumnDef="newaction">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Action</th>
+                    <td mat-cell *matCellDef="let element" class="action-btn-i centerAlign">
+                        <a><i class="material-icons plus edit-icon" aria-hidden="true" title="Edit"> edit </i></a>
+                        <a class="delete-icon"><i class="material-icons plus delete" aria-hidden="true"
+                                title="delete">delete_forever</i></a>
+                    </td>
+                </ng-container>
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+                <!-- Footer Section Of table -->
+                <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns"></tr>
+            </table>
+
+            <!-- <table *ngIf="newdataSource.data.length !== undefined ">
+                <tr *ngIf="!newdataSource.data.length" style="background-color: #cccccc;">
+                  <td style="text-align: center;" [attr.colspan]="newdisplayedColumns.length">
+                   <strong> No Records Found!</strong>
+                  </td>
+                </tr>
+              </table> -->
+            <!-- End table Load Balancer HA -->
+            <!--   common button -->
+            <div class="form-action-button">
+                <button mat-raised-button type="submit" class="green" (click)="onDistribute();"
+                    [disabled]="!directiveObject.selection.hasValue()">
+                    <i class="material-icons">
+                        done
+                    </i>Distribute
+                </button>
+                <!-- <button type="button" mat-raised-button color="warn" (click)="navigate()">
+                    <i class="material-icons" aria-hidden="true" title="Listing">
+                        list
+                    </i>
+                    Listing
+                </button> -->
+                <button type="button" mat-raised-button class="btnClose" (click)="onClose();">
+                    <i class="material-icons" aria-hidden="true" title="Budget dashboard">
+                        close
+                    </i>
+                    Close
+                </button>
+            </div>
+            <!-- end common button -->
+        </div>
+    </div>
+</div>

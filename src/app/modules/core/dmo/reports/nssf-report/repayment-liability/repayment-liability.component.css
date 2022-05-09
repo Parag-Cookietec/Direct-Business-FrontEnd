@@ -1,0 +1,15 @@
+.all_months{
+    padding: 20px 0;
+}
+
+.monthDetails{
+    background: #5783a6;
+
+    
+}
+
+.monthTitle{    
+    font-weight: 900;
+    padding: 10px 20px;
+    color: white;
+    }

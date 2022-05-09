@@ -1,0 +1,138 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>Consolidated Receipt Report – Expanded</div>
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+                <li class="breadcrumb-item " aria-current="page">Reports</li>
+                <li class="breadcrumb-item " aria-current="page">Accounting</li>
+                <li class="breadcrumb-item active" aria-current="page">Consolidated Receipt Report – Expanded</li>
+            </ol>
+        </nav>
+        <div class="panel-group" id="printContent">
+            <mat-accordion class="search-accordian">
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <div class="heading-section">
+                            Search
+                        </div>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="workloadReportForm">
+                            <div class="box-body">
+                                <div class="row">
+                                    <!-- From Date -->
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="fromDate" formControlName="fromDate"
+                                                placeholder="From Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #fromDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <!-- To Date -->
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="toDate" formControlName="toDate"
+                                                placeholder="To Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #toDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <!-- Common Button -->
+                                <div class="form-action-button">
+                                    <button type="submit" mat-raised-button color="primary">
+                                        <i class="material-icons" aria-hidden="true">search</i>
+                                        Search
+                                    </button>
+                                    <button type="reset" mat-raised-button color="accent">
+                                        <i class="material-icons" aria-hidden="true">
+                                            restore
+                                        </i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                    </form>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <br>
+            <div class="heading-section ng-star-inserted" style="display:flex; justify-content: space-between;">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-7">
+                    e-Pay and Accounts Office (GST),Gandhinagar <br>
+                    <div>Consolidated Receipt Report For (Month Year)</div>   
+                </div>
+                <a><i class="material-icons plus" title="Print" (click)="onPressPrint('printContent')" aria-hidden="true">print</i></a>
+            </div>
+        
+            <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" multiTemplateDataRows aria-describedby="rbdReport">
+                <ng-container matColumnDef="branch">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Head of Account</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                      {{ element.branch}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <!-- bank name -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Description</th>
+                    <td mat-cell *matCellDef="let element" class="leftAlign">
+                        {{element.name}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef>TOTAL 0006 STATE GOODS AND SERVICES TAX(SGST) RECEIPT</td>
+                </ng-container>
+                <!-- no of transactions -->
+                <ng-container matColumnDef="challanAlloted">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Amount</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.challanAlloted}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                </ng-container>
+                <!-- SGST Tax -->
+                <ng-container matColumnDef="challanPosted">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Amount (Detailed Head)</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.challanPosted}}</td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                </ng-container>
+
+                 <!-- SGST Interest -->
+                 <ng-container matColumnDef="challanPending">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Amount (Sub Head) </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.challanPending}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                </ng-container>
+
+                 <!-- SGST Fees -->
+                <ng-container matColumnDef="moeRaised">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Amount (Minor Head) </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.moeRaised}}</td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">XXXX</td>
+                </ng-container>
+
+                 
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+                <!-- <tr mat-header-row *matHeaderRowDef="newdisplayedColumns1"></tr> -->
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+                <!-- Footer Section Of table -->
+                <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns"></tr>
+            </table>
+            <!-- End table GST File Accountion -->
+            <!-- common button -->
+        </div>
+    </div>
+</div>

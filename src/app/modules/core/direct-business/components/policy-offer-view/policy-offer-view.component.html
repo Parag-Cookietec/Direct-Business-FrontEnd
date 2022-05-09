@@ -1,0 +1,278 @@
+<div class="container">
+  <div class="form-wrapper">
+
+    <!-- heading section -->
+    <div class="heading-section ng-star-inserted">
+      <div>Policy Proposal Letter </div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DOI/DB/PPL/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div>
+    </div>
+
+    <!-- navigation start -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DOI / DB </li>
+        <li class="breadcrumb-item active" aria-current="page">Policy Proposal Letter</li>
+      </ol>
+    </nav>
+    <!-- navigation ends -->
+
+
+
+    <div class="panel-group">
+      <!-- Policy Proposal Letter  Form-->
+      <form [formGroup]="policyProposalLetterForm">
+
+        <!-- Proposer Details -->
+        <div class="box box-primary">
+          <div class="box-header">Proposer Detail</div>
+          <div class="box-body">
+
+            <div class="row">
+
+              <!-- type of proposer -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="proposerType" placeholder="Type Of Proposer">
+                </mat-form-field>
+              </div>
+
+              <!-- Proposer Name -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="proposerName" placeholder="Proposer Name" alphabetOnly>
+                </mat-form-field>
+              </div>
+
+              <!-- District -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="district" placeholder="District">
+                </mat-form-field>
+              </div>
+
+              <!-- Taluka -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="taluka" placeholder="Taluka">
+                </mat-form-field>
+              </div>
+
+              <!-- address -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="address" placeholder="Address">
+                </mat-form-field>
+              </div>
+
+              <!-- contact no -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="contactNo" placeholder="Contact No" numbersOnly maxlength="10">
+                </mat-form-field>
+              </div>
+
+              <!-- email id -->
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <input matInput type="text" placeholder="Email" formControlName="email">
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- Proposer Details End -->
+
+
+        <div class="mat-elevation-z8 mt-2">
+
+          <!-- table start -->
+          <table mat-table [dataSource]="dataSource" width="100%" aria-describedby="policyProposalLetter">
+
+            <!-- policy -->
+            <ng-container matColumnDef="heading1">
+              <th mat-header-cell *matHeaderCellDef scope="row" [attr.colspan]="4">Policy</th>
+            </ng-container>
+
+            <!-- add on -->
+            <ng-container matColumnDef="heading2">
+              <th mat-header-cell *matHeaderCellDef scope="row" [attr.colspan]="4">Add-On</th>
+            </ng-container>
+
+            <!-- Sr. No. Column -->
+            <ng-container matColumnDef="position">
+              <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+              <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                {{ i + 1 }} </td>
+              <td mat-footer-cell *matFooterCellDef>Total</td>
+            </ng-container>
+
+            <!-- Type of Policy Column -->
+            <ng-container matColumnDef="policyType">
+              <th mat-header-cell *matHeaderCellDef scope="row">Type of Policy</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.policyType}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Sum Insured Column -->
+            <ng-container matColumnDef="sumInsured">
+              <th mat-header-cell *matHeaderCellDef scope="row">Sum Insured</th>
+              <td mat-cell *matCellDef="let element" class="rightAlign">
+                {{element.sumInsured}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- premium Amount Column -->
+            <ng-container matColumnDef="premiumAmountPolicy">
+              <th mat-header-cell *matHeaderCellDef scope="row">Premium Amount</th>
+              <td mat-cell *matCellDef="let element" class="rightAlign">
+                {{element.premiumAmountPolicy  | number:'0.2-2'}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef class="rightAlign">{{calculatePremiumAmount()  | number:'0.2-2'}}
+              </td>
+            </ng-container>
+
+            <!-- Types Column -->
+            <ng-container matColumnDef="types">
+              <th mat-header-cell *matHeaderCellDef scope="row">Types</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.types}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Coverage Column -->
+            <ng-container matColumnDef="coverage">
+              <th mat-header-cell *matHeaderCellDef scope="row">Coverage</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.coverage}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Unit Column -->
+            <ng-container matColumnDef="unit">
+              <th mat-header-cell *matHeaderCellDef scope="row">Unit</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.unit}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- premium Amount  Add on Column -->
+            <ng-container matColumnDef="premiumAmountAddOn">
+              <th mat-header-cell *matHeaderCellDef scope="row">Premium Amount</th>
+              <td mat-cell *matCellDef="let element" class="rightAlign">
+                {{element.premiumAmountAddOn  | number:'0.2-2'}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef class="rightAlign">
+                {{calculatePremiumAmountAddOn()  | number:'0.2-2'}}</td>
+            </ng-container>
+
+            <!-- Custom Header Section Of table -->
+            <tr mat-header-row *matHeaderRowDef="['heading1','heading2']"></tr>
+            <!-- Header Section Of table -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <!-- Data Fetch From .TS File to table -->
+            <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+            <!-- Footer Section Of table -->
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+
+          </table>
+          <!-- table end -->
+
+          <!-- paginator -->
+          <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+        </div>
+      </form>
+
+      <div class="row mt-2">
+        <!-- total amount -->
+        <div class="col-sm-3">
+          <mat-form-field>
+            <input matInput placeholder="Total" [ngModelOptions]="{standalone: true}" [(ngModel)]="totalAmount"
+              [value]="totalAmount" readonly>
+          </mat-form-field>
+        </div>
+
+        <!-- discount -->
+        <div class="col-sm-3">
+          <mat-form-field>
+            <input matInput placeholder="Discount" [ngModelOptions]="{standalone: true}" [(ngModel)]="discountValue"
+              [value]="discountValue" (input)="onEnteringDiscount()">
+          </mat-form-field>
+        </div>
+
+        <!-- taxes -->
+        <div class="col-sm-3">
+          <mat-form-field>
+            <input matInput placeholder="Taxes (18%)" [ngModelOptions]="{standalone: true}" [(ngModel)]="taxes"
+              [value]="taxes" readonly>
+          </mat-form-field>
+        </div>
+
+        <!-- grand total -->
+        <div class="col-sm-3">
+          <mat-form-field>
+            <input matInput placeholder="Grand Total" [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="grandTotalValue" [value]="grandTotalValue" readonly>
+          </mat-form-field>
+        </div>
+
+
+      </div>
+
+      <!-- note -->
+      <div class="legend"><strong><span style="font-weight: bold;">Note: Premium to be paid against Ref no.
+            DOI/DB/19-20/E0091 through Cheque/DD. Prepare
+            under
+            the name of DOI-DB.</span></strong>
+      </div>
+
+      <!-- action button start (if view on policy-ofer-screen is clicked) -->
+      <div class="form-action-button" *ngIf="isView">
+
+        <button mat-raised-button type="submit" class="green" title="Submit">
+          <i class="material-icons">
+            done
+          </i>
+          Submit
+        </button>
+
+        <button type="reset" mat-raised-button color="accent" title="Reset">
+          <i class="material-icons" aria-hidden="true">
+            restore
+          </i>
+          Reset
+        </button>
+
+      </div>
+      <!-- action button end -->
+
+      <!-- action button start (if view on payment-screen is clicked) -->
+      <div class="form-action-button" *ngIf="isViewPayment">
+
+        <button mat-raised-button type="submit" color="primary" title="Payment" (click)="onPaymentClick()">
+          Payment
+        </button>
+
+        <button type="button" mat-raised-button class="btnClose" (click)="onClose()">
+          <i aria-hidden="true" class="material-icons" title="Close">
+            close
+          </i>
+          Close
+        </button>
+      </div>
+      <!-- action button end -->
+
+
+    </div>
+  </div>
+</div>

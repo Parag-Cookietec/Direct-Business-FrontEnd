@@ -1,0 +1,470 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>DB Policy Entry </div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DOI/PC/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DOI </li>
+        <li class="breadcrumb-item active" aria-current="page">DB Policy Entry</li>
+      </ol>
+    </nav>
+
+
+
+    <div class="panel-group">
+
+      <form [formGroup]="dbPolicyEntry">
+
+
+        <div class="box box-primary">
+          <div class="box-header">DB Policy Entry</div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="policyNo" placeholder="Policy Number" required>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.policyNo.touched && dbPolicyEntry.controls.policyNo.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.policyNo.errors.required">
+                      {{ errorMessage.PLOICYNO }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- Court Case Date -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="date" formControlName="date" placeholder=" Date  " required>
+                  <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                  <mat-datepicker #date></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.date.touched && dbPolicyEntry.controls.date.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.date.errors.required">
+                      {{ errorMessage.DATE }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="proposalNo" placeholder="Proposal No." required>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.proposalNo.touched && (dbPolicyEntry.controls.proposalNo.errors)">
+                    <mat-error *ngIf="dbPolicyEntry.controls.proposalNo.errors.required">
+                      {{errorMessage.PROPOSALNO}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="riskType" placeholder="Risk Type" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="riskTypeCtrl" [placeholderLabel]="'Find Risk Type...'"
+                        [noEntriesFoundLabel]="'no matching Risk Type found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of riskType_list | filterSelectInput: riskTypeCtrl.value"
+                      [value]="item.value" [matTooltip]="item.viewValue">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.riskType.touched && dbPolicyEntry.controls.riskType.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.riskType.errors.required">
+                      {{errorMessage.RISK_TYPE}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="startDateofInsurance" formControlName="startDateofInsurance"
+                    placeholder=" Start Date of Insurance " required>
+                  <mat-datepicker-toggle matSuffix [for]="startDateofInsurance"></mat-datepicker-toggle>
+                  <mat-datepicker #startDateofInsurance></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.startDateofInsurance.touched && dbPolicyEntry.controls.startDateofInsurance.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.startDateofInsurance.errors.required">
+                      {{ errorMessage.STARTINSURANCE }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="endDateofInsurance" formControlName="endDateofInsurance"
+                    placeholder=" End Date of Insurance   " required>
+                  <mat-datepicker-toggle matSuffix [for]="endDateofInsurance"></mat-datepicker-toggle>
+                  <mat-datepicker #endDateofInsurance></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.endDateofInsurance.touched && dbPolicyEntry.controls.endDateofInsurance.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.endDateofInsurance.errors.required">
+                      {{ errorMessage.ENDINSURANCE }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="nameofInsured" placeholder="Name of Insured" required>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.nameofInsured.touched && dbPolicyEntry.controls.nameofInsured.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.nameofInsured.errors.required">
+                      {{errorMessage.NAMEINSURED}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="insuredAddress" placeholder="Insured Address" required>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.insuredAddress.touched && dbPolicyEntry.controls.insuredAddress.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.insuredAddress.errors.required">
+                      {{errorMessage.INSUREDADD}}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- District -->
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="district" placeholder="District" (selectionChange)="selectDistrict()">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="districtCtrl" [placeholderLabel]="'Find District...'"
+                        [noEntriesFoundLabel]="'No matching District found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let item of districtList |
+                      filterSelectInput:districtCtrl.value" [value]="item.value" matTooltip="{{item.viewValue}}">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+              </div>
+              <!-- Taluka -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-select name='taluka' formControlName='taluka' placeholder='Taluka'>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]='talukaCtrl' [placeholderLabel]="'Select Taluka ...'"
+                        [noEntriesFoundLabel]="'no matching Taluka found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let item of talukaNameList | filterSelectInput : talukaCtrl.value : 'viewValue'"
+                      [value]="item.value" matTooltip="{{item.viewValue}}">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+
+
+                </mat-form-field>
+              </div>
+              <!-- village -->
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="village" placeholder="Village" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="villageCtrl" [placeholderLabel]="'Find Village...'"
+                        [noEntriesFoundLabel]="'No matching Village found'" onlyAlphabetSpaceDot>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of villageList |
+                            filterSelectInput:villageCtrl.value" [value]="item.value" matTooltip="{{item.viewValue}}">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.village.touched && dbPolicyEntry.controls.village.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.village.errors.required">
+                      {{ errorMessage.village }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- Pincode -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="pincode" required numbersOnly placeholder="  Pincode">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.pincode.touched && dbPolicyEntry.controls.pincode.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.pincode.errors.required">
+                      {{ errorMessage.PINCODE }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- Location of Insured Property -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="locationofInsuredProperty" required
+                    placeholder="Location of Insured Property">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.locationofInsuredProperty.touched && dbPolicyEntry.controls.locationofInsuredProperty.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.locationofInsuredProperty.errors.required">
+                      {{ errorMessage.LOCATIONINSURED }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- village -->
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="occupationofBuilding" placeholder="Occupation of Building" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="occupationofBuildingCtrl"
+                        [placeholderLabel]="'Find Occupation of Building..'"
+                        [noEntriesFoundLabel]="'No matching Occupation of Building found'" onlyAlphabetSpaceDot>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of occupationofBuildingList |
+                                    filterSelectInput:occupationofBuildingCtrl.value" [value]="item.value"
+                      matTooltip="{{item.viewValue}}">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.occupationofBuilding.touched && dbPolicyEntry.controls.occupationofBuilding.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.occupationofBuilding.errors.required">
+                      {{ errorMessage.OCCBUILDING }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- Height of Building -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="heightofBuilding" required
+                    placeholder="Height of Building">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.heightofBuilding.touched && dbPolicyEntry.controls.heightofBuilding.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.heightofBuilding.errors.required">
+                      {{ errorMessage.HEIGHTODBUILD }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- Class of Construction -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="classofConstruction" required
+                    placeholder="Class of Construction">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.classofConstruction.touched && dbPolicyEntry.controls.classofConstruction.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.classofConstruction.errors.required">
+                      {{ errorMessage.CLASSCONSTRUCTION }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <!-- payment mode -->
+              <!-- <div class="col-sm-3">
+    <mat-form-field>
+      <input type="text" matInput formControlName="paymentMdae" required placeholder="Payment Mode">
+     
+    </mat-form-field>
+  </div> -->
+              <!-- Class of Construction -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="ratedAs" required placeholder="Rated As">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.ratedAs.touched && dbPolicyEntry.controls.ratedAs.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.ratedAs.errors.required">
+                      {{ errorMessage.RATEUS }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- Class of Construction -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="challanNo" required placeholder="Challan No">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.challanNo.touched && dbPolicyEntry.controls.challanNo.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.challanNo.errors.required">
+                      {{ errorMessage.CHALANNO }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="challanDate" formControlName="challanDate"
+                    placeholder=" Challan Date " required>
+                  <mat-datepicker-toggle matSuffix [for]="challanDate"></mat-datepicker-toggle>
+                  <mat-datepicker #challanDate></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.challanDate.touched && dbPolicyEntry.controls.challanDate.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.challanDate.errors.required">
+                      {{ errorMessage.CHALLANDATE }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="challanAccountingDate" formControlName="challanAccountingDate"
+                    placeholder=" Challan Accounting Date " required>
+                  <mat-datepicker-toggle matSuffix [for]="challanAccountingDate"></mat-datepicker-toggle>
+                  <mat-datepicker #challanAccountingDate></mat-datepicker>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.challanAccountingDate.touched && dbPolicyEntry.controls.challanAccountingDate.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.challanAccountingDate.errors.required">
+                      {{ errorMessage.DACHALLANACCOUNTINGDATE }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="selectProperty" placeholder="Select Property" required>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="selectPropertyCtrl"
+                        [placeholderLabel]="'Find Occupation of Building..'"
+                        [noEntriesFoundLabel]="'No matching Occupation of Building found'" onlyAlphabetSpaceDot>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of selectPropertyList |
+                                filterSelectInput:selectPropertyCtrl.value" [value]="item.value"
+                      matTooltip="{{item.viewValue}}">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.selectProperty.touched && dbPolicyEntry.controls.selectProperty.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.selectProperty.errors.required">
+                      {{ errorMessage.SELECTPROPERTY }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- Basic Sum Insurance  -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="basicSumInsurance" required
+                    placeholder="Basic Sum Insurance ">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.basicSumInsurance.touched && dbPolicyEntry.controls.basicSumInsurance.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.basicSumInsurance.errors.required">
+                      {{ errorMessage.BASICINSURED }}
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+              </div>
+              <!-- discount -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="discount" placeholder="Discount">
+
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+
+                <mat-checkbox color="primary" checked="true">Perils covered</mat-checkbox>
+              </div>
+              <!-- Class of Construction -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="rate" required placeholder="Rate">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.rate.touched && dbPolicyEntry.controls.rate.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.rate.errors.required">
+                      {{ errorMessage.RATE }}
+                    </mat-error>
+                  </div>
+
+                </mat-form-field>
+              </div>
+              <!-- Class of Construction -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="ratePer" required placeholder="Rate Per">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.ratePer.touched && dbPolicyEntry.controls.ratePer.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.ratePer.errors.required">
+                      {{ errorMessage.RATEPER }}
+                    </mat-error>
+                  </div>
+
+                </mat-form-field>
+              </div>
+              <!-- GST -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="GST" required placeholder="GST">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.GST.touched && dbPolicyEntry.controls.GST.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.GST.errors.required">
+                      {{ errorMessage.GST }}
+                    </mat-error>
+                  </div>
+
+                </mat-form-field>
+              </div>
+              <!-- Total Premium -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input type="text" matInput formControlName="totalPremium" required placeholder="Total Premium">
+                  <div class="error-wrapper"
+                    *ngIf="dbPolicyEntry.controls.totalPremium.touched && dbPolicyEntry.controls.totalPremium.errors">
+                    <mat-error *ngIf="dbPolicyEntry.controls.totalPremium.errors.required">
+                      {{ errorMessage.TOTALPREMIUM }}
+                    </mat-error>
+                  </div>
+
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Details of Deceased/Disabled -->
+
+      </form>
+      <!-- Common Button -->
+      <div class="form-action-button">
+        <button mat-raised-button type="submit" class="green"><i class="material-icons">
+            done
+          </i> Submit
+        </button>
+
+        <button type="reset" mat-raised-button color="accent">
+          <i class="material-icons" aria-hidden="true">
+            restore
+          </i>
+          Reset
+        </button>
+
+        <button type="button" mat-raised-button color="warn">
+          <i class="material-icons" aria-hidden="true" title="Listing" (click)="navigate()">
+            list
+          </i>
+          Listing
+        </button>
+
+        <button type="button" mat-raised-button class="btnClose">
+          <i class="material-icons" aria-hidden="true" title="Budget dashboard">
+            close
+          </i>
+          Close
+        </button>
+      </div>
+      <!-- End Common Button -->
+      <!-- End JPA Claim Entry  Form-->
+    </div>
+  </div>
+</div>

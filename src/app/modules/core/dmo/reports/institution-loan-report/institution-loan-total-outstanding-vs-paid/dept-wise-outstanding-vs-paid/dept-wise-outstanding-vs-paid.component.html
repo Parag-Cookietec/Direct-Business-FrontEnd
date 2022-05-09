@@ -1,0 +1,119 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>Department Wise Institute Loan Outstanding Vs Paid</div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/MLA/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">DMO</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Department Wise Institute Loan Outstanding Vs Paid </li>
+      </ol>
+    </nav>
+
+
+
+
+
+    <div class="mat-elevation-z8 mt-2 overflow-x-auto overflow-y-hidden">
+      <!-- Loan Approved Table -->
+      <table mat-table [dataSource]="dataSource" aria-describedby="loanApprovedTable">
+
+        <!-- Sr. No. -->
+        <ng-container matColumnDef="srno">
+          <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                  {{ i + 1 }} </td>
+        </ng-container>
+
+
+        <!-- Account No.   -->
+        <ng-container matColumnDef="AccountNo">
+          <th mat-header-cell *matHeaderCellDef scope="row">Account No.</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.AccountNo}}
+          </td>
+        </ng-container>
+
+
+        <!-- Tranche -->
+        <ng-container matColumnDef="Tranche">
+          <th mat-header-cell *matHeaderCellDef scope="row">Tranche</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.Tranche }}
+          </td>
+        </ng-container>
+        
+
+        
+
+        <!-- Loan Amount(Rs.) -->
+        <ng-container matColumnDef="loanAmount">
+          <th mat-header-cell *matHeaderCellDef scope="row">Loan Amount</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.loanAmount }}
+          </td>
+        </ng-container>
+
+        <!-- Principal -->
+        <ng-container matColumnDef="principal">
+          <th mat-header-cell *matHeaderCellDef scope="row">Principal</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.principal }}
+          </td>
+        </ng-container>
+
+        <!-- interest -->
+        <ng-container matColumnDef="interest">
+          <th mat-header-cell *matHeaderCellDef scope="row">Interest</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.interest }}
+          </td>
+        </ng-container>
+
+        <!-- Outstanding Loan -->
+        <ng-container matColumnDef="outstandingLoan">
+          <th mat-header-cell *matHeaderCellDef scope="row">Outstanding Loan</th>
+          <td mat-cell *matCellDef="let element" class="rightAlign">
+            {{element.outstandingLoan }}
+          </td>
+        </ng-container>
+        
+
+          <!-- Loan Outstanding-->
+        <ng-container matColumnDef="loanOutstanding">
+          <th mat-header-cell *matHeaderCellDef scope="row">LoanOutstanding(%)</th>
+          <td mat-cell *matCellDef="let element" class="rightAlign">
+            {{element.loanOutstanding }}
+          </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="header-row-amount">
+          <th mat-header-cell *matHeaderCellDef 
+              [style.text-align]="center"
+              [attr.colspan]="8"> 
+             Amounts(Rs.)
+          </th>
+        </ng-container>
+
+        
+
+
+
+<tr mat-header-row *matHeaderRowDef="['header-row-amount']"></tr>
+<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator #paginator [pageSizeOptions]="[pageSize]" (page)="onPaginateChange($event)"
+        [length]="totalRecords" showFirstLastButtons></mat-paginator>
+    </div>
+
+
+
+  </div>
+</div>

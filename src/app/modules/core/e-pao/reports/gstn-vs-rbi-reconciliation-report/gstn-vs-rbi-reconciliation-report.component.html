@@ -1,0 +1,98 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>GSTN Vs RBI Reconciliation Report</div>
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+                <li class="breadcrumb-item " aria-current="page">Reports</li>
+                <li class="breadcrumb-item active" aria-current="page">GSTN Vs RBI Reconciliation Report</li>
+            </ol>
+        </nav>
+        <div class="panel-group" id="printContent">
+            <mat-accordion class="search-accordian">
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <div class="heading-section">
+                            Search
+                        </div>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="gstnVrbiReportForm">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="asOnDate" formControlName="asOnDate"
+                                                placeholder="As On Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="asOnDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #asOnDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <!-- Common Button -->
+                                <div class="form-action-button">
+                                    <button type="submit" mat-raised-button color="primary">
+                                        <i class="material-icons" aria-hidden="true">search</i>
+                                        Search
+                                    </button>
+                                    <button type="reset" mat-raised-button color="accent">
+                                        <i class="material-icons" aria-hidden="true">
+                                            restore
+                                        </i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                    </form>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <br>
+            <div class="heading-section ng-star-inserted" style="display:flex; justify-content: space-between;">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-7">
+                    e-Pay and Accounts Office (GST),Gandhinagar <br>
+                           <div style="margin-left: 1rem;">GSTN Vs RBI Reconciliation Report</div>
+                </div>
+                <a><i class="material-icons plus" title="Print" (click)="onPressPrint('printContent')" aria-hidden="true">print</i></a>
+            </div>
+        
+            <!-- table SRS Report -->
+            <div style="float: left;">
+                <mat-paginator [pageSizeOptions]="[3,5,10,25]" [pageSize]="4"></mat-paginator>
+            </div>
+    
+            <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" aria-describedby="rbdReport">
+                
+              
+                <ng-container matColumnDef="perticulars">
+                    <th mat-header-cell *matHeaderCellDef scope="row">Perticulars </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                   
+                        {{element.perticulars}}
+                  
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Amount (In Rupees)</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.amount}}
+                    </td>
+                </ng-container>
+
+        
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+                <!-- Footer Section Of table -->
+            </table>
+            <!-- End table GST File Accountion -->
+            <!-- common button -->
+        </div>
+    </div>
+</div>

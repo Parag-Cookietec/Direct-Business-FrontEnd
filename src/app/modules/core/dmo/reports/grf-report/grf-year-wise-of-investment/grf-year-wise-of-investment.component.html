@@ -1,0 +1,208 @@
+<div class="container">
+    <div class="form-wrapper">
+      <div class="heading-section ng-star-inserted">
+        <div>Year Wise Maturity of GRF Investement</div>
+        <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/MLA/001</div>
+        <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+      </div>
+  
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">DMO</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Year Wise Maturity of GRF Investement</li>
+        </ol>
+      </nav>
+  
+  
+      <form [formGroup]="GRfyrwiseForm">
+        <!-- GRF Security Investment Sale -->
+        <div class="panel-group">
+          <div class="box box-primary">
+            <div class="box-header">Year Wise Maturity of GRF Investement</div>
+            <div class="box-body">
+  
+  
+              <div class="row">
+                <div class="col-sm-4">
+              <mat-form-field >
+                <mat-label>Financial Year from</mat-label>
+                <mat-select formControlName="fromDate" >
+                  <mat-option *ngFor="let FinancialYear of FinancialYears" [value]="FinancialYear.viewValue">
+                    {{FinancialYear.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              </div>
+              <div class="col-sm-4">
+                <mat-form-field >
+                  <mat-label>Financial Year to</mat-label>
+                  <mat-select formControlName="toDate" >
+                    <mat-option *ngFor="let FinancialYear of FinancialYears" [value]="FinancialYear.viewValue">
+                      {{FinancialYear.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                </div>
+              </div>
+  
+              <!-- <div class="row">
+  
+                <div class="col-sm-4">
+                  <mat-form-field (click)="fromDate.open()">
+                    <input matInput formControlName="fromDate" [matDatepicker]="fromDate" placeholder="From Date" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="fromDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #fromDate disabled="false"></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                  <mat-form-field (click)="toDate.open()">
+                    <input matInput formControlName="toDate" [matDatepicker]="toDate" placeholder="To Date" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="toDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #toDate disabled="false"></mat-datepicker>
+                  </mat-form-field>
+                </div>
+  
+              </div> -->
+  
+  
+              <!-- <div class="row">
+                <div class="col-sm-4">
+                <mat-form-field >
+                  <mat-label>Security Transaction</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let SecurityTransaction of SecurityTransactions" [value]="SecurityTransaction.value">
+                      {{SecurityTransaction.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                </div>
+                </div> -->
+            
+              <div class="row reportsRadioButtons">
+                <mat-radio-group aria-label="Select an option" formControlName="ammountIn">
+                  <mat-radio-button class="lefrRigthpadding" value="1">Rs in Crores</mat-radio-button>
+                  <mat-radio-button class="lefrRigthpadding"  value="2">Rs in Lacks</mat-radio-button>
+                  <mat-radio-button class="lefrRigthpadding"  value="3">Rs in Thousands</mat-radio-button>
+                  <mat-radio-button class="lefrRigthpadding"  value="4">Absolute Amount(Rs)</mat-radio-button>
+                </mat-radio-group>
+             
+              </div>
+  
+  
+             <!-- Action Button -->
+             <div class="form-action-button">
+              <button mat-raised-button type="button" class="green" title="Submit" (click)="crfyearwisereport()">
+                <i class="material-icons" title="Submit" aria-hidden="true">done</i>
+                Generate
+              </button>
+              <button mat-raised-button type="button"  title="Submit" (click)="reset()">
+                <i class="material-icons" title="Submit" aria-hidden="true">refresh</i>
+                Reset
+              </button>
+              <button type="button" title="Cancel" mat-raised-button class="btnClose">
+                <i class="material-icons " title="cancel">close</i>Cancel</button>
+            </div>
+  
+            </div>
+          </div>
+        </div>
+      </form>
+  
+  
+      <div class="mat-elevation-z8 mt-2 overflow-x-auto overflow-y-hidden">
+        <!-- Loan Approved Table -->
+        <table mat-table [dataSource]="dataSource" aria-describedby="loanApprovedTable">
+  
+          <!-- Sr. No. -->
+          <ng-container matColumnDef="srno">
+            <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                    {{ i + 1 }} </td>
+          </ng-container>
+        
+          <!-- Date Of Purchase -->
+          <ng-container matColumnDef="dateOfPurchase">
+            <th mat-header-cell *matHeaderCellDef scope="row">Date Of Purchase</th>
+            <td mat-cell *matCellDef="let element" class="centerAlign">
+              {{element.dateOfPurchase | date: 'dd-MMM-yyyy'}}
+            </td>
+          </ng-container>
+  
+          <!-- Name Of Security -->
+          <ng-container matColumnDef="nameOfSecurity">
+            <th mat-header-cell *matHeaderCellDef scope="row">Name Of Security </th>
+            <td mat-cell *matCellDef="let element" class="centerAlign">
+              {{element.nameOfSecurity }}
+            </td>
+          </ng-container>
+  
+          <!-- Face Value -->
+          <ng-container matColumnDef="faceValue">
+            <th mat-header-cell *matHeaderCellDef scope="row">Face Value</th>
+            <td mat-cell *matCellDef="let element" class="rightAlign">
+              {{element.faceValue }}
+            </td>
+          </ng-container>
+  
+           <!-- Purchase Price -->
+           <ng-container matColumnDef="purchasePrice">
+            <th mat-header-cell *matHeaderCellDef scope="row">Purchase Price</th>
+            <td mat-cell *matCellDef="let element" class="rightAlign">
+              {{element.purchasePrice }}
+            </td>
+          </ng-container>
+  
+           <!-- Purchase Value -->
+           <ng-container matColumnDef="purchaseValue">
+            <th mat-header-cell *matHeaderCellDef scope="row">Purchase Value</th>
+            <td mat-cell *matCellDef="let element" class="rightAlign">
+              {{element.purchaseValue }}
+            </td>
+          </ng-container>
+  
+           <!-- Broken Days -->
+           <ng-container matColumnDef="brokenDays">
+            <th mat-header-cell *matHeaderCellDef scope="row">Broken Days</th>
+            <td mat-cell *matCellDef="let element" class="rightAlign">
+              {{element.brokenDays  }}
+            </td>
+          </ng-container>
+  
+           <!-- Broken Period Interest -->
+           <ng-container matColumnDef="brokenPeriodInterest">
+            <th mat-header-cell *matHeaderCellDef scope="row">Broken Period Interest</th>
+            <td mat-cell *matCellDef="let element" class="rightAlign">
+              {{element.brokenPeriodInterest }}
+            </td>
+          </ng-container>
+  
+           <!-- Total Purchased Cost -->
+           <ng-container matColumnDef="totalPurchasedCost">
+            <th mat-header-cell *matHeaderCellDef scope="row">Total Purchased Cost</th>
+            <td mat-cell *matCellDef="let element" class="rightAlign">
+              {{element.totalPurchasedCost }}
+            </td>
+          </ng-container>
+  
+           
+  
+        
+  
+          <!-- Header column of Table -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <!-- Data fetch from .TS File  -->
+          
+          <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator #paginator [pageSizeOptions]="[10,20,30]" (page)="onPaginateChange($event)"
+          [length]="totalRecords" showFirstLastButtons></mat-paginator>
+      </div>
+  
+  
+  
+    </div>
+  </div>

@@ -1,0 +1,151 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>Net Issuance of Guarantees</div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/MLA/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">DMO</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Net Issuance of Guarantees</li>
+      </ol>
+    </nav>
+
+
+    <form [formGroup]="NetIssuanceofGuaranteesForm">
+      <!-- Net Issuance of Guarantees -->
+      <div class="panel-group">
+        <div class="box box-primary">
+          <div class="box-header">Net Issuance of Guarantees</div>
+          <div class="box-body">
+
+            <div class="row">
+              <div class="col-sm-4">
+              <mat-form-field >
+                <mat-label>Financial Year From</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let YearFrom of YearFroms" [value]="YearFrom.value">
+                    {{YearFrom.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              </div>
+
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <mat-form-field >
+                  <mat-label>Year To</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let YearTo of YearTos" [value]="YearTo.value">
+                      {{YearTo.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+            </div>
+
+         
+            <div class="row">
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button value="1">Rs in Crores</mat-radio-button>
+              <mat-radio-button value="2">Rs in Lacks</mat-radio-button>
+              <mat-radio-button value="3">Rs in Thousands</mat-radio-button>
+              <mat-radio-button value="4">Absolute Amount(Rs)</mat-radio-button>
+            </mat-radio-group>
+           
+            </div>
+
+
+            <!-- Action Button -->
+            <div class="form-action-button">
+              <button mat-raised-button type="button" class="green" title="Submit" >
+                <i class="material-icons" title="Submit" aria-hidden="true">done</i>
+                Generate
+              </button>
+              <button mat-raised-button type="button"  title="Submit" >
+                <i class="material-icons" title="Submit" aria-hidden="true">refresh</i>
+                Reset
+              </button>
+              <button type="button" title="Cancel" mat-raised-button class="btnClose">
+                <i class="material-icons " title="cancel">close</i>Cancel</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+    <div class="mat-elevation-z8 mt-2 overflow-x-auto overflow-y-hidden">
+      <!-- Net Issuance of Guarantees -->
+      <table mat-table [dataSource]="dataSource" aria-describedby="loanApprovedTable">
+
+              <!-- Sr. No. -->
+              <ng-container matColumnDef="srno">
+                <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                      <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                        {{ i + 1 }} </td>
+              </ng-container>
+
+        <!-- year  -->
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef scope="row">Year</th>
+          <td mat-cell *matCellDef="let element" class="ceAlign">
+            {{element.year}}
+          </td>
+        </ng-container>
+       
+
+        <!-- New Guarantee  -->
+        <ng-container matColumnDef="newGuarantee">
+          <th mat-header-cell *matHeaderCellDef scope="row">New Guarantee Sanctioned(Rs)</th>
+          <td mat-cell *matCellDef="let element" class="rightAlign">
+            {{element.newGuarantee }}
+          </td>
+        </ng-container>
+
+           <!-- Guarantee Vacated  -->
+           <ng-container matColumnDef="guaranteeVacated">
+            <th mat-header-cell *matHeaderCellDef scope="row">Guarantee Vacated (Rs.)</th>
+            <td mat-cell *matCellDef="let element" class="rightAlign">
+              {{element.guaranteeVacated}}
+            </td>
+          </ng-container>
+
+             <!-- netGuarantee  -->
+        <ng-container matColumnDef="netGuarantee">
+          <th mat-header-cell *matHeaderCellDef scope="row">Net Guarantees (Rs.)</th>
+          <td mat-cell *matCellDef="let element" class="rightAlign">
+            {{element.netGuarantee}}
+          </td>
+        </ng-container>
+
+        
+
+        <ng-container matColumnDef="header-row-amount">
+          <th mat-header-cell *matHeaderCellDef 
+              [style.text-align]="left"
+              [attr.colspan]="5"> 
+            Amount(Rs.)
+          </th>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="['header-row-amount']"></tr>
+        <!-- Header column of Table -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- Data fetch from .TS File  -->
+        
+        <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator #paginator [pageSizeOptions]="[pageSize]" (page)="onPaginateChange($event)"
+        [length]="totalRecords" showFirstLastButtons></mat-paginator>
+    </div>
+
+
+
+  </div>
+</div>

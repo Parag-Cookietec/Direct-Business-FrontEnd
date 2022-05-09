@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="form-wrapper">
+
+    <!-- heading section -->
+    <div class="heading-section ng-star-inserted">
+      <div>Policy Payment</div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DOI/DB/PP/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div>
+    </div>
+
+    <!-- navigation -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DOI / DB </li>
+        <li class="breadcrumb-item active" aria-current="page">Policy Payment</li>
+      </ol>
+    </nav>
+
+
+    <div class="panel-group">
+
+      <!-- Payment Screen Form-->
+      <form [formGroup]="paymentForm">
+
+        <div class="box box-primary">
+          <div class="box-header">Payment Screen</div>
+          <div class="box-body">
+            <div class="row">
+
+              <!-- reference no -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="referenceNo" placeholder="Reference No.">
+                </mat-form-field>
+              </div>
+
+              <!-- proposer name -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="proposerName" placeholder="Proposer Name" alphabetOnly>
+                </mat-form-field>
+              </div>
+
+              <!-- type of payment -->
+              <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="paymentType" placeholder="Type of Payment">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="paymentTypeCtrl"
+                        [placeholderLabel]="'Find Type of Payment...'"
+                        [noEntriesFoundLabel]="'No matching Type of Payment found'">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let item of paymentTypeList | filterSelectInput:paymentTypeCtrl.value"
+                      [value]="item.value" matTooltip="{{item.viewValue}}">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- payment date -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="paymentDate" formControlName="paymentDate" placeholder="Payment Date"
+                    [max]="maxDate">
+                  <mat-datepicker-toggle matSuffix [for]="paymentDate"></mat-datepicker-toggle>
+                  <mat-datepicker #paymentDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <!-- premium amount -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="premiumAmount" placeholder="Premium Amount">
+                </mat-form-field>
+              </div>
+
+              <!-- cheque bank name -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="bankName" placeholder="Cheque Bank Name">
+                </mat-form-field>
+              </div>
+
+              <!-- cheque date -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="chequeDate" formControlName="chequeDate" placeholder="Cheque Date"
+                    [max]="onChequeDate()">
+                  <mat-datepicker-toggle matSuffix [for]="chequeDate"></mat-datepicker-toggle>
+                  <mat-datepicker #chequeDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <!-- cheque no -->
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <input matInput formControlName="chequeNo" placeholder="Cheque No" numbersOnly maxlength="7">
+                </mat-form-field>
+              </div>
+
+              <!-- action button start -->
+              <div class="form-action-button">
+                <button mat-raised-button type="submit" class="green"><i class="material-icons">
+                    done
+                  </i> Submit
+                </button>
+
+                <button type="button" mat-raised-button color="accent" (click)="reset()">
+                  <i class="material-icons" aria-hidden="true">
+                    restore
+                  </i>
+                  Reset
+                </button>
+              </div>
+              <!-- action button end -->
+
+            </div>
+
+          </div>
+        </div>
+      </form>
+      <!-- Payment Screen End-->
+
+    </div>
+  </div>
+</div>

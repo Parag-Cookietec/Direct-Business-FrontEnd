@@ -1,0 +1,202 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>Summary Receipt Subsidiary Register Report</div>
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+                <li class="breadcrumb-item " aria-current="page">Reports</li>
+                <li class="breadcrumb-item " aria-current="page">Accounting</li>
+                <li class="breadcrumb-item active" aria-current="page">Receipt Subsidiary Register Report</li>
+            </ol>
+        </nav>
+        <div class="panel-group" id="printContent">
+            <mat-accordion class="search-accordian">
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <div class="heading-section">
+                            Search
+                        </div>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="summaryRSRReportForm">
+                            <div class="box-body">
+                                <div class="row">
+                                    <!-- From Date -->
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="fromDate" formControlName="fromDate"
+                                                placeholder="From Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #fromDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <!-- To Date -->
+                                    <div class="col-sm-3">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="toDate" formControlName="toDate"
+                                                placeholder="To Date ">
+                                            <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #toDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <!-- Common Button -->
+                                <div class="form-action-button">
+                                    <button type="submit" mat-raised-button color="primary">
+                                        <i class="material-icons" aria-hidden="true">search</i>
+                                        Search
+                                    </button>
+                                    <button type="reset" mat-raised-button color="accent">
+                                        <i class="material-icons" aria-hidden="true">
+                                            restore
+                                        </i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                    </form>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <br>
+            <div class="heading-section ng-star-inserted" style="display:flex; justify-content: space-between;">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-7">
+                    e-Pay and Accounts Office (GST),Gandhinagar <br>
+                    <div>Summary Receipt Subsidiary Register Report</div>
+                    <div style="margin-left: 2.5rem;">Date: From 01/07/2019 To 21/07/2019</div>
+                </div>
+                <a><i class="material-icons plus" title="Print" (click)="onPressPrint('printContent')" aria-hidden="true">print</i></a>
+            </div>
+        
+            <!-- table SRS Report -->
+            <div style="float: left;">
+                <mat-paginator [pageSizeOptions]="[3,5,10,25]" [pageSize]="4"></mat-paginator>
+            </div>
+    
+            <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" aria-describedby="rbdReport">
+                <!-- bank name -->
+                <ng-container matColumnDef="bankName">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Bank Name</th>
+                    <td mat-cell *matCellDef="let element" class="leftAlign">
+                        {{element.bankName}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef>Total</td>
+                </ng-container>
+                <!-- no of transactions -->
+                <ng-container matColumnDef="noOfTransactions">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> No Of Transactions</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.noOfTransactions}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCalculation(0)}}</td>
+                </ng-container>
+                <!-- SGST Tax -->
+                <ng-container matColumnDef="sgstTax">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> SGST Tax </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.sgstTax}}</td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCalculation(1)}}</td>
+                </ng-container>
+
+                 <!-- SGST Interest -->
+                 <ng-container matColumnDef="sgstInterest">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> SGST Interest </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.sgstInterest}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCalculation(2)}}</td>
+                </ng-container>
+
+                 <!-- SGST Fees -->
+                <ng-container matColumnDef="sgstFees">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> SGST Fees </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.sgstFees}}</td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCalculation(3)}}</td>
+                </ng-container>
+
+                 <!-- SGST Penalty-->
+                <ng-container matColumnDef="sgstPenalty">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> SGST Penalty </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.sgstPenalty}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCalculation(4)}}</td>
+                </ng-container>
+
+                <!-- SGST Others -->
+                <ng-container matColumnDef="sgstOthers">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> SGST Others</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.sgstOthers}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCalculation(5)}}</td>
+                </ng-container>
+
+                <!-- Rat Amount -->
+                <ng-container matColumnDef="ratAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Rat Amount</th>
+                    <td mat-cell *matCellDef="let element"class="rightAlign">
+                        {{element.ratAmount}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCalculation(6)}}</td>
+                </ng-container>
+
+                <!-- Total Amount -->
+                <ng-container matColumnDef="totalAmount">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Total Amount </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.totalAmount}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCalculation(7)}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="1">
+                    <th mat-header-cell *matHeaderCellDef scope="row">1</th>
+                </ng-container>
+                <ng-container matColumnDef="2">
+                    <th mat-header-cell *matHeaderCellDef scope="row">2</th>
+                </ng-container>
+                <ng-container matColumnDef="3">
+                    <th mat-header-cell *matHeaderCellDef scope="row">3</th>
+                </ng-container>
+                <ng-container matColumnDef="4">
+                    <th mat-header-cell *matHeaderCellDef scope="row">4</th>
+                </ng-container>
+                <ng-container matColumnDef="5">
+                    <th mat-header-cell *matHeaderCellDef scope="row">5</th>
+                </ng-container>
+                <ng-container matColumnDef="6">
+                    <th mat-header-cell *matHeaderCellDef scope="row">6</th>
+                </ng-container>
+                <ng-container matColumnDef="7">
+                    <th mat-header-cell *matHeaderCellDef scope="row">7</th>
+                </ng-container>
+                <ng-container matColumnDef="8">
+                    <th mat-header-cell *matHeaderCellDef scope="row">8</th>
+                </ng-container>
+                <ng-container matColumnDef="9">
+                    <th mat-header-cell *matHeaderCellDef scope="row">9</th>
+                </ng-container>
+        
+                
+            
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns1"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+                <!-- Footer Section Of table -->
+                <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns"></tr>
+            </table>
+            <!-- End table GST File Accountion -->
+            <!-- common button -->
+        </div>
+    </div>
+</div>

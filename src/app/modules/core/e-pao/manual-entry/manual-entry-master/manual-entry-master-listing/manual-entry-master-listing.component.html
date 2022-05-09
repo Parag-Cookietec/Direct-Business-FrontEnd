@@ -1,0 +1,206 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>Manual Entry listing </div>
+
+        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">E-PAO</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Manual Entry Listing</li>
+            </ol>
+        </nav>
+        <form [formGroup]="entryMasterForm">
+            <mat-accordion class="search-accordian">
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <div class="heading-section">
+                            Search
+                        </div>
+                    </mat-expansion-panel-header>
+                    <!-- GST File Accounting Listing -->
+                    <div class="box-body">
+                        <div class="row">
+
+                            <div class="col-sm-3">
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="Reference Number" formControlName="refNo">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="date" formControlName="date" [max]="maxDate"
+                                        placeholder="Entry Date ">
+                                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                                    <mat-datepicker #date></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="col-sm-3">
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="CIN/ Ref No" formControlName="cinNo">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <mat-form-field class="full-width">
+                                    <mat-select formControlName="type" placeholder="Type">
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]="typeCtrl"
+                                                [placeholderLabel]="'Find Type...'"
+                                                [noEntriesFoundLabel]="'no matching Type found'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option>-- None --</mat-option>
+                                        <mat-option *ngFor="let CE of type_list | filterSelectInput: typeCtrl.value
+            " [value]="CE.id" matTooltip="{{ CE.typeName }}">
+                                            {{ CE.typeName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- status -->
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <mat-select name='status' formControlName='status' placeholder='Status'>
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]='statusCtrl'
+                                                [placeholderLabel]="'Select status ...'"
+                                                [noEntriesFoundLabel]="'no matching status found'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option>-- None --</mat-option>
+                                        <mat-option
+                                            *ngFor="let item of statusList | filterSelectInput : statusCtrl.value : 'viewValue'"
+                                            [value]="item.value" matTooltip="{{item.viewValue}}">
+                                            {{item.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+
+                        </div>
+                        <div class="form-action-button">
+                            <button type="submit" mat-raised-button color="primary" (click)="search()">
+                                <i class="material-icons" aria-hidden="true">search</i>
+                                Search
+                            </button>
+                            <button type="reset" mat-raised-button color="accent" (click)="resetListing()">
+                                <i class="material-icons" aria-hidden="true">
+                                    restore
+                                </i>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                    <!-- end GST File Accounting Listing -->
+                </mat-expansion-panel>
+            </mat-accordion>
+            <br>
+            <div class="panel-group">
+                <!-- Manual Entry -->
+                <table mat-table [dataSource]="dataSource" width="100%" matSort aria-describedby="manualEntry">
+                    <!-- checkBox -->
+                    <!-- <ng-container matColumnDef="checkBox">
+                        <th mat-header-cell *matHeaderCellDef scope="row">
+                            <mat-checkbox (change)="$event ? directiveObject.masterToggle(ELEMENT_DATA) : null"
+                                [checked]="directiveObject.selection.hasValue() && directiveObject.isAllSelected(ELEMENT_DATA)"
+                                [indeterminate]="directiveObject.selection.hasValue() && !directiveObject.isAllSelected(ELEMENT_DATA)"
+                                [aria-label]="directiveObject.checkboxLabel(ELEMENT_DATA)">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="text-center">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                                (change)="$event ? directiveObject.selection.toggle(row) : null"
+                                [checked]="directiveObject.selection.isSelected(row) "
+                                [aria-label]="directiveObject.checkboxLabel(ELEMENT_DATA, row)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container> -->
+                    <!-- Transaction Reference No -->
+                    <ng-container matColumnDef="referenceNo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> Reference No</th>
+                        <td mat-cell *matCellDef="let element"> {{element.referenceNo}} </td>
+                    </ng-container>
+                    <!-- CIN/ Ref No -->
+                    <ng-container matColumnDef="cinNo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">CIN/ Ref No</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a [routerLink]="'../'">
+                                {{element.cinNo}}</a> </td>
+                    </ng-container>
+                    <!-- Amount -->
+                    <ng-container matColumnDef="totalEntryAmt">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Amount(₹)</th>
+                        <td mat-cell *matCellDef="let element" class="rightAlign">
+                            {{element.totalEntryAmt}} </td>
+                    </ng-container>
+                    <!-- Entry Date -->
+                    <ng-container matColumnDef="manualEntryDt">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Entry Date </th>
+                        <td mat-cell *matCellDef="let element"> {{element.manualEntryDt | date: 'dd-MMM-yyyy' }} </td>
+                    </ng-container>
+                    <!-- Value Date -->
+                    <ng-container matColumnDef="valueDt">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Value Date</th>
+                        <td mat-cell *matCellDef="let element"> {{element.valueDt | date: 'dd-MMM-yyyy' }} </td>
+                    </ng-container>
+                    <!-- Type -->
+                    <ng-container matColumnDef="typeId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Type</th>
+                        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                    </ng-container>
+                    <!-- Status -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">Status</th>
+                        <td mat-cell *matCellDef="let element"> {{element.wfStatus}} </td>
+                    </ng-container>
+                    <!-- Action -->
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row"> Action </th>
+                        <td mat-cell *matCellDef="let element;let i = index;" class="action-btn-i centerAlign">
+                            <a *ngIf=" element.isEditable == 1" (click)="onEdit(element.id)">
+                                <i aria-hidden="true" class="material-icons plus edit-icon" title="Edit"> edit </i></a>
+                            <a *ngIf="(element.trnStatus != 'Approved')" (click)="onDelete(element.id)">
+                                <i class="material-icons plus delete" aria-hidden="true" title="Delete">delete
+                                </i>
+                            </a>
+                        </td>
+                    </ng-container>
+                    <!-- Header Section Of table -->
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <!-- Data Fetch From .TS File to table -->
+                    <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;">
+                    </tr>
+                </table>
+                <!-- End Manual Entry -->
+                <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" (page)="onPaginateChange($event)"
+        [length]="totalRecords" showFirstLastButtons></mat-paginator>
+
+                <div class="form-action-button">
+
+                    <button type="button" mat-raised-button class="btnClose">
+                        <i class="material-icons" aria-hidden="true" title="close">
+                            close
+                        </i>
+                        Close
+                    </button>
+                </div>
+
+
+            </div>
+        </form>
+
+
+    </div>
+</div>

@@ -1,0 +1,264 @@
+<div class="container">
+    <div class="form-wrapper">
+        <div class="panel-group" id="printContent">
+            <br>
+            <div class="heading-section ng-star-inserted" style="display:flex; justify-content: space-between;">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-8">
+                    e - Pay and Accounts Office (GST), Gandhinagar <br>
+                    <div style="margin-left:0rem">GSTN EODCIN FILE ACCOUNTING VOUCHER</div>
+                </div>
+            </div> 
+
+            <div class="row" style=" display:flex; margin-top: 1rem;">
+                <div class="col-md-3 text-center">
+                   <strong>Reference No</strong>
+                </div>
+                <div class="col-md-4 text-center">
+                   <strong> {{voucherData.refrenceNo}}</strong>
+                </div>
+                <div class="col-md-2" >
+                   <strong>Reference Date</strong>
+                </div>
+                <div class="col-md-3" >
+                    <strong>{{ voucherData.refrenceDt | date: 'dd-MMM-yyyy HH:mm'}}</strong>
+                 </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+            </div>
+
+        
+            <!---Debit Table-->
+            <table mat-table [dataSource]="newdataSource" class="mat-elevation-z8" aria-describedby="rbdReport">
+
+                <!-- bank name -->
+                <ng-container matColumnDef="dh">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> DEBIT HEAD</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.debitedHead}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <!-- no of transactions -->
+                <ng-container matColumnDef="desc">
+                    <th mat-header-cell *matHeaderCellDef scope="row">DESCRIPTION</th>
+                    <td mat-cell *matCellDef="let element" class="leftAlign">
+                        {{element.description}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="leftAlign">Total</td>
+                </ng-container>
+                <!-- SGST Tax -->
+                <ng-container matColumnDef="txn">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> NO. OF TXN </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.noOfTransaction}}</td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                </ng-container>
+
+                <!-- SGST Interest -->
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> AMOUNT</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.amount | number:'1.2-2'}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalAmount() | number:'1.2-2'}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="1">
+                    <th *matHeaderCellDef scope="row"></th>
+                </ng-container>
+                <ng-container matColumnDef="2">
+                    <th mat-header-cell *matHeaderCellDef scope="row"></th>
+                </ng-container>
+                <ng-container matColumnDef="3">
+                    <th mat-header-cell *matHeaderCellDef scope="row"></th>
+                </ng-container>
+                <ng-container matColumnDef="4">
+                    <th mat-header-cell *matHeaderCellDef scope="row"></th>
+                </ng-container>
+                <!-- Header Section Of table -->
+                <!-- <tr mat-header-row *matHeaderRowDef="newdisplayedColumns1"></tr> -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+                <!-- Footer Section Of table -->
+                <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns"></tr>
+            </table>
+
+
+            <!------Credit Table--->
+            <br>
+            <table mat-table [dataSource]="newdataSource2" class="mat-elevation-z8" aria-describedby="rbdReport">
+                <!-- bank name -->
+                <ng-container matColumnDef="ch">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> CREDIT HEAD</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.creditHead}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <!-- no of transactions -->
+                <ng-container matColumnDef="cdesc">
+                    <th mat-header-cell *matHeaderCellDef scope="row">DESCRIPTION</th>
+                    <td mat-cell *matCellDef="let element" class="leftAlign">
+                        {{element.description}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="leftAlign">Total</td>
+                </ng-container>
+                <!-- SGST Tax -->
+                <ng-container matColumnDef="ctxn">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> NO. OF TXN </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.noOfTransaction}}</td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                </ng-container>
+
+                <!-- SGST Interest -->
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> AMOUNT</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.amount | number:'1.2-2'}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalCreditAmount() | number:'1.2-2'}}</td>
+                </ng-container>
+
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns2"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns2;"></tr>
+                <!-- Footer Section Of table -->
+                <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns1"></tr>
+            </table>
+
+            <!---File Table---->
+            <br>
+            <table mat-table [dataSource]="newdataSource10" class="mat-elevation-z8" aria-describedby="rbdReport">
+                <ng-container matColumnDef="srNo">
+                    <th mat-header-cell *matHeaderCellDef scope="row">
+                        Sr No.
+                    </th>
+                    <td mat-cell *matCellDef="let row ; let i = index" class=" centerAlign">
+                        {{i + 1}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <!-- bank name -->
+                <ng-container matColumnDef="fileNo">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> FILE NO.</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.fileName}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="leftAlign">Total</td>
+                </ng-container>
+                <!-- no of transactions -->
+                <ng-container matColumnDef="ftxn">
+                    <th mat-header-cell *matHeaderCellDef scope="row">NO. OF TXN</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.noOfTransaction}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <!-- SGST Tax -->
+                <ng-container matColumnDef="fdt">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> FILE DATE & TIME </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.fileDt | date: 'dd-MMM-yyyy HH:mm'}}</td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                </ng-container>
+
+                <!-- SGST Interest -->
+                <ng-container matColumnDef="famt">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> AMOUNT</th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.totalAmount | number:'1.2-2'}}
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign">{{totalAmount() | number:'1.2-2'}}</td>
+                    <!-- <td mat-footer-cell *matFooterCellDef class="rightAlign"></td> -->
+                </ng-container>
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns11"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns11;"></tr>
+                <!-- Footer Section Of table -->
+                <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns2"></tr>
+            </table>
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-md-4 text-center" >
+                   <strong> S.A./D.A.</strong>
+                </div>
+                <div class="col-md-4 text-center">
+                   <strong> H.A</strong>
+                </div>
+                <div class="col-md-4 text-center">
+                   <strong> A.O</strong>
+                </div>
+            </div>
+            <!---Voucher Table-->
+            <table mat-table [dataSource]="newdataSource20" class="mat-elevation-z8" aria-describedby="rbdReport">
+                <!-- bank name -->
+                <ng-container matColumnDef="voucherNo">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> VOUCHER NO.</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        <!-- {{element.voucherNo}} -->
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <!-- no of transactions -->
+                <ng-container matColumnDef="yymmxxx">
+                    <th mat-header-cell *matHeaderCellDef scope="row">{{voucherData.voucherNo}}</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        <!-- {{element.yymmxxx}} -->
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="leftAlign"></td>
+                </ng-container>
+                <!-- SGST Tax -->
+                <ng-container matColumnDef="vdt">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> DATE </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        <!-- {{element.vdt}} -->
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                </ng-container>
+
+                <!-- SGST Interest -->
+                <ng-container matColumnDef="vyear">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> {{voucherData.fileDate | date:'dd-MMM-yyyy'}}</th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        <!-- {{element.vyear}} -->
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef class="rightAlign"></td>
+                </ng-container>
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns21"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <!-- <tr mat-row *matRowDef="let row; columns: newdisplayedColumns21;"></tr> -->
+                <!-- Footer Section Of table -->
+                <!-- <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns3"></tr> -->
+            </table>
+
+            <div class="form-action-button">
+                <button type="button" mat-raised-button class="print-btn" title="Print" (click)="onPressPrint();">
+                    <i class="material-icons" title="Print" aria-hidden="true">print</i>
+                    Print
+                  </button>
+                <button type="button" mat-raised-button class="green" >
+                    <i class="material-icons" aria-hidden="true" title="Budget dashboard">
+                        save as pdf
+                    </i>
+                    Save As PDF
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+</div>

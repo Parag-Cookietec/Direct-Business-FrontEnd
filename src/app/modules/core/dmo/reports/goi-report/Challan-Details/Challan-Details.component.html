@@ -1,0 +1,174 @@
+<div class="container">
+  <div class="form-wrapper">
+    <div class="heading-section ng-star-inserted">
+      <div>Challan Details</div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/MLA/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">DMO</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Challan Details</li>
+      </ol>
+    </nav>
+
+
+    <form [formGroup]="ChallanDetailsForm">
+      <!-- Loan Approved -->
+      <div class="panel-group">
+        <div class="box box-primary">
+          <div class="box-header">Challan Details</div>
+          <div class="box-body">         
+
+            <div class="row">
+
+             
+                <div class="col-sm-4">
+                <mat-form-field >
+                  <mat-label>From Year</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let InstitueName of InstitueNames" [value]="InstitueName.value">
+                      {{InstitueName.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                </div>
+              
+
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                  <mat-form-field>
+                    <input matInput  placeholder="Letter No">
+                  </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-sm-4">
+                <mat-form-field (click)="fromDate.open()">
+                  <input matInput formControlName="fromDate" [matDatepicker]="fromDate" placeholder="From Date" disabled>
+                  <mat-datepicker-toggle matSuffix [for]="fromDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #fromDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <mat-form-field (click)="toDate.open()">
+                  <input matInput formControlName="toDate" [matDatepicker]="toDate" placeholder="To Date" disabled>
+                  <mat-datepicker-toggle matSuffix [for]="toDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #toDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+            </div>
+
+            <div class="row">
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button value="1">Rs in Crores</mat-radio-button>
+              <mat-radio-button value="2">Rs in Lacks</mat-radio-button>
+              <mat-radio-button value="3">Rs in Thousands</mat-radio-button>
+              <mat-radio-button value="4">Absolute Amount(Rs)</mat-radio-button>
+            </mat-radio-group>
+           
+            </div>
+
+
+            <!-- Action Button -->
+            <div class="form-action-button">
+              <button mat-raised-button type="button" class="green" title="Generate" >
+                <i class="material-icons" title="Generate" aria-hidden="true">done</i>
+                Generate
+              </button>
+
+              <button type="button" title="Reset" mat-raised-button class="btnReset">
+                <i class="material-icons " title="Reset">refresh</i>Reset</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+    <div class="mat-elevation-z8 mt-2 overflow-x-auto overflow-y-hidden">
+      <!-- Loan Approved Table -->
+      <table mat-table [dataSource]="dataSource" aria-describedby="loanApprovedTable">
+
+        <!-- Sr. No. -->
+        <ng-container matColumnDef="srno">
+          <th mat-header-cell *matHeaderCellDef scope="row">Sr. No.</th>
+                <td mat-cell *matCellDef="let element; let i = index;" class="centerAlign">
+                  {{ i + 1 }} </td>
+        </ng-container>
+
+
+      <!-- Challan No   -->
+          <ng-container matColumnDef="challanNo">
+          <th mat-header-cell *matHeaderCellDef scope="row">Challan No</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.challanNo}}
+          </td>
+          </ng-container>
+
+        <!-- Institute Name   -->
+        <ng-container matColumnDef="instituteName">
+          <th mat-header-cell *matHeaderCellDef scope="row">Institute Name</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.instituteName}}
+          </td>
+        </ng-container>
+
+        <!-- Letter No   -->
+        <ng-container matColumnDef="letterNo">
+          <th mat-header-cell *matHeaderCellDef scope="row">Letter No</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.letterNo}}
+          </td>
+        </ng-container>
+
+        <!-- Letter Date -->
+        <ng-container matColumnDef="letterDate">
+          <th mat-header-cell *matHeaderCellDef scope="row">Letter Date</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.letterDate}}
+          </td>
+        </ng-container>
+
+        <!-- Amount -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef scope="row">Amount</th>
+          <td mat-cell *matCellDef="let element" class="centerAlign">
+            {{element.amount}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="header-row-amount">
+          <th mat-header-cell *matHeaderCellDef 
+              [style.text-align]="center"
+              [attr.colspan]="6"> 
+             Amounts(Rs.)
+          </th>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="['header-row-amount']"></tr>
+
+      
+
+        <!-- Header column of Table -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- Data fetch from .TS File  -->
+        
+        <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator #paginator [pageSizeOptions]="[pageSize]" (page)="onPaginateChange($event)"
+        [length]="totalRecords" showFirstLastButtons></mat-paginator>
+    </div>
+
+
+
+  </div>
+</div>

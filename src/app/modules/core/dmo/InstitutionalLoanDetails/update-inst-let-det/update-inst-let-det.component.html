@@ -1,0 +1,138 @@
+<div class="container">
+    <div class="form-wrapper">
+      <div class="heading-section ng-star-inserted">
+        <div>DMO</div>
+        <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/UILD/001</div>
+        <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div> -->
+      </div>
+  
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">DMO</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Update Institute Letter Details</li>
+        </ol>
+      </nav>
+  
+  
+      <form [formGroup]="letterForm">
+        <!-- Update Institute Letter Details -->
+        <div class="panel-group">
+          <div class="box box-primary">
+            <div class="box-header">Update Institute Letter Details</div>
+            <div class="box-body">
+  
+              <div class="row">
+  
+                <!-- <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="insName" placeholder="Name of Institute" required>
+  
+                    <div class="error-wrapper"
+                      *ngIf="letterForm.controls.insName.touched && (letterForm.controls.insName.errors)">
+                      <mat-error *ngIf="letterForm.controls.insName.errors.required">
+                        {{errorMessages.NAME}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div> -->
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select (selectionChange)="GetReferenceByInstitute($event)" formControlName="nameOfInstitute" placeholder="Name of Institute" required>
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="nameOfInstituteCtrl"
+                          [placeholderLabel]="'Select Name of Institute ...'"
+                          [noEntriesFoundLabel]="'no matching Name of Institute found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option *ngFor="let item of InstituteNames | filterSelectInput: nameOfInstituteCtrl.value"
+                        [value]="item.id">
+                        {{item.name}}
+                      </mat-option>
+                    </mat-select>
+                    <div class="error-wrapper"
+                      *ngIf="letterForm.controls.nameOfInstitute.touched && (letterForm.controls.nameOfInstitute.errors)">
+                      <mat-error *ngIf="letterForm.controls.nameOfInstitute.errors.required">
+                        {{errorMessages.INSTITUTE_NAME}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select formControlName="refrenceNo" placeholder="Reference Number" required>
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="refrenceNoCtrl"
+                          [placeholderLabel]="'Select Reference No ...'"
+                          [noEntriesFoundLabel]="'no matching Reference Number found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option *ngFor="let item of ReferenceNumbers | filterSelectInput: refrenceNoCtrl.value"
+                        [value]="item">
+                        {{item}}
+                      </mat-option>
+                    </mat-select>
+                    <div class="error-wrapper"
+                      *ngIf="letterForm.controls.refrenceNo.touched && (letterForm.controls.refrenceNo.errors)">
+                      <mat-error *ngIf="letterForm.controls.refrenceNo.errors.required">
+                        {{errorMessages.INSTITUTE_NAME}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="amtReleased" placeholder="Total Amount Released (Rs.)" required>
+  
+                    <div class="error-wrapper"
+                      *ngIf="letterForm.controls.amtReleased.touched && (letterForm.controls.amtReleased.errors)">
+                      <mat-error *ngIf="letterForm.controls.amtReleased.errors.required">
+                        {{errorMessages.AMOUNT}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field >
+                    <input matInput formControlName="lettNo" placeholder="Letter No.">
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="lettDate.open()">
+                    <input matInput formControlName="lettDate" [matDatepicker]="lettDate" placeholder="Letter Date"
+                    disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="lettDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #lettDate disabled="false"></mat-datepicker>
+  
+                    <div class="error-wrapper"
+                      *ngIf="letterForm.controls.lettDate.touched && (letterForm.controls.lettDate.errors)">
+                      <mat-error *ngIf="letterForm.controls.lettDate.errors.required">
+                        {{errorMessages.DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+              </div>
+  
+              <!-- Action Button -->
+              <div class="form-action-button">
+                <button type="submit" mat-raised-button color="primary">
+                  <i class="material-icons" aria-hidden="true" title="search">search</i>
+                  Search
+                </button>
+  
+                <button type="button" title="Cancel" mat-raised-button class="btnClose">
+                  <i class="material-icons " title="cancel">close</i>Cancel</button>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </form>
+  
+    </div>
+  </div>

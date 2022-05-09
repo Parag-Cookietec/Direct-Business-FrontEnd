@@ -1,0 +1,64 @@
+
+<div class="container">
+    <div class="form-wrapper">
+      <div class="heading-section ng-star-inserted">
+        <div>DMO</div>
+        <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/DM/001</div>
+        <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div> -->
+      </div>
+  
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">DMO</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Delete Memorandum</li>
+        </ol>
+      </nav>
+  
+  
+      <form [formGroup]="deleteForm">
+        <!-- Delete Memorandum -->
+        <div class="panel-group">
+          <div class="box box-primary">
+            <div class="box-header">Delete Memorandum</div>
+            <div class="box-body">
+  
+              <div class="row">
+                <!-- Memo No.  -->
+                <div class="col-sm-3">
+                  <mat-form-field class="full-width">
+                    <mat-select formControlName="memoNo" placeholder="Memo No." (selectionChange)="selectedId($event)">
+                      <mat-option>
+                        <ngx-mat-select-search [formControl]="memoNoCtrl" [placeholderLabel]="'Find Memo No. ...'"
+                          [noEntriesFoundLabel]="'no Memo No.  found'">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option>-- None --</mat-option>
+                      <mat-option *ngFor="let va of memoNo_List | filterSelectInput:memoNoCtrl.value" [value]="va">
+                        {{va}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+  
+              <!-- Action Button -->
+              <div class="form-action-button">
+                <button type="submit" mat-raised-button color="warn" (click)="deleteMemo()">
+                  <i class="material-icons" aria-hidden="true" title="Delete">
+                    delete_forever
+                  </i>
+                  Delete
+                </button>
+  
+                <button type="button" title="Cancel" mat-raised-button class="btnClose">
+                  <i class="material-icons " title="cancel">close</i>Cancel</button>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </form>
+  
+    </div>
+  </div>

@@ -1,0 +1,189 @@
+<div class="container" id="printContent">
+    <div class="form-wrapper">
+        <div class="heading-section ng-star-inserted">
+            <div>GST File Accounting </div>
+            <div class="font-heading"><strong>Reference Number:</strong> {{refNumber}}</div>
+            <div class="font-heading"><strong>Reference Date:</strong> {{ maxDate | date: 'dd-MMM-yyyy HH:mm'}}
+            </div>
+        </div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">E-PAO</li>
+                <li class="breadcrumb-item active" aria-current="page">GST File Accounting </li>
+            </ol>
+        </nav>
+        <div class="panel-group">
+            <!--  GST File Accountion Form -->
+            <form [formGroup]="gftFileAccountingForm" (ngSubmit)="gftFileAccountingData()">
+                <div class="box box-primary">
+                    <div class="box-header">GST File Accounting</div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput formControlName="fileName" placeholder="File Name">
+                                </mat-form-field>
+                            </div>
+                            <!-- From Date -->
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="fromDate" formControlName="fromDate"
+                                        placeholder="From Date ">
+                                    <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #fromDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <!-- To Date -->
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="toDate" formControlName="toDate"
+                                        placeholder="To Date ">
+                                    <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #toDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- Common Button -->
+                        <div class="form-action-button">
+                            <button type="submit" mat-raised-button color="primary" (click)="listingData();"
+                                [disabled]="visible === true || showBtn === true || disableSearch === true">
+                                <i class="material-icons" aria-hidden="true">search</i>
+                                Search
+                            </button>
+                            <button type="reset" mat-raised-button color="accent" (click)="resetForm();"
+                                [disabled]="visible === true || showBtn === true || disableSearch === true">
+                                <i class="material-icons" aria-hidden="true">
+                                    restore
+                                </i>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <!-- End GST File Accountion Form -->
+            <br>
+            <!-- table GST File Accountion -->
+            <table mat-table [dataSource]="gstFileAccDataSource" class="mat-elevation-z8"
+                aria-describedby="gstFileAccounting">
+                <!-- sr no -->
+                <ng-container matColumnDef="srNo">
+                    <th mat-header-cell *matHeaderCellDef scope="row">
+                        <mat-checkbox (change)="$event ? directiveObject.masterToggle(gstFileAccDataSource.filteredData) : null"
+                            [checked]="directiveObject.selection.hasValue() && directiveObject.isAllSelected(gstFileAccDataSource.filteredData)"
+                            [indeterminate]="directiveObject.selection.hasValue() && !directiveObject.isAllSelected(gstFileAccDataSource.filteredData)"
+                            [aria-label]="directiveObject.checkboxLabel(gstFileAccDataSource.filteredData)">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="text-center">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? directiveObject.selection.toggle(row) : null"
+                            [checked]="directiveObject.selection.isSelected(row) "
+                            [aria-label]="directiveObject.checkboxLabel(gstFileAccDataSource.filteredData, row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+                <!-- file name -->
+                <ng-container matColumnDef="fileName">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> File Name </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.fileName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="fileDate">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> File Date </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.fileDate | date:'dd-MMM-yyyy'}}
+                    </td>
+                </ng-container>
+                <!-- no of challan -->
+                <ng-container matColumnDef="totFileCnt">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> No. Of Challan </th>
+                    <td mat-cell *matCellDef="let element" class="centerAlign">
+                        {{element.totFileCnt}}
+                    </td>
+                </ng-container>
+                <!-- amount -->
+                <ng-container matColumnDef="totAmt">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Amount(₹) </th>
+                    <td mat-cell *matCellDef="let element" class="rightAlign">
+                        {{element.totAmt | number:'1.2-2'}}</td>
+                </ng-container>
+                <!-- action -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef scope="row"> Action</th>
+                    <td mat-cell *matCellDef="let element" class="action-btn-i centerAlign">
+                        <a (click)="openView(element.fileDate, check)">
+                            <i class="material-icons plus view-icon" aria-hidden="true" title="View">remove_red_eye
+                            </i>
+                        </a>
+                        <a>
+                            <i class="material-icons  plus view-icon" title="Print" aria-hidden="true"
+                                (click)="onClickPrint(element.fileDate, check)">
+                                print</i>
+                        </a>
+
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+
+                <!-- Header Section Of table -->
+                <tr mat-header-row *matHeaderRowDef="newdisplayedColumns"></tr>
+                <!-- Data Fetch From .TS File to table -->
+                <tr mat-row *matRowDef="let row; columns: newdisplayedColumns;"></tr>
+                <!-- Footer Section Of table -->
+                <!-- <tr mat-footer-row *matFooterRowDef="newdisplayedFooterColumns"></tr> -->
+            </table>
+
+           
+
+            <table>
+                <tr *ngIf="!gstFileAccDataSource.data.length" style="background-color: #cccccc;">
+                    <td style="text-align: center;" [attr.colspan]="newdisplayedColumns.length">
+                        <strong> No Records Found!</strong>
+                    </td>
+                </tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+            <!-- End table GST File Accountion -->
+            <!-- common button -->
+            <div class="form-action-button">
+                <button type="submit" mat-raised-button color="primary" (click)="getFileSummary();"
+                    [disabled]="visible === true || showBtn === true">
+                    <i class="material-icons iconset">
+                        save_alt
+                    </i>
+                    File Summary
+                </button>
+
+                <button mat-raised-button type="submit" class="green" (click)="onSubmit();"
+                    [disabled]="visible === true || showBtn === true">
+                    <i class="material-icons">
+                        done
+                    </i> Submit
+                </button>
+
+
+                <button type="button" mat-raised-button color="warn" (click)="navigate()"
+                    [disabled]="visible === true || showBtn === true">
+                    <i class="material-icons" aria-hidden="true" title="Listing">
+                        list
+                    </i>
+                    Listing
+                </button>
+
+
+                <button type="button" mat-raised-button class="btnClose" (click)="onClose()">
+                    <i class="material-icons" aria-hidden="true" title="Budget dashboard">
+                        close
+                    </i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

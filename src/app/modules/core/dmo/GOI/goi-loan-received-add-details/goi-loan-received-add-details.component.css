@@ -1,0 +1,7 @@
+
+
+.disabled-style {
+    cursor: progress;
+    pointer-events: none;
+    opacity: 0.5;
+  }

@@ -1,0 +1,197 @@
+<div class="container">
+    <div class="form-wrapper">
+      <!-- Screen Name R -->
+      <div class="heading-section ng-star-inserted">
+        <div>DMO</div>
+        <!-- <div class="font-heading"><strong>Reference Number:</strong> 19-20/DMO/DPS/001</div>
+        <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}</div> -->
+      </div>
+  
+      <!-- Breadcrumb Strarts -->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">DMO</a></li>
+          <li class="breadcrumb-item"><a href="#">Institute Loan Approved</a></li>
+        </ol>
+      </nav>
+      <!-- Breadcrumb Ends -->
+  
+  
+      <form [formGroup]="instituteLoanApproved">
+        <!-- Institute Loan Approved Starts -->
+        <div class="panel-group">
+          <div class="box box-primary">
+            <div class="box-header">Institute Loan Approved</div>
+            <div class="box-body">
+  
+              <div class="row">
+  
+                <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="loanNo" placeholder="Advice no."></mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="fromDate.open()">
+                    <input matInput formControlName="fromDate" [matDatepicker]="fromDate" placeholder="From Date " disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="fromDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #fromDate disabled="false" ></mat-datepicker>
+                    <div class="error-wrapper"
+                      *ngIf="instituteLoanApproved.controls.fromDate.touched && instituteLoanApproved.controls.fromDate.errors">
+                      <mat-error *ngIf="instituteLoanApproved.controls.fromDate.errors.required">
+                        {{errorMessages.FROM_DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+  
+                <div class="col-sm-3">
+                  <mat-form-field (click)="toDate.open()">
+                    <input matInput formControlName="toDate" [matDatepicker]="toDate" placeholder="To Date " 
+                    disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="toDate">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #toDate disabled="false"></mat-datepicker>
+                    <div class="error-wrapper"
+                      *ngIf="instituteLoanApproved.controls.toDate.touched && instituteLoanApproved.controls.toDate.errors">
+                      <mat-error *ngIf="instituteLoanApproved.controls.toDate.errors.required">
+                        {{errorMessages.TO_DATE}}
+                      </mat-error>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <!-- Common Button -->
+                <div class="form-action-button">
+                  <button type="submit" mat-raised-button color="primary" (click)="GetDetails()">
+                    <i class="material-icons" aria-hidden="true" title="search">search</i>
+                    Search</button>
+                  <button type="reset" mat-raised-button color="accent">
+                    <i class="material-icons" aria-hidden="true" title="reset">
+                      restore
+                    </i>
+                    Reset
+                  </button>
+                </div>
+                <!-- End Common Button -->
+              </div>
+  
+            </div>
+          </div>
+  
+  
+        </div>
+      </form>
+  
+      <div class="mat-elevation-z8 table-responsive mt-2" *ngIf="showDetails">
+        <table mat-table [dataSource]="dataSource" width="100%" matSort aria-describedby="institute loan approved">
+          <!-- select -->
+  
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef scope="row">
+              <mat-checkbox (change)="$event ? directiveObj.masterToggle(dataSource) : null"
+                [checked]="directiveObj.selection.hasValue() && directiveObj.isAllSelected(dataSource)"
+                [indeterminate]="directiveObj.selection.hasValue() && !directiveObj.isAllSelected(dataSource)"
+                [aria-label]="directiveObj.checkboxLabel(dataSource)">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row" class="centerAlign">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                (change)="$event ? directiveObj.selection.toggle(row) : null;"
+                [checked]="directiveObj.selection.isSelected(row)"
+                [aria-label]="directiveObj.checkboxLabel(dataSource,row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+          <!-- Sr.No -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row" class="srnowidth">
+              Sr. No.
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index" class="centerAlign">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+  
+          <!-- account no -->
+          <ng-container matColumnDef="loanAccNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Account No.
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.loanAccNumber }}
+            </td>
+          </ng-container>
+  
+          <!-- Loan Sanction date -->
+          <ng-container matColumnDef="sanctionOrderDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Loan Sanction Date
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.sanctionOrderDate }}
+            </td>
+          </ng-container>
+  
+  
+          <!-- Loan Receipt Date -->
+          <ng-container matColumnDef="loanReceiptDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Loan Receipt Date
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.loanReceiptDate }}
+            </td>
+          </ng-container>
+  
+  
+          <!-- Loam Amount -->
+          <ng-container matColumnDef="loanAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Loam Amount (₹)
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.loanAmount }}
+            </td>
+          </ng-container>
+  
+          <!-- Loan Tenure -->
+          <ng-container matColumnDef="loanTenure">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Loan Tenure (Years)
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.loanTenure }}
+            </td>
+          </ng-container>
+  
+          <!-- Moratorium Period -->
+          <ng-container matColumnDef="moratariumPeriod">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Moratorium Period (Years)
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.moratariumPeriod }}
+            </td>
+          </ng-container>
+          <!-- Interest Rate (%) -->
+          <ng-container matColumnDef="loanROI">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="row">
+              Interest Rate (%)
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.loanROI }}
+            </td>
+          </ng-container>
+  
+          <!-- Header Section Of table -->
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <!-- Data Fetch From .TS File to table -->
+          <tr mat-row *matRowDef="let row; let i = index; columns: columns"></tr>
+        </table>
+  
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>

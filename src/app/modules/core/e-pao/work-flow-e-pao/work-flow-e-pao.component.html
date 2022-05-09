@@ -1,0 +1,188 @@
+<div class="container common-workflow-section">
+    <div class="row">
+        <div class="heading-section ng-star-inserted">
+            <div>E-PAO Bill Release From Finance Department</div>
+            <div class="font-heading"><strong>Reference No:</strong> 19-20/E-PAO/EPAORFD/001</div>
+            <div class="font-heading"><strong>Reference Date:</strong> {{ date | date: 'dd-MMM-yyyy HH:mm'}}</div>
+        </div>
+        <mat-tab-group mat-stretch-tabs class="standing-est-tabing
+        mat-form-field" [selectedIndex]="selectedIndex">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon" *ngIf="doneHeader">check</mat-icon>
+                    Comment
+                </ng-template>
+                <div class="row header-detail">
+                    <div class="col-sm-4 colPadding" *ngFor="let item of
+                    headerJso">
+                        <div class="col-sm-4 labelCSS">{{item.label}}<span class="floatRight">:</span></div>
+                        <div class="col-sm-8 paddingUnset">{{item.value}}</div>
+                    </div>
+                </div>
+
+                <div class="forward-module-container">
+                    <div class="forward-dialog-left">
+                        <div class="col-sm-12">
+                            <div class="form-datatable-list
+                            history-common-section">
+
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="htry-hding-name">
+                                            <strong>Comment History:</strong>
+                                        </div>
+                                        <div class="back-to-action">
+                                            <a (click)="checkDisplayFileToggle()">Back to Action Form</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="category-deprt"><strong>Education Department</strong></div>
+                                <div class="history-list-container">
+                                    <mat-list *ngFor="let comments of
+                                forwardDialog_history_list" class="column-box">
+                                        <div class="histy-box">
+                                            <mat-list-item class="txt-heading">
+                                                {{comments.userName}},{{comments.designation}} ({{comments.role}})
+                                            </mat-list-item>
+                                            <mat-list-item class="txt-heading">{{ date | date: 'dd-MMM-yyyy HH:mm'}}
+                                            </mat-list-item>
+                                        </div>
+                                        <mat-list-item class="comment-text">
+                                            <span *ngIf="comments.comment.length>
+                                        250">{{comments.comment |
+                                        slice:0:249}}<a (click)="readMoreId=
+                                            comments.id;" *ngIf="readMoreId !=
+                                            comments.id">&nbsp;&nbsp;..read
+                                                    more</a></span>
+                                            <span *ngIf="readMoreId == comments.id">{{comments.comment
+                                        | slice:249}}<a (click)="readMoreId= undefined;" *ngIf="readMoreId ==
+                                            comments.id">&nbsp;&nbsp;less</a></span>
+                                            <span *ngIf="comments.comment.length
+                                    <250">{{comments.comment}}</span>
+                                        </mat-list-item>
+                                        <mat-list-item>
+                                            <div class="box-opener">
+                                                <p class="flexicon">
+                                                    <a *ngFor="let file of
+                                                attachment" (click)="checkDisplayFile(file)" class="attachmentType" (click)="file_name=
+                                                file.fileName;">{{file.fileName}}
+                                                        <i class="material-icons
+                                                    iconset" title="Download">
+                                                            save_alt
+                                                        </i>
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-datatable-list action-common-section">
+                        <form class="col-sm-12" [formGroup]="actionForm" (ngSubmit)="forwardConsolidate()">
+                            <div *ngIf="show">
+                                <div *ngFor="let file of attachment">
+                                    <div class="open-file-box" *ngIf="file_name === file.fileName">
+                                        <img *ngIf="file.imgStatus &&
+                                        file.fileType == 'image'" src="{{file.filePath}}" alt="file.filePath">
+                                        <span *ngIf="file.pdfStatus &&
+                                        file.fileType == 'pdf'">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="showAction">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <mat-form-field class="full-width">
+                                            <mat-select formControlName="actionCode" placeholder="Action" #singleSelect1 required>
+                                                <mat-option>
+                                                    <ngx-mat-select-search [formControl]="actionCtrl" [placeholderLabel]="'Find Action...'" [noEntriesFoundLabel]="'no
+                                                    matching Action found'">
+                                                    </ngx-mat-select-search>
+                                                </mat-option>
+
+                                                <mat-option *ngFor="let action
+                                                of filteredAction | async" [value]="action.value">
+                                                    {{action.viewValue}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <div class="error-wrapper" *ngIf="actionForm.controls.actionCode.touched || (actionForm.controls.actionCode.errors && isSubmitted)">
+                                                <mat-error *ngIf="actionForm.controls.actionCode.errors.required">
+                                                    {{errorMessages.ACTION}}
+                                                </mat-error>
+                                            </div>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <mat-form-field class="full-width">
+                                            <mat-select formControlName="userCode" placeholder="User" #singleSelect1 required>
+                                                <mat-option>
+                                                    <ngx-mat-select-search [formControl]="userCodeCtrl" [placeholderLabel]="'Find
+                                                    User...'" [noEntriesFoundLabel]="'no
+                                                    matching User found'">
+                                                    </ngx-mat-select-search>
+                                                </mat-option>
+
+                                                <mat-option *ngFor="let user of
+                                                filteredUserCode | async" [value]="user.value">
+                                                    {{user.viewValue}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <div class="error-wrapper" *ngIf="actionForm.controls.userCode.touched || (actionForm.controls.userCode.errors && isSubmitted)">
+                                                <mat-error *ngIf="actionForm.controls.userCode.errors.required">
+                                                    {{errorMessages.USER}}
+                                                </mat-error>
+                                            </div>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <mat-form-field class="full-width">
+
+                                            <textarea matInput class="textarea" autocomplete="off" name="additionalText" (focus)="setGEnglishDefault()" [ngClass]="hasFocusSet == 1 ? 'hasfocus' : ''" (focusout)="hasFocusSet=1;setEnglishOnFocusOut()" formControlName="additionalText" placeholder="Comment (ગુજરાતી)"
+                                                required></textarea>
+
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="text-right row rightAlign">
+                                        <button mat-raised-button type="button" class="lang-btn" (click)="toggleLanguage()">{{currentLang.value == 'Eng' ? 'Guj' : 'Eng' }}</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-action-button">
+                                    <button type="submit" title="Save" mat-raised-button class="green" cdkFocusInitial><i class="material-icons" title="Save">save</i>
+                                        Submit</button>
+                                    <button type="button" title="Cancel" mat-raised-button (click)="onNoClick()" class="btnClose"><i class="material-icons " title="Cancel
+                                        dashboard">close</i>Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Attachments" class="full-width">
+                <app-common-attachment [attachemntValue]="attachmentTypeCode"></app-common-attachment>
+                <div class="form-action-button">
+                    <button type="submit" mat-raised-button color="primary">
+                        <i class="material-icons" aria-hidden="true" title="Save">
+                            save
+                        </i>
+                        Upload
+                    </button>
+                    <button type="button" mat-raised-button class="btnClose" (click)="onNoClick()">
+                        <i class="material-icons" title="Grant dashboard">
+                            close
+                        </i>
+                        Cancel
+                    </button>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

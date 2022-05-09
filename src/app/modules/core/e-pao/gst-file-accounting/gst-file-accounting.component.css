@@ -1,0 +1,57 @@
+@media screen {
+    #content {
+        content-visibility: block !important;
+    }
+    .form-action-button {
+        content-visibility: none !important;
+    }
+
+    body {
+        background: rgb(204,204,204);
+        color: white;
+       font: 300 4em/1 'Merriweather';
+       margin: 5%; 
+      }
+      page[size="A4"] {
+        background: white;
+        width: 21cm;
+        height: 29.7cm;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+      }
+      @media print {
+        body, page[size="A4"] {
+          margin: 0;
+          box-shadow: 0;
+          
+        }
+      }
+      /* @media print {
+        body {
+          background: transparent;
+          color: black;
+          font: normal 20pt/1 sans-serif;
+          text-align: center;
+        }
+        button {display: none;}
+        .container {
+          border: 10px double black;
+          padding: 2em;
+            &:after {
+              font-family: "Fontawesome";
+              color: black;
+              content: "\f259";
+              padding-left: .5cm;
+            }
+          }
+        @page {
+          size: Letter Landscape;
+          margin: 3cm;
+        }
+      }
+       */
+      
+
+    }

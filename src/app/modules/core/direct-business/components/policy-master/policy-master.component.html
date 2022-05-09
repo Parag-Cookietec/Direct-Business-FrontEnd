@@ -1,0 +1,844 @@
+<div class="container">
+  <div class="form-wrapper">
+
+    <!-- heading section -->
+    <div class="heading-section ng-star-inserted">
+      <div>Policy Master</div>
+      <div class="font-heading"><strong>Reference Number:</strong> 19-20/DOI/DB/PM/001</div>
+      <div class="font-heading"><strong>Reference Date:</strong> {{ todayDate | date: 'dd-MMM-yyyy HH:mm'}}
+      </div>
+    </div>
+
+    <!-- navigation start -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item " aria-current="page">DOI / DB </li>
+        <li class="breadcrumb-item active" aria-current="page">Policy Master</li>
+      </ol>
+    </nav>
+    <!-- navigation ends -->
+
+    <div class="panel-group">
+      <mat-tab-group mat-stretch-tabs>
+        <mat-tab label="Proposal Details">
+
+          <!-- Master Policy Form-->
+          <form [formGroup]="masterPolicyForm">
+
+            <div class="box box-primary">
+
+              <div class="box-header">Policy Master</div>
+              <div class="box-body">
+                <div class="row">
+                  <!-- type of Policy -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="policyType" placeholder="Policy Type"
+                        (selectionChange)="ontoken($event)">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="policyTypeCtrl"
+                            [placeholderLabel]="'Find Policy Type...'"
+                            [noEntriesFoundLabel]="'No matching Policy Type found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of policyTypeList | filterSelectInput:policyTypeCtrl.value"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!-- reference no -->
+                  <div class="col-sm-3" *ngIf="isTokentabletwo">
+
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="referenceNo" placeholder="Reference No"
+                        (selectionChange)="selectReferenceNo($event)" required #referenceNo>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="referenceNoCtrl"
+                            [placeholderLabel]="'Find Reference No...'"
+                            [noEntriesFoundLabel]="'No matching Reference No found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of referenceNoList |
+                        filterSelectInput:referenceNoCtrl.value" [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                      <div class="error-wrapper"
+                        *ngIf="masterPolicyForm.controls.referenceNo.touched && masterPolicyForm.controls.referenceNo.errors">
+                        <mat-error *ngIf="masterPolicyForm.controls.referenceNo.errors.required">
+                          {{ errorMessage.REFERENCE_NO }}
+                        </mat-error>
+                      </div>
+
+                    </mat-form-field>
+                  </div>
+
+                  <!-- reference date -->
+                  <div class="col-sm-3" *ngIf="isTokentabletwo">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="referenceDate" formControlName="referenceDate"
+                        placeholder="Reference Date">
+                      <mat-datepicker-toggle matSuffix [for]="referenceDate"></mat-datepicker-toggle>
+                      <mat-datepicker #referenceDate [disabled]="true"></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- policy no -->
+                  <div class="col-sm-3" *ngIf="isTokentableone">
+                    <mat-form-field>
+                      <input matInput formControlName="policyNo" placeholder="Policy No." numbersOnly readonly>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-3" *ngIf="isTokentable">
+                    <mat-form-field>
+                      <input matInput formControlName="policyNo" placeholder="Policy No." numbersOnly readonly>
+                    </mat-form-field>
+                  </div>
+                  <!-- Endorsement No -->
+                  <div class="col-md-3" *ngIf="isTokentable">
+                    <mat-form-field>
+                      <input matInput formControlName="endorsementNo" placeholder="Endorsement No">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field>
+                      <mat-select formControlName="letterProposal" placeholder="Proposal Number">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="letterProposalCttrl"
+                            [placeholderLabel]="'Select Proposal Number ...'"
+                            [noEntriesFoundLabel]="'no matching Proposal Number found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option
+                          *ngFor="let item of letterProposalList | filterSelectInput : letterProposalCttrl.value : 'viewValue'"
+                          [value]="item.value" [matTooltip]="item.viewValue">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="riskType" placeholder="Risk Type">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="riskTypeCtrl" [placeholderLabel]="'Find Risk Type...'"
+                            [noEntriesFoundLabel]="'no matching Risk Type found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of riskType_list | filterSelectInput: riskTypeCtrl.value"
+                          [value]="item.value" [matTooltip]="item.viewValue">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- institute type -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="instituteType" placeholder="Institute Type">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- institute name -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="instituteName" placeholder="Institute Name">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- district -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="district" placeholder="District">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- taluka -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="taluka" placeholder="Taluka">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- address -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="address" placeholder="Address">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- contact no -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="contactNo" placeholder="Contact No.">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- email id -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="emailId" placeholder="Email ID">
+                    </mat-form-field>
+                  </div>
+
+                  <!--  start date -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="startDate" formControlName="startDate" placeholder="Start Date"
+                        [max]="masterPolicyForm.controls.endDate.value">
+                      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                      <mat-datepicker #startDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- end date -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="endDate" formControlName="endDate" placeholder="End Date"
+                        [min]="masterPolicyForm.controls.startDate.value">
+                      <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                      <mat-datepicker #endDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- premium amount -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="premiumAmount" placeholder="Premium Amount">
+                    </mat-form-field>
+                  </div>
+
+                </div>
+              </div>
+
+
+            </div>
+            <!-- ri details -->
+            <div class="box box-primary">
+              <div class="box-header">RI Details</div>
+              <div class="box-body">
+
+                <div class="row">
+
+                  <!-- ri required -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="riRequired" placeholder="RI Required" #riRequiredValue>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="riRequiredCtrl"
+                            [placeholderLabel]="'Find RI Required...'"
+                            [noEntriesFoundLabel]="'No matching RI Required found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of riRequiredList | filterSelectInput:riRequiredCtrl.value"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-12" *ngIf="riRequiredValue.value == '1'">
+
+                    <!-- table start -->
+                    <table mat-table [dataSource]="dataSource1" width="100%" aria-describedby="riDetails">
+
+                      <!-- ri name -->
+                      <ng-container matColumnDef="riName">
+                        <th mat-header-cell *matHeaderCellDef scope="row">RI Name *</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.riName" [ngModelOptions]="{standalone: true}"
+                              (keydown.enter)="onRiNameEnter(element)">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+
+                      <!-- riAddress -->
+                      <ng-container matColumnDef="riAddress">
+                        <th mat-header-cell *matHeaderCellDef scope="row">RI Address *</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.riAddress" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- ri share% -->
+                      <ng-container matColumnDef="riShare">
+                        <th mat-header-cell *matHeaderCellDef scope="row" style="min-width: 100px;">RI Share% *</th>
+                        <td mat-cell *matCellDef="let element">
+                          <span *ngIf="element.riName =='GIC'">{{riShare}}</span>
+                          <mat-form-field class="example-full-width" *ngIf="element.riName !='GIC'">
+                            <input matInput [(ngModel)]="element.riShare" [ngModelOptions]="{standalone: true}"
+                              numbersOnly>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- RI Premium Amount -->
+                      <ng-container matColumnDef="premiumAmount">
+                        <th mat-header-cell *matHeaderCellDef scope="row" style="min-width: 100px;">RI Premium Amount
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i= index;" class="rightAlign">
+                          {{calculateRiPremiumAmount(element,i)}}
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="resPayment">
+                        <th mat-header-cell *matHeaderCellDef scope="row" style="min-width: 100px;">Respect To Payment
+                          Made
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i= index;" class="rightAlign">
+
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.resPayment" [ngModelOptions]="{standalone: true}"
+                              numbersOnly>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- payment received on -->
+                      <ng-container matColumnDef="paymentReceivedOn">
+                        <th mat-header-cell *matHeaderCellDef scope="row" style="min-width: 100px;">Payment Received
+                          On
+                          *
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field>
+                            <input matInput [matDatepicker]="paymentReceivedOn" [(ngModel)]="element.paymentReceivedOn"
+                              [ngModelOptions]="{standalone: true}">
+                            <mat-datepicker-toggle matSuffix [for]="paymentReceivedOn"></mat-datepicker-toggle>
+                            <mat-datepicker #paymentReceivedOn></mat-datepicker>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- payment received through -->
+                      <ng-container matColumnDef="paymentReceivedThrough">
+                        <th mat-header-cell *matHeaderCellDef scope="row" style="min-width: 100px;">Payment Received
+                          Through *
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="full-width">
+                            <mat-select [(ngModel)]="element.paymentReceivedThrough"
+                              [ngModelOptions]="{standalone: true}">
+                              <mat-option>
+                                <ngx-mat-select-search [formControl]="paymentReceivedThroughCtrl"
+                                  [placeholderLabel]="'Find Payment Received Through...'"
+                                  [noEntriesFoundLabel]="'No matching Payment Received Through found'">
+                                </ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option
+                                *ngFor="let item of paymentReceivedThroughList | filterSelectInput:paymentReceivedThroughCtrl.value"
+                                [value]="item.value" matTooltip="{{item.viewValue}}">
+                                {{item.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- challan no -->
+                      <ng-container matColumnDef="challanNo">
+                        <th mat-header-cell *matHeaderCellDef scope="row" style="min-width: 100px;">Challan No</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field class="example-full-width">
+                            <input matInput [(ngModel)]="element.challanNo" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- challan date -->
+                      <ng-container matColumnDef="challanDate">
+                        <th mat-header-cell *matHeaderCellDef scope="row" style="min-width: 100px;">Challan Date
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field>
+                            <input matInput [matDatepicker]="challanDate" [(ngModel)]="element.challanDate"
+                              [ngModelOptions]="{standalone: true}">
+                            <mat-datepicker-toggle matSuffix [for]="challanDate"></mat-datepicker-toggle>
+                            <mat-datepicker #challanDate></mat-datepicker>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <!-- action -->
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef scope="row" [ngStyle]="{'width':'4%'}">
+                          Action</th>
+                        <td mat-cell *matCellDef="let  element; let i=index">
+                          <table class="iconTable" aria-describedby="actionBtn">
+                            <tbody>
+                              <tr>
+                                <td width="30">
+                                  <i class="material-icons  plus add" aria-hidden="true"
+                                    *ngIf="(i  ==  dataSource.data.length -  1)" (click)="addColumn();">
+                                    add
+                                  </i>
+                                </td>
+                                <td width="30">
+                                  <i class="material-icons plus delete" aria-hidden="true"
+                                    *ngIf="(dataSource.data.length>  1)" (click)="deleteColumn(i)">
+                                    delete
+                                  </i>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </ng-container>
+
+
+                      <!-- Header Section Of table -->
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                      <!-- Data Fetch From .TS File to table -->
+                      <tr mat-row *matRowDef="let row; let i = index;columns: displayedColumns1;"></tr>
+
+                    </table>
+                    <!-- table end -->
+                  </div>
+
+
+
+                </div>
+
+              </div>
+            </div>
+            <!-- common action button -->
+            <div class="form-action-button">
+
+              <button mat-raised-button type="submit" class="green" title="Submit" (click)="onSubmit()">
+                <i class="material-icons">
+                  done
+                </i>
+                Submit
+              </button>
+
+              <button type="button" mat-raised-button color="accent" title="Reset" (click)="onReset()">
+                <i class="material-icons" aria-hidden="true">
+                  restore
+                </i>
+                Reset
+              </button>
+
+              <button type="button" mat-raised-button (click)="goToListing()" color="warn" title="Listing">
+                <i class="material-icons" aria-hidden="true" title="Listing">
+                  list
+                </i>
+                Listing
+              </button>
+
+              <button type="button" mat-raised-button (click)="onClose()" class="btnClose" title="Close">
+                <i class="material-icons" aria-hidden="true" title="Close">
+                  close
+                </i>
+                Close
+              </button>
+
+            </div>
+            <!-- common action button end -->
+          </form>
+          <!-- Master Policy Form end -->
+        </mat-tab>
+        <mat-tab label="Premium Details">
+          <form [formGroup]="premiumDetailsForm">
+            <div class="box box-primary">
+              <div class="box-header">Premium Detail</div>
+              <div class="box-body">
+                <div class="row">
+                  <!-- Loan amount -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput type="text" maxlength="50" placeholder="Sum Insured" numbersOnly
+                        (keyup)="setFieldVal()" formControlName="sumInsured" required>
+
+                    </mat-form-field>
+                  </div>
+
+
+
+                  <!-- Term (years) -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput type="text" maxlength="10" placeholder="Term of insurance (Year)" numbersOnly
+                        (keyup)="setFieldVal()" formControlName="term" required>
+
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Rate" formControlName="rate" (keyup)="setFieldVal()"
+                        required decimalLimitTwoOnly>
+
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Insurance premium -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Insurance premium" maxlength="50" numbersOnly
+                        formControlName="insurance" required readonly>
+
+                    </mat-form-field>
+                  </div>
+                  <!-- Payment Mode -->
+                  <div class="col-md-3">
+                    <mat-form-field>
+                      <mat-select name="paymentMode" (selectionChange)="ontoken2($event)" formControlName="paymentMode"
+                        required placeholder="Payment Mode">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="paymentModetrl"
+                            [placeholderLabel]="'Select Payment Mode ...'"
+                            [noEntriesFoundLabel]="'no matching Tange type found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option
+                          *ngFor="let PM of paymentMode_list | filterSelectInput : paymentModetrl.value : 'viewValue'"
+                          [value]="PM.value" [matTooltip]="PM.viewValue">
+                          {{PM.viewValue}}
+                        </mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Date of DD/cheque -->
+                  <div class="col-sm-3" *ngIf="!isTokentable">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="dateCheque" formControlName="dateCheque"
+                        placeholder="Date of DD/cheque " required>
+                      <mat-datepicker-toggle matSuffix [for]="dateCheque"></mat-datepicker-toggle>
+                      <mat-datepicker #dateCheque></mat-datepicker>
+                      <div class="error-wrapper"
+                        *ngIf="premiumDetailsForm.controls.dateCheque.touched && premiumDetailsForm.controls.dateCheque.errors">
+                        <mat-error *ngIf="premiumDetailsForm.controls.dateCheque.errors.required">
+                          {{ errorMessage.DATECHEQUE }}
+                        </mat-error>
+                      </div>
+                    </mat-form-field>
+                  </div>
+                  <!-- Challan Number -->
+                  <div class="col-sm-3" *ngIf="!isTokentable">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="DD/Cheque No." maxlength="10" formControlName="ddZNo"
+                        required>
+
+                    </mat-form-field>
+                  </div>
+                  <!-- Bank Name   -->
+                  <div class="col-sm-3" *ngIf="!isTokentable">
+                    <mat-form-field>
+                      <mat-select formControlName="banName" placeholder="Bank Name" required>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="bankCtrl" [placeholderLabel]="'Select  Bank Name...'"
+                            [noEntriesFoundLabel]="'no matching Bank Name found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let bl of bank_list | filterSelectInput : bankCtrl.value : 'viewValue'"
+                          [value]="bl.value" [matTooltip]="bl.viewValue">
+                          {{bl.viewValue}}
+                        </mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+                  <!-- Bank Branch   -->
+                  <div class="col-sm-3" *ngIf="!isTokentable">
+
+                    <mat-form-field>
+                      <mat-select formControlName="bankBranch" placeholder="Bank Branch" required>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="bankbranchCtrl"
+                            [placeholderLabel]="'Select  Bank Branch...'"
+                            [noEntriesFoundLabel]="'no matching Bank Branch found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option
+                          *ngFor="let bl of bankbranch_list | filterSelectInput : bankbranchCtrl.value : 'viewValue'"
+                          [value]="bl.value" [matTooltip]="bl.viewValue">
+                          {{bl.viewValue}}
+                        </mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+                  <!-- Challan Number -->
+                  <div class="col-sm-3" *ngIf="isTokentableOPEN">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Receipt No.(BTR-5)" formControlName="receiptNo" readonly>
+                    </mat-form-field>
+                  </div>
+                  <!-- Challan Date -->
+                  <div class="col-sm-3" *ngIf="isTokentableOPEN">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="receiptDate" formControlName="receiptDate"
+                        placeholder=" Receipt Date (BTR-5) " readonly>
+                      <mat-datepicker-toggle matSuffix [for]="receiptDate"></mat-datepicker-toggle>
+                      <mat-datepicker #receiptDate></mat-datepicker>
+
+                    </mat-form-field>
+                  </div>
+                  <!-- Challan Number -->
+                  <div class="col-sm-3" *ngIf="isTokentable">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Challan No" formControlName="challanNo" readonly>
+                    </mat-form-field>
+                  </div>
+                  <!-- Challan Date -->
+                  <div class="col-sm-3" *ngIf="isTokentable">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="challanDate" formControlName="challanDate"
+                        placeholder=" Challan Date " readonly>
+                      <mat-datepicker-toggle matSuffix [for]="challanDate"></mat-datepicker-toggle>
+                      <mat-datepicker #challanDate></mat-datepicker>
+
+                    </mat-form-field>
+                  </div>
+                  <!-- Challan Amunt -->
+                  <div class="col-sm-3" *ngIf="isTokentable">
+                    <mat-form-field>
+                      <input matInput formControlName="challaAmount" placeholder="Challan Amount" readonly>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="discpPerc" placeholder="Discount (%)" percentageOnly>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="discAmt" placeholder="Discount Amount" readonly>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- <div class="col-sm-3">
+                  <mat-form-field>
+                    <input matInput formControlName="loadAmt" placeholder="Loading Charge Amount" (keyup)="setFieldVal()"
+                     decimalLimitTwoOnly>
+                  </mat-form-field>
+                </div> -->
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="totAddPre" placeholder="Total Add-on premium" readonly>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="totPre" placeholder="Total Premium" readonly numberDotOnly>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="gstPerc" placeholder="GST (%)" percentageOnly>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="gstAmt" placeholder="GST Amount" readonly>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="payPre" placeholder="Payable Premium" numberDotOnly readonly>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <div class="form-action-button">
+
+              <button type="submit" mat-raised-button color="primary">
+                <i class="material-icons" aria-hidden="true" title="Save">
+                  save
+                </i>
+                Save as Draft
+              </button>
+
+              <button mat-raised-button type="submit" class="green"><i class="material-icons">
+                  done
+                </i> Submit
+              </button>
+
+              <button type="reset" mat-raised-button color="accent">
+                <i class="material-icons" aria-hidden="true">
+                  restore
+                </i>
+                Reset
+              </button>
+
+              <button type="button" mat-raised-button class="btnClose">
+                <i class="material-icons" aria-hidden="true" title="Budget dashboard">
+                  close
+                </i>
+                Close
+              </button>
+
+            </div>
+
+          </form>
+        </mat-tab>
+
+        <mat-tab label="Payment Details">
+          <form [formGroup]="paymentDetailsForm">
+
+            <div class="box box-primary">
+              <div class="box-header">
+                Payment Details
+              </div>
+
+              <div class="box-body">
+
+                <div class="row">
+
+                  <!-- challan no -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="example-full-width">
+                      <input matInput formControlName="challanNo" numbersOnly placeholder="Challan No." readonly>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- challan date  -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="challanDate" formControlName="challanDate"
+                        placeholder="Challan Date" [max]="todayDate" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="challanDate"></mat-datepicker-toggle>
+                      <mat-datepicker #challanDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- type of payment -->
+                  <div class="col-sm-3">
+                    <mat-form-field class="full-width">
+                      <mat-select formControlName="paymentType" placeholder="Type of Payment">
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="paymentTypeCtrl"
+                            [placeholderLabel]="'Find Type of Payment...'"
+                            [noEntriesFoundLabel]="'No matching Type of Payment found'">
+                          </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of paymentTypeList | filterSelectInput:paymentTypeCtrl.value"
+                          [value]="item.value" matTooltip="{{item.viewValue}}">
+                          {{item.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- payment date -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="paymentDate" formControlName="paymentDate"
+                        placeholder="Payment Date" [max]="todayDate">
+                      <mat-datepicker-toggle matSuffix [for]="paymentDate"></mat-datepicker-toggle>
+                      <mat-datepicker #paymentDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- premium amount -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="premiumAmount" placeholder="Premium Amount">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- cheque bank name -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="bankName" placeholder="Cheque Bank Name">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- cheque date -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="chequeDate" formControlName="chequeDate"
+                        placeholder="Cheque Date">
+                      <mat-datepicker-toggle matSuffix [for]="chequeDate"></mat-datepicker-toggle>
+                      <mat-datepicker #chequeDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- cheque no -->
+                  <div class="col-sm-3">
+                    <mat-form-field>
+                      <input matInput formControlName="chequeNo" placeholder="Cheque No" numbersOnly maxlength="7">
+                    </mat-form-field>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="form-action-button">
+
+              <button type="submit" mat-raised-button color="primary">
+                <i class="material-icons" aria-hidden="true" title="Save">
+                  save
+                </i>
+                Save as Draft
+              </button>
+
+              <button mat-raised-button type="submit" class="green"><i class="material-icons">
+                  done
+                </i> Submit
+              </button>
+
+              <button type="reset" mat-raised-button color="accent">
+                <i class="material-icons" aria-hidden="true">
+                  restore
+                </i>
+                Reset
+              </button>
+
+              <button mat-button mat-raised-button color="primary" class="back-button">
+                <i class="material-icons" aria-hidden="true" title="Back">
+                  keyboard_return
+                </i>
+                Send Back
+              </button>
+
+              <button type="button" mat-raised-button class="btnClose">
+                <i class="material-icons" aria-hidden="true" title="Budget dashboard">
+                  close
+                </i>
+                Close
+              </button>
+              <button type="submit" mat-raised-button color="primary" class="btn-print">
+                <i class="material-icons" aria-hidden="true">print </i> Print
+              </button>
+
+              <button type="submit" mat-raised-button color="warn">
+
+                Generate Policy
+              </button>
+
+            </div>
+
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+
+
+    </div>
+
+  </div>
+</div>
