@@ -222,8 +222,12 @@ async getDDValue(key: string) {
   }
 }
 
-createData(data: any) {
-
+createData(data: any, type: string) {
+  if(type === 'proposal') {
+    return this.apiService.request(APIConst.DOI.DIRECT_BUSINESS.FIRE.CREATE_PROPOSAL, data);
+  } else if(type === 'policy') {
+    return this.apiService.request(APIConst.DOI.DIRECT_BUSINESS.FIRE.CREATE_POLICY, data);
+  }
 }
 
 }

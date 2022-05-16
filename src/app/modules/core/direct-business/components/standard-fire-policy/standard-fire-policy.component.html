@@ -374,7 +374,7 @@
                   </div>
                   <div class="col-sm-3">
                     <mat-form-field>
-                      <input matInput formControlName="trePremium" placeholder="Terrorism">
+                      <input matInput formControlName="terrorDet" placeholder="Terrorism">
 
                     </mat-form-field>
                   </div>
@@ -1526,7 +1526,7 @@
               </i>
               Save as Draft
             </button>
-            <button mat-raised-button type="submit" class="green"><i class="material-icons">
+            <button mat-raised-button type="submit" class="green" (click)="submit()"><i class="material-icons">
                 done
               </i> Submit
             </button>
