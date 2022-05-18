@@ -575,14 +575,246 @@ export class StdFirePolicyComponent implements OnInit {
       this.isTokentableOPEN = false;
     }
   }
+  total(sumInsured, rate, index): Number { 
+    this.dataSourceTotalSumInsured.data[index].premium = (sumInsured * rate / 1000).toString();
+    return (sumInsured * rate / 1000) 
+  }
 
-  total = (sumInsured, rate): Number => { return (sumInsured * rate / 1000) }
+  getTotalSumInsured(){
+    let sum = 0
+    this.dataSourceTotalSumInsured.data.forEach(element => sum += isNaN(parseFloat(element.sumInsured))? 0 : parseFloat(element.sumInsured));
+    return sum;
+  }
 
-  setFieldVal() {
-    
+  getTotalPremium() {
+    let sum = 0
+    this.dataSourceTotalSumInsured.data.forEach(element => sum += isNaN(parseFloat(element.premium))? 0 : parseFloat(element.premium));
+    return sum;
+  }
+
+  getBuildingWiseTotal(index: number) {
+    return (isNaN(parseFloat(this.dataSourceBuildingWise.data[index].buildingIncludingPath))? 0 : parseFloat(this.dataSourceBuildingWise.data[index].buildingIncludingPath)) +
+    (isNaN(parseFloat(this.dataSourceBuildingWise.data[index].ma))? 0 : parseFloat(this.dataSourceBuildingWise.data[index].ma)) +
+    (isNaN(parseFloat(this.dataSourceBuildingWise.data[index].ffOtherEquipment))? 0 : parseFloat(this.dataSourceBuildingWise.data[index].ffOtherEquipment)) +
+    (isNaN(parseFloat(this.dataSourceBuildingWise.data[index].ssp))? 0 : parseFloat(this.dataSourceBuildingWise.data[index].ssp)) +
+    (isNaN(parseFloat(this.dataSourceBuildingWise.data[index].propertyInsuredSeparately))? 0 : parseFloat(this.dataSourceBuildingWise.data[index].propertyInsuredSeparately))
+  }
+
+  getBuildingWiseGrandTotal(field?: string) {
+    let sum = 0;
+    if(!field) {
+      this.dataSourceBuildingWise.data.forEach((element,index) => {
+        sum += this.getBuildingWiseTotal(index);
+      });
+    } else {
+      this.dataSourceBuildingWise.data.forEach((element,index) => {
+        sum += isNaN(parseFloat(element[field]))? 0 : parseFloat(element[field]);
+      });
+    }
+
+    if(!field && sum > 0) {
+      const index = this.dataSourceTotalSumInsured.data.findIndex(elem => elem.particulars === 'Building wise values');
+      this.elementData3 = this.dataSourceTotalSumInsured.data;
+      if(index >= 0) {
+        this.elementData3[index].sumInsured = sum.toString();
+      } else {
+        this.elementData3.push({
+          particulars: 'Building wise values',
+          clausePerilCode: '',
+          riskCode: '',
+          rateCode: '',
+          rate: '',
+          sumInsured: sum.toString(),
+          premium: '',
+          riskCode1: '',
+          rateCode1: '',
+          code: 'totalAmt'
+        });
+      }
+      this.dataSourceTotalSumInsured.data = this.elementData3;
+    }
+
+    return sum;
+  }
+
+
+  getFireRiskLocations() {
+    const result = [];
+    this.dataSource.data.forEach(loc => {
+      result.push({
+        "riskLocation": loc.riskLocation,
+        "locationAddress": loc.address,
+        "pincode": loc.pinCode
+      });
+    })
+  }
+
+  getPolicyDet() {
+    this.dataSourcePolicy.data.forEach((pol,index) => {
+      pol['policySrno'] = index;
+      pol['policyNo'] = 'POL'+index;
+    })
+    return this.dataSourcePolicy.data;
+  }
+
+
+  getBuildingWiseData() {
+    const result = [];
+    this.dataSourceBuildingWise.data.forEach(building => {
+      result.push({
+        "blockDesc": building.descriptionOfBlock1,
+        "buildingPathAmt": building.buildingIncludingPath,
+        "mAndAAmt": building.ma,
+        "fAndFAmt": building.ffOtherEquipment,
+        "sspAmt": building.ssp,
+        "insurPropAmt": building.propertyInsuredSeparately,
+        "totalAmt": building.total,
+        "buildingAgeYrs": building.age,
+        "buildingHeight": building.height,
+        "construction": building.construction
+      })
+    });
+    return result;
+  }
+
+
+  getTotalSumInsuredData() {
+    const result = [];
+    this.dataSourceTotalSumInsured.data.forEach(insured => {
+      result.push({
+        "riskCoverId": insured.code,
+        "perilCauseId": insured.clausePerilCode,
+        "riskCode": insured.rateCode,
+        "riskRateCode": insured.rateCode,
+        "riskRate": insured.rate,
+        "sumInsured": insured.sumInsured,
+        "premiumAmt": insured.premium,
+        "prmRiskCode": insured.riskCode1,
+        "prmRiskRateCode": insured.rateCode1
+      });
+    });
+    return result;
+  }
+
+
+  getRIDetails() {
+    const result = [];
+    this.dataSourceRi.data.forEach(ri => {
+      result.push({
+        "riCompName": ri.riCompName,
+        "riBrnchOffice": ri.riOff,
+        "riSharePerc": ri.riShare,
+        "riAmount": ri.riAmt
+      })
+    });
+    return result;
+  }
+
+  getTotalRIAmount() {
+    let total = 0;
+    this.dataSourceRi.data.forEach(ri => {
+      total+=parseFloat(ri.riAmt);
+    });
+    return total;
   }
 
   onSubmit() {
-    
+    const dataToSubmit = {
+      propslPoliciesId: 0,
+      tdoiDbProposal: {
+        "proposerTypeId": 1,
+        "proposerName": this.standardFirePolicyForm.get('proposerName').value,
+        "proposerAddress": this.standardFirePolicyForm.get('address').value,
+        "contactNum": this.standardFirePolicyForm.get('phoneNo').value,
+        "emailAddress": this.standardFirePolicyForm.get('emailId').value,
+        "sumInsured": this.getTotalSumInsured(),
+        "insurPremium": this.getTotalPremium()
+      },
+      "proposerBusiness": this.standardFirePolicyForm.get('businessOfProposer').value,
+      "firmCapitalPaid": this.standardFirePolicyForm.get('firmCapitalPaidUp').value,
+      "issuedInFavor": this.standardFirePolicyForm.get('issuedPolicy').value,
+      "insurStartDt": this.standardFirePolicyForm.get('insuranceFromDate').value,
+      "insurEndDt": this.standardFirePolicyForm.get('insuranceToDate').value,
+      "tdoiDbFireRiskLocs": this.getFireRiskLocations(),
+      "coversIncluded": this.standardFirePolicyForm.get('coverIncluded').value,
+      "isCoverPinth": this.standardFirePolicyForm.get('coverPlinthFoundation').value,
+      "isArchitectFeesAdd": this.standardFirePolicyForm.get('architectsConsulting').value,
+      "architectFees": this.standardFirePolicyForm.get('architectsConsulting').value,
+      "isDebrisRemvAdd": this.standardFirePolicyForm.get('debrisRemoval').value,
+      "debrisRemvlAmt": this.standardFirePolicyForm.get('debrisRemoval').value,//
+      "coldStrgDetor": this.standardFirePolicyForm.get('detoriationOfStocks').value,
+      "forestFire": this.standardFirePolicyForm.get('forestFire').value,
+      "vehicleDamage": this.standardFirePolicyForm.get('vehicleDamageImpact').value,
+      "spontCombustion": this.standardFirePolicyForm.get('spontaneousCombustion').value,
+      "ommissionAddtn": this.standardFirePolicyForm.get('omission').value,
+      "isEarthquakeCov": this.standardFirePolicyForm.get('earthquake').value,
+      "isOthrCompIns": this.standardFirePolicyForm.get('insuredWithOtherInsuranceCo').value,
+      "othrCompnyName": this.standardFirePolicyForm.get('insuranceCompanyName').value,
+      "insrnceDetails": this.standardFirePolicyForm.get('insuranceCompanyDetails').value,
+      "isInsrDeclined": this.standardFirePolicyForm.get('insuredWithOtherInsuranceCoDeclined').value,
+      "declineDetails": this.standardFirePolicyForm.get('insuranceCompanyDeclinedDetails').value,
+      "terrorismDtls": this.standardFirePolicyForm.get('terrorDet').value,
+      "tdoiDbFirePastPolicies": this.getPolicyDet(),
+      "isResiOffcShop": this.standardFirePolicyForm.get('residenceOfficeShops').value,
+      "anyIndustryRisk": this.standardFirePolicyForm.get('industrialManufacturingRisk').value,
+      "outStorgRisk": this.standardFirePolicyForm.get('storageOutsideIndustrialRisk').value,
+      "outGasTanksRisk": this.standardFirePolicyForm.get('tankGasHolder').value,
+      "utilitiesOutRisk": this.standardFirePolicyForm.get('utilities').value,
+      "isUsedAsShop": this.standardFirePolicyForm.get('usedAsShop').value,
+      "goodsAsPerList": this.standardFirePolicyForm.get('handledAsPerList').value,
+      "stockValExceed": this.standardFirePolicyForm.get('stockValue').value,
+      "usedWarehouseGodwn": this.standardFirePolicyForm.get('usedAsWarehouse').value,
+      "goodsStoredList": this.standardFirePolicyForm.get('goodsStoredList').value,
+      "usedAsIndustry": this.standardFirePolicyForm.get('usedAsIndustrialManufacturingUnit').value,
+      "manufProductList": this.standardFirePolicyForm.get('manufacturedProducts').value,
+      "factoryStatus": this.standardFirePolicyForm.get('factoryState').value,
+      "fireProtectDevice": this.standardFirePolicyForm.get('fireProtectionDeviceInstalled').value,
+      "basisPropInsur": this.standardFirePolicyForm.get('basicProposedForInsurance').value,
+      "marketValBasis": this.standardFirePolicyForm.get('marketValueBasis').value,
+      "reinstatValBasis": this.standardFirePolicyForm.get('reinstatementValueBasis').value,
+      "wallMaterialUsed": this.standardFirePolicyForm.get('materialUsedForWall').value,
+      "floorMaterialUsed":  this.standardFirePolicyForm.get('materialUsedForFloor').value,
+      "roofMaterialUsed": this.standardFirePolicyForm.get('materialUsedForRoof').value,
+      "buildingHeight": this.standardFirePolicyForm.get('heightOfBuilding').value,
+      "buildingAgeId": this.standardFirePolicyForm.get('ageOfBuilding').value,
+      "tdoiDbFireBuildingVals": this.getBuildingWiseData(),
+      "isFloaterBasis": this.standardFirePolicyForm.get('floaterBasis').value,
+      "floaterBasisAmt": this.standardFirePolicyForm.get('amountFloaterBasis').value,
+      "isDeclaraeBasis": this.standardFirePolicyForm.get('declarationBasis').value,
+      "declareBasisAmt": this.standardFirePolicyForm.get('amountDeclarationBasis').value,
+      "isFloatDecBasis": this.standardFirePolicyForm.get('floaterDeclarationBasis').value,
+      "floatDecBasisAmt": this.standardFirePolicyForm.get('amountFloaterDeclarationBasis').value,
+      "isStockStorOpen": this.standardFirePolicyForm.get('stocksStoredInOpen').value,
+      "openStorLoc": this.standardFirePolicyForm.get('locationOfStockInOpen').value,
+      "openStocksAmt": this.standardFirePolicyForm.get('amountStocksStoredInopen').value,
+      "tdoiDbFireSumInsureds": this.getTotalSumInsuredData(),
+      "sumInsured":  this.standardFirePolicyForm.get('sumInsured').value,
+      "rateOfIntrst": this.standardFirePolicyForm.get('rate').value,
+      "insrncPremium": this.standardFirePolicyForm.get('insurance').value,
+      "premDiscPc": this.standardFirePolicyForm.get('discpPerc').value,
+      "premDiscAmt": this.standardFirePolicyForm.get('discAmt').value,
+      "totAddonPrem": this.standardFirePolicyForm.get('totAddPre').value,
+      "totalPremium": this.standardFirePolicyForm.get('totPre').value,
+      "premGstPc": this.standardFirePolicyForm.get('gstPerc').value,
+      "premGstAmt": this.standardFirePolicyForm.get('gstAmt').value,
+      "payablePremAmt": this.standardFirePolicyForm.get('payPre').value,
+      "isRiReqd": this.standardFirePolicyForm.get('riReq').value,
+      "tdoiDbPropFireRiDtls": this.getRIDetails(),
+      "tdoiDbPropslFireWfs": null,
+      "totRiAmt": this.getTotalRIAmount(),
+      "paymentModeId": this.standardFirePolicyForm.get('paymentMode').value,
+      "chequeDdDt": this.standardFirePolicyForm.get('dateCheque').value,
+      "bankId":  this.standardFirePolicyForm.get('banName').value,
+      "branchId": this.standardFirePolicyForm.get('bankBranch').value,
+      "chequeDdNo": this.standardFirePolicyForm.get('ddZNo').value,
+      "bankName": this.standardFirePolicyForm.get('banName').value,
+      "branchName": this.standardFirePolicyForm.get('bankBranch').value,
+      "challanNo": this.standardFirePolicyForm.get('challanNo').value,
+      "challanDt": this.standardFirePolicyForm.get('challanDate').value,
+      "challanAmount": this.standardFirePolicyForm.get('chaAmount').value,
+      "paymentDate": this.standardFirePolicyForm.get('paymentDate').value,
+    }
+
+    this.fireService.createData(dataToSubmit, 'policy');
   }
 }
