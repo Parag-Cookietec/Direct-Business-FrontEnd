@@ -759,6 +759,7 @@ export class StandardFirePolicyComponent implements OnInit {
       "paymentDate": this.standardFirePolicyForm.get('paymentDate').value,
     }
 
-    this.fireService.createData(dataToSubmit, 'proposal');
+    this.fireService.createData(dataToSubmit, 'proposal').subscribe(res => {
+    });
   }
 }

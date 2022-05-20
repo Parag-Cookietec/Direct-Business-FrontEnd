@@ -58,6 +58,10 @@ export const APIConst = {
                     db_ri_required: { url: `${environment.baseUrl}doi/db-ri-required`, type: RequestTypes.GET, mapping_field: 'isRiReqd' },
                     CREATE_PROPOSAL: { url: `${environment.baseUrl}doi/db/standard-fire-proposal-entry`, type: RequestTypes.POST},
                     CREATE_POLICY: { url: `${environment.baseUrl}doi/db/standard-fire-policy-entry`, type: RequestTypes.POST},
+                },
+                MONEY: {
+                    CREATE_PROPOSAL: { url: `${environment.baseUrl}doi/db/money-in-transit-proposal-entry`, type: RequestTypes.POST},
+                    CREATE_POLICY: { url: `${environment.baseUrl}doi/db/money-in-transit-policy-entry`, type: RequestTypes.POST},
                 }
         }
     }
