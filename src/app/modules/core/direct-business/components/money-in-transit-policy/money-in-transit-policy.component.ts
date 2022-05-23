@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CommonDirective } from 'src/app/common/directive/validation.directive';
 import { doiMessage } from 'src/app/common/error-message/common-message.constants';
 import { ListValue } from 'src/app/model/common-listing';
+import { MoneyService } from 'src/app/modules/services/doi/money.service';
 
 @Component({
   selector: 'app-money-in-transit-policy',
@@ -197,7 +198,7 @@ export class MoneyInTransitPolicyComponent implements OnInit {
     }
   ];
   dataSourceRi = new MatTableDataSource<any>(this.elementDataRi);
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private moneyService: MoneyService) { }
 
   ngOnInit() {
     this.moneyInTransitForm = this.fb.group({
@@ -314,6 +315,68 @@ export class MoneyInTransitPolicyComponent implements OnInit {
   deleteColumnRI(dataSourceRi, index) {
     dataSourceRi.data.splice(index, 1);
     dataSourceRi.data = dataSourceRi.data;
+  }
+
+  getPropInsData() {
+    const result = [];
+    this.dataSource1.data.forEach(data => {
+      result.push({
+        "propertyInsurance": data.propIns,
+        "transAmtDurYr": data.estAmt,
+        "gifLiabilityLmt": data.limitLoss,
+        "gifLiabLmtDurYr": data.limitInsurance
+      });
+    });
+    return result;
+  }
+
+
+  getRiDetails() {
+    const result = [];
+    this.dataSourceRi.data.forEach(ri => {
+      result.push({
+        riCompName: ri.riCompName,
+        riBrnchOffice: ri.riOff,
+        riSharePerc: ri.riShare,
+        riAmount: ri.riAmt
+      });
+    });
+    return result;
+  }
+
+  submit(saveType: number) {
+    const dataToSubmit = {
+      "propslPoliciesId": 0,
+      "tdoiDbProposal": {
+        "proposerTypeId": saveType,
+        "proposerName": this.moneyInTransitForm.get('proposerName').value,
+        "proposerAddress": this.moneyInTransitForm.get('address').value,
+        "contactNum": this.moneyInTransitForm.get('phoneNo').value,
+        "emailAddress": this.moneyInTransitForm.get('emailId').value,
+        "sumInsured": this.moneyInTransitForm.get('sumInsured').value,
+        "insurPremium": this.moneyInTransitForm.get('insurance').value,
+      },
+      "proposerBusiness": this.moneyInTransitForm.get('businessOfProposer').value,
+      "insurStartDt": this.moneyInTransitForm.get('insuranceFromDate').value,
+      "insurEndDt": this.moneyInTransitForm.get('insuranceToDate').value,
+      "insurExpiryTime": this.moneyInTransitForm.get('expTime').value,
+      "tdoiDbPolMitInsurances": this.getPropInsData(),
+      "sumInsured":this.moneyInTransitForm.get('sumInsured').value,
+      "rateOfIntrst": this.moneyInTransitForm.get('rate').value,
+      "insrncPremium": this.moneyInTransitForm.get('insurance').value,
+      "premDiscPc": this.moneyInTransitForm.get('discpPerc').value,
+      "premDiscAmt": this.moneyInTransitForm.get('discAmt').value,
+      "totAddonPrem": this.moneyInTransitForm.get('totAddPre').value,
+      "totalPremium": this.moneyInTransitForm.get('totPre').value,
+      "premGstPc":this.moneyInTransitForm.get('gstPerc').value,
+      "premGstAmt": this.moneyInTransitForm.get('gstAmt').value,
+      "payablePremAmt": this.moneyInTransitForm.get('payPre').value,
+      "isRiReqd": this.moneyInTransitForm.get('riReq').value,
+      "tdoiDbPolMitRiDtls": this.getRiDetails()
+    }
+
+    this.moneyService.createData(dataToSubmit, 'policy').subscribe(res => {
+    });
   }
 
 
