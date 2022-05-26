@@ -62,6 +62,11 @@ export const APIConst = {
                 MONEY: {
                     CREATE_PROPOSAL: { url: `${environment.baseUrl}doi/db/money-in-transit-proposal-entry`, type: RequestTypes.POST},
                     CREATE_POLICY: { url: `${environment.baseUrl}doi/db/money-in-transit-policy-entry`, type: RequestTypes.POST},
+                },
+                AVIATION: {
+                    riskCovered: { url: `${environment.baseUrl}doi/db/db-aviation-risk-covered`, type: RequestTypes.GET},
+                    CREATE_PROPOSAL: { url: `${environment.baseUrl}doi/db/aviation-proposal-entry`, type: RequestTypes.POST},
+                    CREATE_POLICY: { url: `${environment.baseUrl}doi/db/aviation-policy-entry`, type: RequestTypes.POST},
                 }
         }
     }

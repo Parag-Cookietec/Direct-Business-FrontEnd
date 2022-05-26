@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CommonDirective } from 'src/app/common/directive/validation.directive';
 import { doiMessage } from 'src/app/common/error-message/common-message.constants';
 import { ListValue } from 'src/app/model/common-listing';
+import { AviationService } from 'src/app/modules/services/doi/aviation.service';
 
 @Component({
   selector: 'app-avaiation-proposal',
@@ -152,13 +153,6 @@ export class AvaiationProposalComponent implements OnInit {
     { value: '2', viewValue: 'Demand Draft' },
     { value: '3', viewValue: 'Treasury' },
   ];
-  riskCovList: ListValue[] = [
-    { value: '1', viewValue: 'HULL ALL RISKS' },
-    { value: '2', viewValue: 'HULL WAR RISKS' },
-    { value: '3', viewValue: 'PLL' },
-    { value: '4', viewValue: 'TPL' },
-    { value: '5', viewValue: 'Others' },
-  ];
 
   displayedColumns1: string[] = [
     'makeType',
@@ -171,7 +165,7 @@ export class AvaiationProposalComponent implements OnInit {
     'type',
     'action',
   ];
-  aelementData: any[] = [
+  aelementData = [
     {
       makeType: '',
       seriesNo: '',
@@ -183,7 +177,7 @@ export class AvaiationProposalComponent implements OnInit {
       type: '',
     }
   ];
-  dataSource1 = new MatTableDataSource<any>(this.aelementData);
+  aircraftsDS = new MatTableDataSource(this.aelementData);
 
   displayedColumnsRi: string[] = [
     'riCompName',
@@ -202,9 +196,10 @@ export class AvaiationProposalComponent implements OnInit {
     }
   ];
   dataSourceRi = new MatTableDataSource<any>(this.elementDataRi);
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, public aviationService: AviationService) { }
 
   ngOnInit() {
+    this.aviationService.getRiskCoveredList();
     this.aviationForm = this.fb.group({
       prevPolNo: [''],
       proposerName: [''],
@@ -311,7 +306,7 @@ export class AvaiationProposalComponent implements OnInit {
   }
 
   addColumn() {
-    const data = this.dataSource1.data;
+    const data = this.aircraftsDS.data;
     data.push({
       makeType: '',
       seriesNo: '',
@@ -322,7 +317,7 @@ export class AvaiationProposalComponent implements OnInit {
       noOfEng: '',
       type: '',
     });
-    this.dataSource1.data = data;
+    this.aircraftsDS.data = data;
   }
 
   deleteColumn(dataSource, index) {
@@ -332,4 +327,80 @@ export class AvaiationProposalComponent implements OnInit {
   setFieldVal() {
     
   }
+
+  getAircraftsDetails() {
+    const result = [];
+    this.aircraftsDS.data.forEach(aircraft => {
+      result.push({
+          "makeType": aircraft.makeType,
+          "seriesNo": aircraft.seriesNo,
+          "constructYr": aircraft.yearConst,
+          "purchaseYr": aircraft.yearPur,
+          "seatingCapacity": aircraft.seat,
+          "regnNo": aircraft.idMark,
+          "engineNum": aircraft.noOfEng,
+          "aircraftType": aircraft.type
+      });
+    });
+    return result;
+  }
+
+  getRiDetails() {
+    const result = [];
+    this.dataSourceRi.data.forEach(ri => {
+      result.push({
+        riCompName: ri.riCompName,
+        riBrnchOffice: ri.riOff,
+        riSharePerc: ri.riShare,
+        riAmount: ri.riAmt
+      });
+    });
+    return result;
+  }
+
+  submit(saveType: number) {
+    const dataToSubmit = {
+      "propslPoliciesId": 0,
+      "prevPolicyNo": this.aviationForm.get('prevPolNo').value,
+      "tdoiDbProposal": {
+        "proposerTypeId": saveType,
+        "proposerName": this.aviationForm.get('proposerName').value,
+        "proposerAddress": this.aviationForm.get('address').value,
+        "contactNum": this.aviationForm.get('phoneNo').value,
+        "emailAddress": this.aviationForm.get('emailId').value,
+        "sumInsured": this.aviationForm.get('sumInsured').value,
+        "insurPremium": this.aviationForm.get('insurance').value,
+      },
+      "insurStartDt": this.aviationForm.get('insuranceFromDate').value,
+      "insurEndDt": this.aviationForm.get('insuranceToDate').value,
+      "tdoiDbPropAviationAircrafts": this.getAircraftsDetails(),
+      "aircraftStdInstr": this.aviationForm.get('aircraftStd').value,
+      "totAgreedVal": this.aviationForm.get('totAggVal').value,
+      "applDeduction": this.aviationForm.get('appDed').value,
+      "tplCslLiab": this.aviationForm.get('tpl').value,
+      "pllAmt": this.aviationForm.get('pll').value,
+      "crewPaCover": this.aviationForm.get('crewPa').value,
+      "riskCoveredDtls": this.aviationForm.get('riskCov').value,
+      "pilotWarranty": this.aviationForm.get('pilWarr').value,
+      "aircraftUsedPurp": this.aviationForm.get('purpAircraft').value,
+      "aircraftGeogLmt": this.aviationForm.get('geoLimit').value,
+      "sumInsured": this.aviationForm.get('sumInsured').value,
+      "rateOfIntrst": this.aviationForm.get('rate').value,
+      "insrncPremium": this.aviationForm.get('insurance').value,
+      "premDiscPc": this.aviationForm.get('discpPerc').value,
+      "premDiscAmt": this.aviationForm.get('discAmt').value,
+      "totAddonPrem": this.aviationForm.get('totAddPre').value,
+      "totalPremium":  this.aviationForm.get('totPre').value,
+      "premGstPc": this.aviationForm.get('gstPerc').value,
+      "premGstAmt": this.aviationForm.get('gstAmt').value,
+      "payablePremAmt": this.aviationForm.get('payPre').value,
+      "isRiReqd": this.aviationForm.get('riReq').value,
+      "tdoiDbPropAviationRiDtls": this.getRiDetails()
+    }
+
+    this.aviationService.createData(dataToSubmit,'proposal').subscribe(res=>{});
+
+  }
+
+
 }
